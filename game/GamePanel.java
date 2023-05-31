@@ -2,6 +2,7 @@
 
 package game;
 
+import entity.Muzan;
 import entity.Player;
 
 import javax.swing.*;
@@ -21,6 +22,7 @@ public class GamePanel extends JPanel implements Runnable{
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
     Player player = new Player(this, keyH);
+    Muzan muzan = new Muzan();
 
 
 //      게임 패널의 초기 설정 수행.
@@ -74,6 +76,7 @@ public class GamePanel extends JPanel implements Runnable{
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
         player.draw(g2);
+        muzan.draw(g2);
         g2.dispose();
     }
 }
