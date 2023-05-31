@@ -1,6 +1,6 @@
 package entity;
 
-import game.GamePanel;
+import game.Map1Panel;
 import game.KeyHandler;
 
 import javax.imageio.ImageIO;
@@ -11,11 +11,12 @@ import java.io.IOException;
 
 public class Player extends Entity {
 
-    GamePanel gp;
+    //    GamePanel gp;
+    Map1Panel gp;
     KeyHandler keyH;
     public static boolean isJumping = false;
 
-    public Player(GamePanel gp, KeyHandler keyH) {
+    public Player(Map1Panel gp, KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
         setDefaultValues();

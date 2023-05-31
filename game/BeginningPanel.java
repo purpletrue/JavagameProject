@@ -12,8 +12,6 @@ import javax.swing.JPanel;
 
 public class BeginningPanel extends JPanel {
     private GameFrame parent;
-//    시작 메인화면 패널
-//    여기는 절대위치로 해야 뜸;;
     private ImageIcon start1 = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\start1.png");
     private ImageIcon start2 = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\start2.png");
     private ImageIcon help1 = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\help1.png");
@@ -26,17 +24,20 @@ public class BeginningPanel extends JPanel {
     public BeginningPanel(GameFrame parent) {
         this.parent = parent;
         setLayout(null);
-//        버튼에 호버시 효과. Jbutton으로 안 하고 JLabel로 설정
+        // 버튼에 호버시 효과. JButton으로 안 하고 JLabel로 설정
         JLabel startButtonLabel = new JLabel(start1);
-        startButtonLabel.setSize(start1 .getIconWidth(), start1.getIconHeight());
+        startButtonLabel.setSize(start1.getIconWidth(), start1.getIconHeight());
         startButtonLabel.setLocation(450, 450);
         startButtonLabel.addMouseListener(new ButtonClickedEvent(parent, 0, start2, start1));
-//      게임시작 버튼 누를 시 게임패널로 이동
+        // 게임시작 버튼 누를 시 게임패널로 이동
         startButtonLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                Main2.getGamePanel().startGameThread();
-                parent.switchToGamePanel();
+                Map1Panel map1Panel = Main2.getMap1Panel();
+                if (map1Panel != null) {
+                    map1Panel.startGameThread();
+                }
+                parent.swapPanel(0);
             }
         });
         add(startButtonLabel);
@@ -53,7 +54,7 @@ public class BeginningPanel extends JPanel {
         showLankingButtonLabel.addMouseListener(new ButtonClickedEvent(parent, 2, pro2, pro1));
         add(showLankingButtonLabel);
     }
-//      백그라운드 설정
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
