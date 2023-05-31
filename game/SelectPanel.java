@@ -8,21 +8,20 @@ import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import game.ButtonClickedEvent;
 
 public class SelectPanel extends MyJPanel {
     private GameFrame parent;
     private int characterType;
 
-    private ImageIcon sangsangBugiIcon = new ImageIcon("res/character_um.png");
-    private ImageIcon hansungNyanIicon = new ImageIcon("res/character_yu.png");
-    private ImageIcon kkokkokkukkuIcon = new ImageIcon("res/character_mok.png");
+    private ImageIcon sangsangBugiIcon = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\character_um.png");
+    private ImageIcon hansungNyanIicon = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\character_yu.png");
+    private ImageIcon kkokkokkukkuIcon = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\character_mok.png");
 
-    private ImageIcon enteredBugi = new ImageIcon("res/character_um.png");
-    private ImageIcon enteredHansungNyangi = new ImageIcon("res/character_yu.png");
-    private ImageIcon enteredKKKK = new ImageIcon("res/character_mok.png");
+    private ImageIcon enteredBugi = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\character_um.png");
+    private ImageIcon enteredHansungNyangi = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\character_yu.png");
+    private ImageIcon enteredKKKK = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\character_mok.png");
 
-    private ImageIcon selectBackgroundImageicon = new ImageIcon("src/images/selectBackgroundImage.png");
+    private ImageIcon selectBackgroundImageicon = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\background1.png");
     private Image selectBackgroundImage = selectBackgroundImageicon.getImage();
 
     private int selectType;
@@ -38,9 +37,12 @@ public class SelectPanel extends MyJPanel {
         @Override
         public void mouseClicked(MouseEvent e) {
             System.out.println(characterType + "번 캐릭터 선택됨");
+            SelectPanel.this.characterType = characterType; // SelectPanel의 characterType 변수 설정
             Map1Panel game = new Map1Panel(parent, characterType);
             parent.setContentPane(game);
             parent.validate();
+            game.startGameThread();
+            parent.requestFocus();
         }
     }
 
@@ -74,7 +76,11 @@ public class SelectPanel extends MyJPanel {
 
     @Override
     public void paintComponent(Graphics g) {
+//        주석처리된 건 배경이미지 사이즈 그대로 나오게 하게 하는것. 지금 설정된건 이미지를 화면에 꽉 차게 한 것임
+//        super.paintComponent(g);
+//        g.drawImage(selectBackgroundImage, 0, 0, selectBackgroundImageicon.getIconWidth(), selectBackgroundImageicon.getIconHeight(), null);
         super.paintComponent(g);
-        g.drawImage(selectBackgroundImage, 0, 0, selectBackgroundImageicon.getIconWidth(), selectBackgroundImageicon.getIconHeight(), null);
+        g.drawImage(selectBackgroundImage, 0, 0, getWidth(), getHeight(), null);
+
     }
 }

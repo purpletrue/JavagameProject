@@ -1,7 +1,7 @@
 package game;
 
-import java.awt.*;
-
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -14,45 +14,34 @@ public class GameFrame extends JFrame {
 
     private BeginningPanel beginningPanel;
     private SelectPanel selectPanel;
+    private Map1Panel map1Panel;
+
+    private int characterType;
 
     public GameFrame() {
         setTitle("코딩의 호흡");
-        setSize(1152, 864);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        Dimension frameSize = this.getSize();
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
+        int screenWidth = (int) screenSize.getWidth();
+        int screenHeight = (int) screenSize.getHeight();
+        int frameWidth = 1152;
+        int frameHeight = 864;
+        int x = (screenWidth - frameWidth) / 2;
+        int y = (screenHeight - frameHeight) / 2;
+
+        setBounds(x, y, frameWidth, frameHeight);
         setResizable(false);
 
         beginningPanel = new BeginningPanel(this);
         selectPanel = new SelectPanel(this);
 
         setContentPane(beginningPanel);
+        setFocusable(true);
+        requestFocusInWindow();
 
         setVisible(true);
     }
-    public GameFrame(JPanel panel) {
-        currentPanel = panel;
-
-        initializeFrame();
-        initializePanel();
-    }
-
-    private void initializeFrame() {
-        setSize(Main2.WINDOW_WIDTH, Main2.WINDOW_HEIGHT);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setResizable(false);
-        setTitle("Game Frame");
-    }
-
-    private void initializePanel() {
-        setContentPane(currentPanel);
-        validate();
-        currentPanel.requestFocusInWindow();
-    }
-
 
     public void swapPanel(int selectedMenu) {
         switch (selectedMenu) {
@@ -75,6 +64,16 @@ public class GameFrame extends JFrame {
                 // System.out.println("패널 변경 -> 제작자 패널");
                 break;
         }
-        validate(); // 새로운 컨텐트 패널을 적용하기 위해 validate() 호출
+        validate();
+        requestFocusInWindow();
+    }
+
+    public void startGame(int selectedCharacterType) {
+        characterType = selectedCharacterType;
+        map1Panel = new Map1Panel(this, characterType);
+        setContentPane(map1Panel);
+        validate();
+        map1Panel.requestFocusInWindow();
+        map1Panel.startGameThread();
     }
 }
