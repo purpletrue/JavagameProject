@@ -1,5 +1,6 @@
 package game;
 
+import entity.Muzan;
 import entity.PlayerU;
 import entity.PlayerY;
 import entity.PlayerM;
@@ -25,6 +26,7 @@ public class Map1Panel extends JPanel implements Runnable {
     private PlayerU playerU;
     private PlayerY playerY;
     private PlayerM playerM;
+    Muzan muzan;
 
     public Map1Panel(GameFrame gameFrame, int characterType) {
         this.gameFrame = gameFrame;
@@ -49,6 +51,7 @@ public class Map1Panel extends JPanel implements Runnable {
                 playerM = new PlayerM(this, keyH);
                 break;
         }
+        muzan = new Muzan();
     }
 
     public void startGameThread() {
@@ -88,12 +91,15 @@ public class Map1Panel extends JPanel implements Runnable {
         switch (characterType) {
             case 0:
                 playerU.update();
+                muzan.moveForwardAndBackward();
                 break;
             case 1:
                 playerY.update();
+                muzan.moveForwardAndBackward();
                 break;
             case 2:
                 playerM.update();
+                muzan.moveForwardAndBackward();
                 break;
         }
     }
@@ -104,12 +110,15 @@ public class Map1Panel extends JPanel implements Runnable {
         switch (characterType) {
             case 0:
                 playerU.draw(g2);
+                muzan.draw(g2);
                 break;
             case 1:
                 playerY.draw(g2);
+                muzan.draw(g2);
                 break;
             case 2:
                 playerM.draw(g2);
+                muzan.draw(g2);
                 break;
         }
         g2.dispose();

@@ -66,13 +66,13 @@ public class Player {
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
         switch (direction) {
-            case "up" -> {
-                if (spriteNum == 1) {
-                    image = up1;
-                } else if (spriteNum == 2) {
-                    image = up2;
-                }
-            }
+//            case "up" -> {
+//                if (spriteNum == 1) {
+//                    image = up1;
+//                } else if (spriteNum == 2) {
+//                    image = up2;
+//                }
+//            }
 //                왼, 오 방향키 누르면서 점프시에 점프 이미지가 먼저 나왔으면 좋겠는데..
             case "jump" -> {
                 if (spriteNum == 1 || (keyH.rightPressed || keyH.leftPressed) && spriteNum == 1) {
