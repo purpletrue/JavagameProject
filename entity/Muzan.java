@@ -12,6 +12,8 @@ public class Muzan extends Enemy {
     private BufferedImage muzan2;
     private String direction;
     private boolean movingForward = true;
+    private int distanceMoved = 0;
+    private int maxDistance = 200; // 일정 거리
 
     public Muzan() {
         setDefaultValues();
@@ -38,7 +40,7 @@ public class Muzan extends Enemy {
     public void setDefaultValues() {
         x = 550;
         y = 550;
-        speed = 20; // Set the speed to 20
+        speed = 5;
         direction = "up";
     }
 
@@ -54,15 +56,17 @@ public class Muzan extends Enemy {
     public void moveForwardAndBackward() {
         if (movingForward) {
             x += speed; // Move the image forward
+            distanceMoved += speed;
         } else {
             x -= speed; // Move the image backward
+            distanceMoved -= speed;
         }
 
         // Check if the image has reached the boundaries
-        if (x <= 0) {
-            movingForward = true; // Change direction to forward
-        } else if (x >= getWidth() - width) {
+        if (distanceMoved >= maxDistance) {
             movingForward = false; // Change direction to backward
+        } else if (distanceMoved <= -maxDistance) {
+            movingForward = true; // Change direction to forward
         }
     }
 

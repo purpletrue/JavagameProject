@@ -1,5 +1,3 @@
-// 게임 패널
-
 package game;
 
 import entity.Muzan;
@@ -9,38 +7,38 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class GamePanel extends JPanel implements Runnable{
-    // TODO: 2023-05-31 사이즈를 이렇게 설정했는데 캐릭터가 픽셀을 넘어간다면 타격 범위는 그대로인가?
-    final int originalTileSize = 48; //한 칸 사이즈
-    final int scale = 2; //16x3=48 픽셀
-    public final int tileSize = originalTileSize * scale;  //최종 결정 타일사이즈
-    final int maxScreenCol = 12;  //화면에 표시되는 최대 열,행의 수
-    final int maxScreenRow = 9;  //4x3비율
-    final int screenWidth = tileSize * maxScreenCol;  //1152: 48x2x12
-    final int screenHeight = tileSize * maxScreenRow;  //864
+public class GamePanel extends JPanel implements Runnable {
+    final int originalTileSize = 48;
+    final int scale = 2;
+    public final int tileSize = originalTileSize * scale;
+    final int maxScreenCol = 12;
+    final int maxScreenRow = 9;
+    final int screenWidth = tileSize * maxScreenCol;
+    final int screenHeight = tileSize * maxScreenRow;
     int FPS = 60;
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
-    Player player = new Player(this, keyH);
-    Muzan muzan = new Muzan();
+    Player player;
+    Muzan muzan;
 
-
-//      게임 패널의 초기 설정 수행.
-    public GamePanel(){
+    public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
+
+        player = new Player(this, keyH);
+        muzan = new Muzan();
     }
 
-//      게임 루프를 실행하는 스레드 시작
-    public void startGameThread(){
+    public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
     }
+
     @Override
-    public void run(){
+    public void run() {
         double drawInterval = 1000000000 / FPS;
         double delta = 0;
         long lastTime = System.nanoTime();
@@ -66,15 +64,15 @@ public class GamePanel extends JPanel implements Runnable{
             }
         }
     }
-//      플레이어 상태 업데이트
+
     public void update() {
         player.update();
+        muzan.moveForwardAndBackward();
     }
 
-//    플레이어 그리는 작업 수행.
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D) g;
         player.draw(g2);
         muzan.draw(g2);
         g2.dispose();
