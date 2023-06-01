@@ -15,11 +15,19 @@ public class PlayerU extends Entity {
     KeyHandler keyH;
     public static boolean isJumping = false;
 
+    // TODO: 2023-06-01 유진 hp 공격 수정중
+    private boolean isAttacking = false;
+    private int attackCooldown = 0;
+    private int attackCooldownMax = 30;
+    private BufferedImage attack1;
+    private BufferedImage attack2;
+
     public PlayerU(Map1Panel gp, KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
         setDefaultValues();
         getPlayerImage();
+        updateAttack();
     }
 
     public void setDefaultValues() {
@@ -42,6 +50,10 @@ public class PlayerU extends Entity {
             jump1 = ImageIO.read(getClass().getResourceAsStream("/res/tanjiro_jump2.png"));
             jump2 = ImageIO.read(getClass().getResourceAsStream("/res/tanjiro_jump2.png"));
 
+            // 유진 어택 추가
+            attack1 = ImageIO.read(getClass().getResourceAsStream("/res/tanjiro_jump2.png"));
+            attack2 = ImageIO.read(getClass().getResourceAsStream("/res/tanjiro_jump2.png"));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -50,6 +62,7 @@ public class PlayerU extends Entity {
     public void update() {
         handleKeyEvents();
         animateSprite();
+        updateAttack();
     }
 
     private void handleKeyEvents() {
@@ -63,6 +76,13 @@ public class PlayerU extends Entity {
 
         if (keyH.spaceBarPressed) {
             jump(true);
+        }
+
+        // 유진- 어택 추가
+        if (keyH.xPressed && !isAttacking) {
+            direction = "attack";
+            x -= speed;
+            attack();
         }
     }
 
@@ -111,6 +131,13 @@ public class PlayerU extends Entity {
                     image = right2;
                 }
                 break;
+
+            case "attack":
+                if (spriteNum == 1) {
+                    image = attack1;
+                } else if (spriteNum == 2) {
+                    image = attack2;
+                }
         }
         g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
     }
@@ -167,5 +194,24 @@ public class PlayerU extends Entity {
             });
             jumpThread.start();
         }
+    }
+
+
+    // TODO: 2023-06-01 유진 어택 추가
+    private void updateAttack() {
+        if (isAttacking) {
+            attackCooldown--;
+
+            if (attackCooldown <= 0) {
+                isAttacking = false;
+                attackCooldown = 0;
+            }
+        }
+    }
+
+    private void attack() {
+        isAttacking = true;
+        attackCooldown = attackCooldownMax;
+
     }
 }

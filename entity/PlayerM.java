@@ -15,17 +15,26 @@ public class PlayerM extends Entity {
     KeyHandler keyH;
     public static boolean isJumping = false;
 
+    // TODO: 2023-06-01 유진 hp 공격 수정중
+    private boolean isAttacking = false;
+    private int attackCooldown = 0;
+    private int attackCooldownMax = 30;
+    private BufferedImage attack1;
+    private BufferedImage attack2;
+    private BufferedImage lastDirectionImage;
+
     public PlayerM(Map1Panel gp, KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
         setDefaultValues();
         getPlayerImage();
+        updateAttack();
     }
 
     public void setDefaultValues() {
         x = 150;
-        y = 550;
-        speed = 2;
+        y = 450;
+        speed = 8;
         direction = "up";
     }
 
@@ -41,6 +50,9 @@ public class PlayerM extends Entity {
             right2 = ImageIO.read(getClass().getResourceAsStream("/res/rengoku_right2.png"));
             jump1 = ImageIO.read(getClass().getResourceAsStream("/res/rengoku_jump2.png"));
             jump2 = ImageIO.read(getClass().getResourceAsStream("/res/rengoku_jump2.png"));
+            // 유진 어택 추가
+            attack1 = ImageIO.read(getClass().getResourceAsStream("/res/rengoku_attack1.png"));
+            attack2 = ImageIO.read(getClass().getResourceAsStream("/res/rengoku_attack2.png"));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -50,6 +62,7 @@ public class PlayerM extends Entity {
     public void update() {
         handleKeyEvents();
         animateSprite();
+        checkBounds();
     }
 
     private void handleKeyEvents() {
@@ -64,6 +77,12 @@ public class PlayerM extends Entity {
         if (keyH.spaceBarPressed) {
             jump(true);
         }
+        // 유진- 어택 추가
+        if (keyH.xPressed && !isAttacking) {
+            direction = "attack";
+            attack();
+        }
+
     }
 
     private void animateSprite() {
@@ -113,10 +132,44 @@ public class PlayerM extends Entity {
                     image = right2;
                 }
                 break;
-        }
-        Image resizedImage = image.getScaledInstance(newWidth, newHeight, Image.SCALE_DEFAULT);
+            case "attack":
+                if (spriteNum == 1) {
+                    image = attack1;
+                } else if (spriteNum == 2) {
+                    image = attack2;
+                } else {
+                    // 공격 후 원래 이미지로 돌아오도록 설정
+                    if (direction.equals("left")) {
+                        image = left1;
+                    } else if (direction.equals("right")) {
+                        image = right1;
+                    }
+                }
+                break;
 
-        g2.drawImage(resizedImage, x, y, null);
+        }
+        if (image != null) {
+            Image resizedImage = image.getScaledInstance(newWidth, newHeight, Image.SCALE_DEFAULT);
+            g2.drawImage(resizedImage, x, y, null);
+        }
+
+    }
+
+    public void checkBounds() {
+        int maxX = gp.getWidth() - gp.tileSize; // 오른쪽 경계에 타일의 크기(gp.tileSize)를 고려하여 계산
+        int maxY = gp.getHeight() - gp.tileSize; // 아래쪽 경계에 타일의 크기(gp.tileSize)를 고려하여 계산
+
+        if (x < 0) {
+            x = 0;
+        } else if (x > maxX) {
+            x = maxX;
+        }
+
+        if (y < 0) {
+            y = 0;
+        } else if (y > maxY) {
+            y = maxY;
+        }
     }
 
     public void keyPressed(KeyEvent e) {
@@ -136,6 +189,11 @@ public class PlayerM extends Entity {
         }
         // Handle other key events
     }
+
+    public Rectangle getBounds() {
+        return new Rectangle(x, y, width, height);
+    }
+
 
     public void jump(boolean b) {
         if (!isJumping && b) {
@@ -172,4 +230,57 @@ public class PlayerM extends Entity {
             jumpThread.start();
         }
     }
+
+    // TODO: 2023-06-01 유진 어택 추가
+    private void attack() {
+        if (!isAttacking && attackCooldown <= 0) {
+            isAttacking = true;
+            attackCooldown = attackCooldownMax;
+
+            Thread attackThread = new Thread(new Runnable() {
+                public void run() {
+                    // 공격 애니메이션 처리 코드 작성
+                    BufferedImage currentImage = lastDirectionImage;
+                    BufferedImage attackImage;
+
+                    if (spriteNum == 1) {
+                        attackImage = attack1;
+                    } else {
+                        attackImage = attack2;
+                    }
+
+                    // 몬스터와의 충돌 체크 및 HP 감소 처리
+//                    Rectangle attackBounds = new Rectangle(x, y, width, height);  // 공격 범위 바운딩 박스
+//                    Monster monster = gp.getMonster();  // 몬스터 객체 가져오기
+//
+//                    if (monster != null && attackBounds.intersects(monster.getBounds())) {
+//                        monster.decreaseHP(attackDamage);
+//                    }
+
+                    try {
+                        Thread.sleep(20);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (currentImage != lastDirectionImage) {
+                        currentImage = lastDirectionImage;
+                    }
+
+
+                    isAttacking = false;
+                }
+            });
+
+            attackThread.start();
+        }
+    }
+
+
+    private void updateAttack() {
+        if (attackCooldown > 0) {
+            attackCooldown--;
+        }
+    }
 }
+

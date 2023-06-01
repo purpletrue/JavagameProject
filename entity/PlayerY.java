@@ -50,7 +50,12 @@ public class PlayerY extends Entity {
     public void update() {
         handleKeyEvents();
         animateSprite();
+        checkBounds();
     }
+    public Rectangle getBounds() {
+        return new Rectangle(x, y, width, height);
+    }
+
 
     private void handleKeyEvents() {
         if (keyH.leftPressed) {
@@ -113,6 +118,23 @@ public class PlayerY extends Entity {
                 break;
         }
         g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
+
+    }
+    public void checkBounds() {
+        int maxX = gp.getWidth() - gp.tileSize; // 오른쪽 경계에 타일의 크기(gp.tileSize)를 고려하여 계산
+        int maxY = gp.getHeight() - gp.tileSize; // 아래쪽 경계에 타일의 크기(gp.tileSize)를 고려하여 계산
+
+        if (x < 0) {
+            x = 0;
+        } else if (x > maxX) {
+            x = maxX;
+        }
+
+        if (y < 0) {
+            y = 0;
+        } else if (y > maxY) {
+            y = maxY;
+        }
     }
 
     public void keyPressed(KeyEvent e) {
