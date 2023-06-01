@@ -33,7 +33,7 @@ public class BeginningPanel extends JPanel {
         startButtonLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                Map1Panel map1Panel = Main2.getMap1Panel();
+                Map1Panel map1Panel = Main.getMap1Panel();
                 if (map1Panel != null) {
                     map1Panel.startGameThread();
                 }
