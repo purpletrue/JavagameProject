@@ -1,17 +1,28 @@
 package game;
 
-// 메인화면. 버튼 누를 시 동작하는 화면
+import javax.swing.JFrame;
+
 public class Main2 {
-    static int WINDOW_WIDTH = 1152;
-    static int WINDOW_HEIGHT = 864;
-    private static GamePanel gamePanel;
+    private static GameFrame frame;
+    private static Map1Panel map1Panel;
 
     public static void main(String[] args) {
-        gamePanel = new GamePanel();
-        new GameFrame(gamePanel);
+        frame = new GameFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.setResizable(false);
+
+        BeginningPanel beginningPanel = new BeginningPanel(frame);
+        frame.setContentPane(beginningPanel);
+
+        frame.setVisible(true);
     }
 
-    public static GamePanel getGamePanel() {
-        return gamePanel;
+    public static Map1Panel getMap1Panel() {
+        return map1Panel;
+    }
+
+    public static void setMap1Panel(Map1Panel map1Panel) {
+        Main2.map1Panel = map1Panel;
     }
 }
