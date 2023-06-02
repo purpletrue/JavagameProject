@@ -8,10 +8,9 @@ import javax.swing.*;
 import entity.*;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 
-public class Gamepanel extends JPanel implements Runnable {
+public class GamePanel extends JPanel implements Runnable {
     Map1Panel parent;
     int characterType;
 
@@ -73,15 +72,15 @@ public class Gamepanel extends JPanel implements Runnable {
         switch (characterType) {
             case 0:
                 playerU.update();
-                muzan.moveForwardAndBackward();
+//                muzan.moveForwardAndBackward();
                 break;
             case 1:
                 playerY.update();
-                muzan.moveForwardAndBackward();
+//                muzan.moveForwardAndBackward();
                 break;
             case 2:
                 playerM.update();
-                muzan.moveForwardAndBackward();
+//                muzan.moveForwardAndBackward();
                 break;
         }
     }

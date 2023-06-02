@@ -10,10 +10,7 @@ import java.util.Objects;
 public class Muzan extends Enemy {
     private BufferedImage muzan1;
     private BufferedImage muzan2;
-    private String direction;
-    private boolean movingForward = true;
-    private int distanceMoved = 0;
-    private int maxDistance = 200; // 일정 거리
+    private int maxDistance = 200;
 
     public Muzan() {
         setDefaultValues();
@@ -21,15 +18,15 @@ public class Muzan extends Enemy {
     }
 
     public Muzan(String string, int x, int y, int hp, String name) {
-        enemyMove = new ImageIcon(string);
+        imageicon = new ImageIcon(string);
         this.name = name;
         this.x = x;
         this.y = y;
-        this.width = enemyMove.getIconWidth();
-        this.height = enemyMove.getIconHeight();
+        this.width = imageicon.getIconWidth();
+        this.height = imageicon.getIconHeight();
         this.hp = hp;
 
-        setIcon(enemyMove);
+        setIcon(imageicon);
         setSize(850, 700);
         setLocation(x, y);
 
@@ -53,22 +50,22 @@ public class Muzan extends Enemy {
         }
     }
 
-    public void moveForwardAndBackward() {
-        if (movingForward) {
-            x += speed; // Move the image forward
-            distanceMoved += speed;
-        } else {
-            x -= speed; // Move the image backward
-            distanceMoved -= speed;
-        }
+//    public void moveForwardAndBackward() {
+//        if (movingForward) {
+//            x += speed; // Move the image forward
+//            distanceMoved += speed;
+//        } else {
+//            x -= speed; // Move the image backward
+//            distanceMoved -= speed;
+//        }
 
         // Check if the image has reached the boundaries
-        if (distanceMoved >= maxDistance) {
-            movingForward = false; // Change direction to backward
-        } else if (distanceMoved <= -maxDistance) {
-            movingForward = true; // Change direction to forward
-        }
-    }
+//        if (distanceMoved >= maxDistance) {
+//            movingForward = false; // Change direction to backward
+//        } else if (distanceMoved <= -maxDistance) {
+//            movingForward = true; // Change direction to forward
+//        }
+//    }
 
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
