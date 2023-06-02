@@ -4,9 +4,11 @@ import entity.Muzan;
 import entity.PlayerU;
 import entity.PlayerY;
 import entity.PlayerM;
+import entity.Platform;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class Map1Panel extends JPanel implements Runnable {
     private Map1Panel parent;
@@ -27,6 +29,7 @@ public class Map1Panel extends JPanel implements Runnable {
     private PlayerY playerY;
     private PlayerM playerM;
     Muzan muzan;
+    Platform platform1;
 
     public Map1Panel(GameFrame gameFrame, int characterType) {
         this.gameFrame = gameFrame;
@@ -52,6 +55,16 @@ public class Map1Panel extends JPanel implements Runnable {
                 break;
         }
         muzan = new Muzan();
+        setPreferredSize(new Dimension(screenWidth, screenHeight));
+
+        // 발판 생성
+        BufferedImage platformImage = new BufferedImage(tileSize * 2, tileSize, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = platformImage.createGraphics();
+        g2.setColor(Color.GRAY);
+        g2.fillRect(0, 0, tileSize * 2, tileSize);
+        g2.dispose();
+
+        platform1 = new Platform(200, 400, platformImage);
     }
 
     public void startGameThread() {
@@ -110,17 +123,16 @@ public class Map1Panel extends JPanel implements Runnable {
         switch (characterType) {
             case 0:
                 playerU.draw(g2);
-                muzan.draw(g2);
                 break;
             case 1:
                 playerY.draw(g2);
-                muzan.draw(g2);
                 break;
             case 2:
                 playerM.draw(g2);
-                muzan.draw(g2);
                 break;
         }
+        muzan.draw(g2);
+        platform1.draw(g2);
         g2.dispose();
     }
 }
