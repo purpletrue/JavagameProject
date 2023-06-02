@@ -25,10 +25,29 @@ public class Player extends JLabel {
     int spriteCounter = 0;      //캐릭터 이미지를 변경하기 위한 변수
     public int spriteNum = 1;       // 위와 마찬가지
 
+    // TODO: 2023-06-02 유진
+    // HP 바 변수
+    public int maxHp=100; // 최대 체력
+    public int currentHp; // 현재 체력
+    public int decreaseHp;  // 적에게 공격당했을때 줄어들 hp
+    public int hpBarWidth=50;
+    public int hpBarHeight;
+    public Enemy enemy;
+    public int hpwidth;
+
+    public void setHpBar() {
+        maxHp = 100;
+        currentHp = maxHp - decreaseHp;
+        hpBarWidth = 100;
+        hpBarHeight = 5;
+    }
+
+
     public void update(){
         handleKeyEvents();
         animateSprite();
         updateAttack();
+        setHpBar();
     }
 
     private void handleKeyEvents() {
@@ -106,6 +125,16 @@ public class Player extends JLabel {
 
         }
         g2.drawImage(image, x, y, width, height, null);
+        // TODO: 2023-06-02 유진
+        // HP 바 그리기
+        hp = maxHp;
+        g2.setColor(Color.BLUE);
+        g2.fillRect(x, y - 10, hpBarWidth, hpBarHeight); // HP 바 위치 및 크기 조정
+        g2.setColor(Color.GREEN);
+        int hpBarWidth = (int) ((double) hp / maxHp * this.hpBarWidth); // 현재 체력에 따라 바의 길이 계산
+        g2.fillRect(x, y - 10, this.hpBarWidth, hpBarHeight); // 현재 체력에 맞게 HP 바 그리기
+
+
     }
 
     public void jump(boolean b) {
@@ -215,6 +244,28 @@ public class Player extends JLabel {
                 isAttack = false;
                 attackCoolDown = 0;
             }
+        }
+    }
+
+
+    // TODO: 2023-06-02 유진 hp
+
+    public void decreaseHp(int amount) {
+        this.hp -= amount;
+        if (hp < 0) {
+            hp = 0;
+        }
+    }
+
+    public Rectangle getBoundingBox() {
+        return new Rectangle(x, y, width, height);
+    }
+    public void handleCollision() {
+        Rectangle playerBounds = getBoundingBox();
+        Rectangle muzanBounds = getBoundingBox();
+
+        if (playerBounds.intersects(muzanBounds)) {
+            decreaseHp(10); // 일정량의 체력을 감소시킵니다.
         }
     }
 

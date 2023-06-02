@@ -13,6 +13,7 @@ public class PlayerY extends Player {
         setDefaultValues();
         getPlayerImage();
         updateAttack();
+        setHpBar();
     }
     public void setDefaultValues() {
         x = 150;

@@ -15,15 +15,15 @@ public class PlayerM extends Player {
         setDefaultValues();
         getPlayerImage();
         updateAttack();
+        setHpBar();
     }
     public void setDefaultValues() {
         x = 150;
         y = 550;
         speed = 4;
         direction = "right";
-        hp = 80;
+        currentHp = maxHp - decreaseHp; // 현재 체력
         mp = 120;
-
         width = 150;
         height = 150;
     }
@@ -87,6 +87,15 @@ public class PlayerM extends Player {
 
         }
         g2.drawImage(image, x, y, width * 2, height * 2, null);
+        // TODO: 2023-06-02 유진
+        // HP 바 그리기
+        hp = maxHp;
+        g2.setColor(Color.BLUE);
+        g2.fillRect(x, y - 10, 200, hpBarHeight); // HP 바 위치 및 크기 조정
+        g2.setColor(Color.GREEN);
+        int hpBarWidth = (int) ((double) hp / maxHp * 200); // 현재 체력에 따라 바의 길이 계산
+        g2.fillRect(x, y - 10, 200, hpBarHeight); // 현재 체력에 맞게 HP 바 그리기
+
     }
 
 }

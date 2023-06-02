@@ -24,8 +24,34 @@ public class Enemy extends JLabel {
     Timer timer = new Timer();
     public int spriteNum = 1;
 
-    public Enemy() {
+    // TODO: 2023-06-02 유진
+    // HP 바 관련 필드
+    public int maxHpEnemy=100;
+    public int currentHpEnemy;
+    public int playerattackHp;     // 플레이어에게 공격당했을 때 줄어들 hp
+    public int hpBarWidthEnemy=50;
+    public int hpBarHeightEnemy;
+    public Player player;
 
+    public void setHpBarDefaultValues() {
+        maxHpEnemy = 100;
+        currentHpEnemy = maxHpEnemy - playerattackHp;
+        hpBarWidthEnemy = 150;
+        hpBarHeightEnemy = 5;
+    }
+
+    public void decreaseHp(int amount) {
+        currentHpEnemy -= amount;
+        if (currentHpEnemy < 0) {
+            currentHpEnemy = 0;
+        }
+    }
+
+
+
+
+    public Enemy() {
+        setHpBarDefaultValues();
     }
     public Enemy(String string, int x, int y) {
 
