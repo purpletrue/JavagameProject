@@ -4,15 +4,14 @@
 package game;
 
 import javax.swing.*;
-import entity.Muzan;
-import entity.PlayerU;
-import entity.PlayerY;
-import entity.PlayerM;
-import entity.Platform;
-import java.awt.*;
 
-        
-public class GamePanel extends JPanel implements Runnable {
+import entity.*;
+
+import java.awt.*;
+import java.util.ArrayList;
+
+
+public class Gamepanel extends JPanel implements Runnable {
     Map1Panel parent;
     int characterType;
 
@@ -32,6 +31,10 @@ public class GamePanel extends JPanel implements Runnable {
    PlayerM playerM;
     Muzan muzan;
     Platform platform1;
+
+    // TODO: 2023-06-02 유진
+    public Enemy enemy;
+    public Player player;
 
     public void startGameThread() {
         gameThread = new Thread(this);
@@ -101,4 +104,5 @@ public class GamePanel extends JPanel implements Runnable {
         platform1.draw(g2);
         g2.dispose();
     }
+
 }

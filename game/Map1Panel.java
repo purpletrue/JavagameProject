@@ -9,7 +9,7 @@ import entity.Platform;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Map1Panel extends GamePanel implements Runnable {
+public class Map1Panel extends Gamepanel implements Runnable {
 
     public Map1Panel(GameFrame gameFrame, int characterType) {
         this.gameFrame = gameFrame;
@@ -46,6 +46,7 @@ public class Map1Panel extends GamePanel implements Runnable {
 
         platform1 = new Platform(200, 400, platformImage);
     }
+
 
 
 }
