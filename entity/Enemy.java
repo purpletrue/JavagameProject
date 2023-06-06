@@ -54,6 +54,21 @@ public class Enemy extends JLabel {
         hpBarHeightEnemy = 5;
     }
 
+    public void update(){
+        // 화면 밖으로 벗어나지 못하도록 처리
+        if (x < 0) {
+            x = 0;
+        } else if (x > 1152 - width) {
+            x = 1152- width;
+        }
+
+        if (y < 0) {
+            y = 0;
+        } else if (y > 864 - height) {
+            y = 864 - height;
+        }
+    }
+
 
 
 

@@ -7,7 +7,8 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 
 public class PlayerY extends Player {
-    public PlayerY(Map1Panel gp, KeyHandler keyH) {
+    public PlayerY(Map1Panel gp, KeyHandler keyH, int x, int y, int width, int height) {
+        super(x, y, width, height); // 부모 클래스인 Player의 생성자 호출
         this.mp1 = gp;
         this.keyH = keyH;
         setDefaultValues();
@@ -17,7 +18,7 @@ public class PlayerY extends Player {
     }
     public void setDefaultValues() {
         x = 150;
-        y = 550;
+        y = 700;
         speed = 4;
         direction = "right";
         hp = 80;
@@ -31,17 +32,16 @@ public class PlayerY extends Player {
             right2 = ImageIO.read(getClass().getResourceAsStream("/res/rengoku_right2.png"));
             left1 = ImageIO.read(getClass().getResourceAsStream("/res/rengoku_left1.png"));
             left2 = ImageIO.read(getClass().getResourceAsStream("/res/rengoku_left2.png"));
-            jump1 = ImageIO.read(getClass().getResourceAsStream("/res/rengoku_jump2.png"));
-            jump2 = ImageIO.read(getClass().getResourceAsStream("/res/rengoku_jump2.png"));
-            attack1 = ImageIO.read(getClass().getResourceAsStream("/res/rengoku_attack1.png"));
-            attack2 = ImageIO.read(getClass().getResourceAsStream("/res/rengoku_attack2.png"));
-            die = ImageIO.read(getClass().getResourceAsStream("/res/rengoku_jump2.png"));
+            jump1 = ImageIO.read(getClass().getResourceAsStream("/res/rengoku_jumpR.png"));
+            jump2 = ImageIO.read(getClass().getResourceAsStream("/res/rengoku_jumpL.png"));
+            attack1 = ImageIO.read(getClass().getResourceAsStream("/res/rengoku_attackR1.png"));
+            attack2 = ImageIO.read(getClass().getResourceAsStream("/res/rengoku_attackR2.png"));
+            die = ImageIO.read(getClass().getResourceAsStream("/res/rengoku_jumpR.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
 }
-
 
 
