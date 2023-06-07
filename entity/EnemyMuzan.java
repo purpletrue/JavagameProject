@@ -15,7 +15,7 @@ public class EnemyMuzan extends Enemy {
     private Player playerToFollow; // 따라다니는 대상 Player
     private int spriteNum = 1; // 스프라이트 번호
     private int hpBarWidthEnemy = 100; // 적 체력바 너비
-    private int maxDistance = 200;
+    private int maxDistance = 100;
 
     public EnemyMuzan() {
         setDefaultValues();
@@ -63,23 +63,27 @@ public class EnemyMuzan extends Enemy {
         if (playerToFollow != null) {
             int targetX = playerToFollow.getX(); // 따라다닐 대상의 X 좌표
             int targetY = playerToFollow.getY(); // 따라다닐 대상의 Y 좌표
+            int distanceX = Math.abs(targetX - x);
 
-            if (x < targetX) {
-                x += speed; // 타겟의 X 좌표를 따라 오른쪽으로 이동
-                direction = "right"; // 이동 방향을 오른쪽으로 설정
-            } else if (x > targetX) {
-                x -= speed; // 타겟의 X 좌표를 따라 왼쪽으로 이동
-                direction = "left"; // 이동 방향을 왼쪽으로 설정
-            }
+            // player와 muzan 사이의 거리가 maxDistance 이상일 때만 이동
+            if (Math.abs(distanceX) > maxDistance) {
+                if (x < targetX) {
+                    x += speed; // 타겟의 X 좌표를 따라 오른쪽으로 이동
+                    direction = "right"; // 이동 방향을 오른쪽으로 설정
+                } else if (x > targetX) {
+                    x -= speed; // 타겟의 X 좌표를 따라 왼쪽으로 이동
+                    direction = "left"; // 이동 방향을 왼쪽으로 설정
+                }
 
-            if (y < targetY) {
-                y += speed; // 타겟의 Y 좌표를 따라 아래로 이동
-                direction = "down"; // 이동 방향을 아래로 설정
-            } else if (y > targetY) {
-                y -= speed; // 타겟의 Y 좌표를 따라 위로 이동
-                direction = "up"; // 이동 방향을 위로 설정
+                if (y < targetY) {
+                    y += speed; // 타겟의 Y 좌표를 따라 아래로 이동
+                    direction = "down"; // 이동 방향을 아래로 설정
+                } else if (y > targetY) {
+                    y -= speed; // 타겟의 Y 좌표를 따라 위로 이동
+                    direction = "up"; // 이동 방향을 위로 설정
+                }
+                movingForward = !movingForward; // 이동 방향이 변경되었으므로 스프라이트 애니메이션 전환을 위한 플래그 업데이트
             }
-            movingForward = !movingForward; // 이동 방향이 변경되었으므로 스프라이트 애니메이션 전환을 위한 플래그 업데이트
         }
     }
 
