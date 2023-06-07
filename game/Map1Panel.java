@@ -6,13 +6,12 @@
 package game;
 
 import entity.*;
-
 import java.awt.*;
 
 public class Map1Panel extends GamePanel implements Runnable {
 
     public Map1Panel(GameFrame gameFrame, int characterType) {
-        this.gameFrame = gameFrame;
+        super(gameFrame);
         this.characterType = characterType;
         this.mapNumber = 1; // Map1Panel은 mapNumber를 1로 설정
         setFocusable(true);
@@ -41,7 +40,6 @@ public class Map1Panel extends GamePanel implements Runnable {
 //        setMuzanTarget(playerY);
 //        setMuzanTarget(playerM);
         setPreferredSize(new Dimension(screenWidth, screenHeight));
-
     }
 
     private void setMuzanTarget(Player player) {

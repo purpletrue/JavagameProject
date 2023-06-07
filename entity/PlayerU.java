@@ -1,9 +1,6 @@
 package entity;
 
-//import game.Background;
-import game.KeyHandler;
-import game.Map1Panel;
-
+import game.*;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 
@@ -14,7 +11,6 @@ public class PlayerU extends Player {
         this.keyH = keyH;
         setDefaultValues();
         getPlayerImage();
-        updateAttack();
     }
 
 

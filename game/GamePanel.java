@@ -15,7 +15,6 @@ public class GamePanel extends JPanel implements Runnable {
     protected int mapNumber;
     protected int characterType;
     int x, y, width, height;
-
     protected GameFrame gameFrame;
     protected Thread gameThread;
     protected final int originalTileSize = 48;
@@ -35,20 +34,8 @@ public class GamePanel extends JPanel implements Runnable {
     protected EnemyAkaza akaza;
     protected EnemyKoku koku;
 
-    public GamePanel() {
-        // 발판 생성
-        int tileSize = 32; // 발판의 크기
-        int totalTiles = 1152 / tileSize; // 패널 가로 크기를 발판의 크기로 나눈 값
-
-        int yPosition = 700; // y 좌표
-
-        BufferedImage platformImage = new BufferedImage(tileSize * 2, tileSize, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = platformImage.createGraphics();
-        g2.setColor(Color.GRAY);
-        g2.fillRect(0, 0, tileSize * 2, tileSize);
-        g2.dispose();
-
-
+    public GamePanel(GameFrame gameFrame) {
+        this.gameFrame = gameFrame;
     }
 
 

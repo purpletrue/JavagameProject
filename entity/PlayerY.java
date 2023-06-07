@@ -8,13 +8,11 @@ import java.io.IOException;
 
 public class PlayerY extends Player {
     public PlayerY(Map1Panel gp, KeyHandler keyH, int x, int y, int width, int height, Enemy enemy) {
-        super(x, y, width, height, enemy); // 부모 클래스인 Player의 생성자 호출
+        super(x, y, width, height, enemy);
         this.mp1 = gp;
         this.keyH = keyH;
         setDefaultValues();
         getPlayerImage();
-        updateAttack();
-        setHpBar();
     }
     public void setDefaultValues() {
         x = 150;
@@ -41,7 +39,6 @@ public class PlayerY extends Player {
             e.printStackTrace();
         }
     }
-
 }
 
 

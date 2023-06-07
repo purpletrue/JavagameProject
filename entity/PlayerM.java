@@ -3,12 +3,9 @@ package entity;
 import game.*;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class PlayerM extends Player {
-    // 이미지 변수 추가
 
     public PlayerM(Map1Panel gp, KeyHandler keyH, int x, int y, int width, int height, Enemy enemy) {
         super(x, y, width, height, enemy);
@@ -16,23 +13,21 @@ public class PlayerM extends Player {
         this.keyH = keyH;
         getPlayerImage();
         setDefaultValues();
-        updateAttack();
-        setHpBar();
     }
 
     public void setDefaultValues() {
         x = 150;
         speed = 4;
         direction = "right";
-        currentHp = maxHp - decreaseHp; // 현재 체력
+        currentHp = maxHp - decreaseHp;
         mp = 120;
         width = 150;
         height = 150;
+        hp = 200;
     }
 
     public void getPlayerImage() {
         try {
-            // 이미지 로딩 코드 수정
             right1 = ImageIO.read(getClass().getResource("/res/rengoku_right1.png"));
             right2 = ImageIO.read(getClass().getResource("/res/rengoku_right2.png"));
             left1 = ImageIO.read(getClass().getResource("/res/rengoku_left1.png"));
@@ -46,7 +41,4 @@ public class PlayerM extends Player {
             e.printStackTrace();
         }
     }
-
-    // Graphics2D 객체를 인자로 받아와서 사용
-
 }

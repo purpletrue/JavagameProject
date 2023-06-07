@@ -1,7 +1,8 @@
 package entity;
 
+import game.*;
+
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -13,38 +14,22 @@ public class EnemyMuzan extends Enemy {
     private String direction; // 이동 방향
     private boolean movingForward = true; // 스프라이트 애니메이션 전환을 위한 플래그
     private Player playerToFollow; // 따라다니는 대상 Player
-    private int spriteNum = 1; // 스프라이트 번호
     private int hpBarWidthEnemy = 100; // 적 체력바 너비
     private int maxDistance = 100;
+    private GamePanel gamePanel;
 
     public EnemyMuzan() {
         setDefaultValues();
         getEnemyImage();
     }
 
-    public EnemyMuzan(String string, int x, int y, int hp, String name) {
-        imageicon = new ImageIcon(string);
-        this.name = name;
-        this.x = x;
-        this.y = y;
-        this.width = imageicon.getIconWidth();
-        this.height = imageicon.getIconHeight();
-        this.hp = hp;
-
-        setIcon(imageicon);
-        setSize(850, 700);
-        setLocation(x, y);
-
-        setDefaultValues();
-        getEnemyImage();
-    }
 
     public void setDefaultValues() {
         x = 550;
         y = 550;
         speed = 1;
         direction = "up";
-        hp = 1000;
+        hp = 10;
     }
 
     public void getEnemyImage() {

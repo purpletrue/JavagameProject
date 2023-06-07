@@ -11,7 +11,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class GameFrame extends JFrame {
-    private JPanel currentPanel;
     public static final int BEGINNING_PANEL = -1; // 시작메뉴 패널
     public static final int SELECT_PANEL = 0; // 캐릭터 선택 패널
     public static final int RULE_PANEL = 1; // 룰 설명 패널
@@ -71,18 +70,6 @@ public class GameFrame extends JFrame {
         }
         validate();
         requestFocusInWindow();
-    }
 
-    public void startGame(int selectedCharacterType) {
-        characterType = selectedCharacterType;
-        map1Panel = new Map1Panel(this, characterType);
-        setContentPane(map1Panel);
-        validate();
-        map1Panel.requestFocusInWindow();
-        map1Panel.startGameThread();
-    }
-    public void returnToBeginningPanel() {
-        swapPanel(BEGINNING_PANEL);
-        repaint();
     }
 }

@@ -17,15 +17,11 @@ public class SelectPanel extends JPanel {
     GameFrame parent;
     int characterType;
 
-
-
     ImageIcon homeButtonIcon = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\home.png");
     ImageIcon homeButtonEnteredIcon = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\home.png");
-
     ImageIcon umjiro = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\characterU1.png");
     ImageIcon yujinko = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\characterY1.png");
     ImageIcon mokgoku = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\characterM1.png");
-
     ImageIcon enteredUmjiro = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\characterU2.png");
     ImageIcon enteredYujinko = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\characterY2.png");
     ImageIcon enteredMokgoku = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\characterM2.png");
