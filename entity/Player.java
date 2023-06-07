@@ -1,7 +1,6 @@
 package entity;
 
-import game.KeyHandler;
-import game.Map1Panel;
+import game.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,15 +8,19 @@ import java.awt.image.BufferedImage;
 
 public class Player extends JLabel {
     Map1Panel mp1;
-//    Map2Panel mp2;
+    //    Map2Panel mp2;
 //    Map3Panel mp3;
     KeyHandler keyH;
 
     int x, y;       // 캐릭터 위치한 좌표
     int hp, mp;     // 캐릭터 체력, 마력
+
     int width, height;      // 캐릭터 크기
-    int speed;      // 캐릭터 속도
-    boolean isRight, isLeft, isMove, isAttack, isJump;        //캐릭터 상태
+    int speed, jumpSpeed;      // 캐릭터 속도
+    boolean right, left, move, attack;        //캐릭터 상태
+    private boolean up;
+    private volatile boolean down;
+    private boolean leftWallCrash, rightWallCrash;
     int attackCoolDown, attackCoolDownMax;        // 공격 관련. 공격 연속으로 못 하게 변수 설정
     boolean seeWhere;       //보는 방향?
     BufferedImage right1, right2, left1, left2, jump1, jump2, attack1, attack2, die;       // 캐릭터 이미지
@@ -27,13 +30,23 @@ public class Player extends JLabel {
 
     // TODO: 2023-06-02 유진
     // HP 바 변수
-    public int maxHp=100; // 최대 체력
+    public int maxHp = 100; // 최대 체력
     public int currentHp; // 현재 체력
     public int decreaseHp;  // 적에게 공격당했을때 줄어들 hp
-    public int hpBarWidth=50;
+    public int hpBarWidth = 50;
     public int hpBarHeight;
     public Enemy enemy;
     public int hpwidth;
+
+    public Player(int x, int y, int width, int height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.mp1 = mp1;  // mp1 변수에 Map1Panel 인스턴스 할당
+        initBackgroundPlayerService();
+    }
+
 
     public void setHpBar() {
         maxHp = 100;
@@ -42,10 +55,7 @@ public class Player extends JLabel {
         hpBarHeight = 5;
     }
 
-
-
-
-    public void update(){
+    public void update() {
         handleKeyEvents();
         animateSprite();
         updateAttack();
@@ -53,18 +63,18 @@ public class Player extends JLabel {
     }
 
     private void handleKeyEvents() {
-        if (keyH.leftPressed) {
+        if (keyH.leftPressed && !isLeftWallCrash()) {
             direction = "left";
             moveLeft();
-        } else if (keyH.rightPressed) {
+        } else if (keyH.rightPressed && !isRightWallCrash()) {
             direction = "right";
             moveRight();
         }
         if (keyH.spaceBarPressed) {
             direction = "jump";
-            jump(true);
+            up();
         }
-        if (keyH.xPressed && !isAttack) {
+        if (keyH.xPressed && !attack) {
             direction = "attack";
             attack();
         }
@@ -127,79 +137,81 @@ public class Player extends JLabel {
 
         }
         g2.drawImage(image, x, y, width, height, null);
-        // TODO: 2023-06-02 유진
-        // HP 바 그리기
-        hp = maxHp;
-        g2.setColor(Color.BLUE);
-        g2.fillRect(x, y - 10, hpBarWidth, hpBarHeight); // HP 바 위치 및 크기 조정
-        g2.setColor(Color.GREEN);
-        int hpBarWidth = (int) ((double) hp / maxHp * this.hpBarWidth); // 현재 체력에 따라 바의 길이 계산
-        g2.fillRect(x, y - 10, this.hpBarWidth, hpBarHeight); // 현재 체력에 맞게 HP 바 그리기
 
 
     }
 
-    public void jump(boolean b) {
-        if (!isJump && b) {
-            isJump = true;
-            String previousDirection = direction; // 이전 방향을 저장하기 위한 변수 추가
-            Thread jumpThread = new Thread(new Runnable() {
-                public void run() {
-                    int initialY = y;
-                    int targetY = y - 200;
-                    int deltaY = -20;
-                    while (y > targetY) {
-                        y += deltaY;
-                        try {
-                            Thread.sleep(20);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+    public void up() {
+        if (!up) {
+            up = true;
+            new Thread(() -> {
+                int initialY = y;
+                for (int i = 0; i < 100 && up; i++) {
+                    y -= jumpSpeed;
+                    setLocation(x, y);
+                    if (y <= initialY - 150) { // 100은 점프 높이
+                        up = false;
+                        down();
                     }
-                    deltaY = 10;
-                    while (y < initialY) {
-                        y += deltaY;
-                        try {
-                            Thread.sleep(20);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        if (!isJump) { // isJump가 false로 변경되면 반복 종료
-                            break;
-                        }
+                    try {
+                        Thread.sleep(5);
+                    } catch (Exception e) {
+                        System.out.println("위쪽 이동중 인터럽트 발생 : " + e.getMessage());
                     }
-                    direction = previousDirection; // 이전 방향으로 설정
-                    if (direction.equals("right")) {
-                        spriteNum = 1; // 오른쪽 이미지
-                    } else if (direction.equals("left")) {
-                        spriteNum = 1; // 왼쪽 이미지
-                    }
-                    isJump = false;
                 }
-            });
-            jumpThread.start();
+            }).start();
         }
     }
+    public void down() {
+        down = true;
+        new Thread(() -> {
+            int initialY = y;
+            while (down) {
+                y += jumpSpeed;
+                setLocation(x, y);
+                try {
+                    Thread.sleep(3);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            down = false;
+        }).start();
+    }
 
 
+
+
+
+    public boolean isDown() {
+        return down;
+    }
+
+    public boolean isUp() {
+        return up;
+    }
+
+    public void setUp(boolean up) {
+        this.up = up;
+    }
     public void setY(int y) {
         this.y = y;
     }
 
-    public void moveRight(){
+    public void moveRight() {
         x += speed; // 플레이어의 x 좌표를 오른쪽으로 이동
         direction = "right"; // 이동 방향을 오른쪽으로 설정
     }
 
-    public void moveLeft(){
+    public void moveLeft() {
         x -= speed; // 플레이어의 x 좌표를 왼쪽으로 이동
         direction = "left"; // 이동 방향을 왼쪽으로 설정
 
     }
 
     public void attack() {
-        if (!isAttack) {
-            isAttack = true;
+        if (!attack) {
+            attack = true;
             attackCoolDown = attackCoolDownMax;
             if (spriteNum == 1) {
                 spriteNum = 1;
@@ -236,60 +248,54 @@ public class Player extends JLabel {
 //    }
 
 
-
-
-    public void updateAttack(){
-        if (isAttack) {
+    public void updateAttack() {
+        if (attack) {
             attackCoolDown--;
 
             if (attackCoolDown <= 0) {
-                isAttack = false;
+                attack = false;
                 attackCoolDown = 0;
             }
         }
     }
 
 
-    // TODO: 2023-06-02 유진 hp
-
-    public void decreaseHp(int amount) {
-        this.hp -= amount;
-        if (hp < 0) {
-            hp = 0;
-        }
+    private void initBackgroundPlayerService() {
+        new Thread(new Background(this)).start();
     }
 
-    public Rectangle getBoundingBox() {
-        return new Rectangle(x, y, width, height);
+    public int getX() {
+        return this.x;
     }
-    public void handleCollision() {
-        Rectangle playerBounds = getBoundingBox();
-        Rectangle muzanBounds = getBoundingBox();
 
-        if (playerBounds.intersects(muzanBounds)) {
-            decreaseHp(10); // 일정량의 체력을 감소시킵니다.
-        }
+    public int getY() {
+        return this.y;
     }
 
 
-//    public void die(){
-//        y -= 170;
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                for (int i = 0; i < 160; i++) {
-//                    setIcon((Icon) die);
-//                    y++;
-//                    setLocation(x, y);
-//                    try {
-//                        Thread.sleep(3);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        }).start();
-//    }
+    public void setLeftWallCrash(boolean leftWallCrash) {
+        this.leftWallCrash = leftWallCrash;
+    }
+
+    public boolean isRightWallCrash() {
+        return rightWallCrash;
+    }
+
+    public void setRightWallCrash(boolean rightWallCrash) {
+        this.rightWallCrash = rightWallCrash;
+    }
+
+    public boolean isLeftWallCrash() {
+        return leftWallCrash;
+    }
 
 
+    public void setDown(boolean down) {
+        this.down = down;
+    }
 }
+
+
+
+
+

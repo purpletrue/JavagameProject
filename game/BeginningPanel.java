@@ -12,12 +12,12 @@ import javax.swing.JPanel;
 
 public class BeginningPanel extends JPanel {
     private GameFrame parent;
-    private ImageIcon start1 = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\start1.png");
-    private ImageIcon start2 = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\start2.png");
-    private ImageIcon help1 = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\help1.png");
-    private ImageIcon help2 = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\help2.png");
-    private ImageIcon pro1 = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\produce1.png");
-    private ImageIcon pro2 = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\produce2.png");
+    private ImageIcon start = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\start.png");
+    private ImageIcon startH = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\startH.png");
+    private ImageIcon help = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\help.png");
+    private ImageIcon helpH = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\helpH.png");
+    private ImageIcon credit = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\credit.png");
+    private ImageIcon creditH = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\creditH.png");
     private ImageIcon bgImageicon = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\background.png");
     private Image backgroundPanelImage = bgImageicon.getImage();
 
@@ -25,10 +25,10 @@ public class BeginningPanel extends JPanel {
         this.parent = parent;
         setLayout(null);
         // 버튼에 호버시 효과. JButton으로 안 하고 JLabel로 설정
-        JLabel startButtonLabel = new JLabel(start1);
-        startButtonLabel.setSize(start1.getIconWidth(), start1.getIconHeight());
+        JLabel startButtonLabel = new JLabel(start);
+        startButtonLabel.setSize(start.getIconWidth(), start.getIconHeight());
         startButtonLabel.setLocation(450, 450);
-        startButtonLabel.addMouseListener(new ButtonClickedEvent(parent, 0, start2, start1));
+        startButtonLabel.addMouseListener(new ButtonClickedEvent(parent, 0, startH, start));
         // 게임시작 버튼 누를 시 게임패널로 이동
         startButtonLabel.addMouseListener(new MouseAdapter() {
             @Override
@@ -42,17 +42,17 @@ public class BeginningPanel extends JPanel {
         });
         add(startButtonLabel);
 
-        JLabel ruleButtonLabel = new JLabel(help1);
-        ruleButtonLabel.setSize(help1.getIconWidth(), help1.getIconHeight());
-        ruleButtonLabel.setLocation(450, 550);
-        ruleButtonLabel.addMouseListener(new ButtonClickedEvent(parent, 1, help2, help1));
-        add(ruleButtonLabel);
+        JLabel helpButtonLabel = new JLabel(help);
+        helpButtonLabel.setSize(help.getIconWidth(), help.getIconHeight());
+        helpButtonLabel.setLocation(450, 550);
+        helpButtonLabel.addMouseListener(new ButtonClickedEvent(parent, 1, helpH, help));
+        add(helpButtonLabel);
 
-        JLabel showLankingButtonLabel = new JLabel(pro1);
-        showLankingButtonLabel.setSize(pro1.getIconWidth(), pro1.getIconHeight());
-        showLankingButtonLabel.setLocation(450, 650);
-        showLankingButtonLabel.addMouseListener(new ButtonClickedEvent(parent, 2, pro2, pro1));
-        add(showLankingButtonLabel);
+        JLabel showCreditButtonLabel = new JLabel(credit);
+        showCreditButtonLabel.setSize(credit.getIconWidth(), credit.getIconHeight());
+        showCreditButtonLabel.setLocation(450, 650);
+        showCreditButtonLabel.addMouseListener(new ButtonClickedEvent(parent, 2, creditH, credit));
+        add(showCreditButtonLabel);
     }
 
     @Override

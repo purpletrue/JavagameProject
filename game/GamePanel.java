@@ -1,39 +1,57 @@
-// 게임 화면 전체의 부모 클래스
-// 게임 화면 Map1,Map2,Map3으로 나뉠 것.
-
 package game;
-
-import javax.swing.*;
 
 import entity.*;
 
+import javax.swing.*;
 import java.awt.*;
-
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable {
-    Map1Panel parent;
-    int characterType;
+    protected int mapNumber;
+    protected int characterType;
+    int x, y, width, height;
 
-    GameFrame gameFrame;
-    final int originalTileSize = 48;
-    final int scale = 2;
+    protected GameFrame gameFrame;
+    protected final int originalTileSize = 48;
+    protected final int scale = 2;
     public final int tileSize = originalTileSize * scale;
-    final int maxScreenCol = 12;
-    final int maxScreenRow = 9;
-    final int screenWidth = tileSize * maxScreenCol;
-    final int screenHeight = tileSize * maxScreenRow;
-    int FPS = 60;
-    KeyHandler keyH = new KeyHandler();
-    Thread gameThread;
-   PlayerU playerU;
-    PlayerY playerY;
-   PlayerM playerM;
-    Muzan muzan;
-    Platform platform1;
+    protected final int maxScreenCol = 12;
+    protected final int maxScreenRow = 9;
+    protected final int screenWidth = tileSize * maxScreenCol;
+    protected final int screenHeight = tileSize * maxScreenRow;
+    protected int FPS = 60;
+    protected KeyHandler keyH = new KeyHandler();
+    protected Thread gameThread;
+    protected PlayerU playerU;
+    protected PlayerY playerY;
+    protected PlayerM playerM;
+    protected EnemyMuzan muzan;
 
-    // TODO: 2023-06-02 유진
-    public Enemy enemy;
-    public Player player;
+    public GamePanel() {
+        // 발판 생성
+        int tileSize = 32; // 발판의 크기
+        int totalTiles = 1152 / tileSize; // 패널 가로 크기를 발판의 크기로 나눈 값
+
+        int yPosition = 700; // y 좌표
+
+        BufferedImage platformImage = new BufferedImage(tileSize * 2, tileSize, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = platformImage.createGraphics();
+        g2.setColor(Color.GRAY);
+        g2.fillRect(0, 0, tileSize * 2, tileSize);
+        g2.dispose();
+
+
+    }
+
+
+    public void setMapNumber(int mapNumber) {
+        this.mapNumber = mapNumber;
+    }
+
+    public void setCharacterType(int characterType) {
+        this.characterType = characterType;
+    }
 
     public void startGameThread() {
         gameThread = new Thread(this);
@@ -61,7 +79,6 @@ public class GamePanel extends JPanel implements Runnable {
                 drawCount++;
             }
             if (timer >= 1000000000) {
-                System.out.println("FPS: " + drawCount);
                 drawCount = 0;
                 timer = 0;
             }
@@ -70,38 +87,40 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void update() {
         switch (characterType) {
-            case 0:
-                playerU.update();
-//                muzan.moveForwardAndBackward();
-                break;
-            case 1:
-                playerY.update();
-//                muzan.moveForwardAndBackward();
-                break;
-            case 2:
-                playerM.update();
-//                muzan.moveForwardAndBackward();
-                break;
+            case 0 -> playerU.update();
+            case 1 -> playerY.update();
+            case 2 -> playerM.update();
         }
+
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
+        drawBackground(g2);
         switch (characterType) {
-            case 0:
-                playerU.draw(g2);
-                break;
-            case 1:
-                playerY.draw(g2);
-                break;
-            case 2:
-                playerM.draw(g2);
-                break;
+            case 0 -> playerU.draw(g2);
+            case 1 -> playerY.draw(g2);
+            case 2 -> playerM.draw(g2);
         }
         muzan.draw(g2);
-        platform1.draw(g2);
         g2.dispose();
     }
 
-}
+    private void drawBackground(Graphics2D g2) {
+        ImageIcon backgroundIcon;
+        switch (mapNumber) {
+            case 1 -> backgroundIcon = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\test.png");
+            case 2 -> backgroundIcon = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\backgroundG2.png");
+            case 3 -> backgroundIcon = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\backgroundG3.png");
+            default -> backgroundIcon = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\background1.png");
+        }
+        Image backgroundImage = backgroundIcon.getImage();
+        g2.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+    }
+
+
+
+
+        }
+

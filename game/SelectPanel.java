@@ -4,9 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
-import javax.swing.*;
-import java.awt.Graphics;
-import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -14,19 +11,19 @@ import javax.swing.JPanel;
 public class SelectPanel extends JPanel {
     GameFrame parent;
     int characterType;
-    ImageIcon bgImageicon = new ImageIcon("src/images/background.png");
-    Image backgroundPanelImage = bgImageicon.getImage();
+
+
 
     ImageIcon homeButtonIcon = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\home.png");
     ImageIcon homeButtonEnteredIcon = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\home.png");
 
-    ImageIcon umjiro = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\character_um.png");
-    ImageIcon yujinko = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\character_yu.png");
-    ImageIcon mokgoku = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\character_mok.png");
+    ImageIcon umjiro = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\characterU1.png");
+    ImageIcon yujinko = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\characterY1.png");
+    ImageIcon mokgoku = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\characterM1.png");
 
-    ImageIcon enteredUmjiro = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\character_um.png");
-    ImageIcon enteredYujinko = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\character_yu.png");
-    ImageIcon enteredMokgoku = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\character_mok.png");
+    ImageIcon enteredUmjiro = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\characterU2.png");
+    ImageIcon enteredYujinko = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\characterY2.png");
+    ImageIcon enteredMokgoku = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\characterM2.png");
 
     ImageIcon selectBackgroundImageicon = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\background1.png");
     Image selectBackgroundImage = selectBackgroundImageicon.getImage();

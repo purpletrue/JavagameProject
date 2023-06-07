@@ -1,19 +1,20 @@
 package game;
 
-import entity.Muzan;
+import entity.EnemyMuzan;
 import entity.PlayerU;
 import entity.PlayerY;
 import entity.PlayerM;
-import entity.Platform;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class Map1Panel extends GamePanel implements Runnable {
 
     public Map1Panel(GameFrame gameFrame, int characterType) {
         this.gameFrame = gameFrame;
         this.characterType = characterType;
+        this.mapNumber = 1; // Map1Panel은 mapNumber를 1로 설정
         setFocusable(true);
         setVisible(true);
 
@@ -24,29 +25,13 @@ public class Map1Panel extends GamePanel implements Runnable {
 
         // Player 객체 생성
         switch (characterType) {
-            case 0:
-                playerU = new PlayerU(this, keyH);
-                break;
-            case 1:
-                playerY = new PlayerY(this, keyH);
-                break;
-            case 2:
-                playerM = new PlayerM(this, keyH);
-                break;
+            case 0 -> playerU = new PlayerU(this, keyH,x, y, width, height);
+            case 1 -> playerY = new PlayerY(this, keyH,x, y, width, height);
+            case 2 -> playerM = new PlayerM(this, keyH,x, y, width, height);
         }
-        muzan = new Muzan();
+        muzan = new EnemyMuzan();
         setPreferredSize(new Dimension(screenWidth, screenHeight));
 
-        // 발판 생성
-        BufferedImage platformImage = new BufferedImage(tileSize * 2, tileSize, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = platformImage.createGraphics();
-        g2.setColor(Color.GRAY);
-        g2.fillRect(0, 0, tileSize * 2, tileSize);
-        g2.dispose();
 
-        platform1 = new Platform(200, 400, platformImage);
     }
-
-
-
 }
