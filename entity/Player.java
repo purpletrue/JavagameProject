@@ -137,8 +137,6 @@ public class Player extends JLabel {
 
         }
         g2.drawImage(image, x, y, width, height, null);
-
-
     }
 
     public void up() {
@@ -178,9 +176,6 @@ public class Player extends JLabel {
             down = false;
         }).start();
     }
-
-
-
 
 
     public boolean isDown() {

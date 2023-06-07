@@ -1,9 +1,4 @@
 // TODO: 2023-06-02 체력 구현, 기본공격 구현, 움직임 제어, 자기 체력 닳는거 구현, 플레이어 따라가기
-
-
-
-
-
 package entity;
 
 import game.KeyHandler;
@@ -70,19 +65,9 @@ public class Enemy extends JLabel {
     }
 
 
-
-
     public Enemy() {
         setHpBarDefaultValues();
     }
     public Enemy(String string, int x, int y) {
-
     }
-    public void moveChange(){
-
-    }
-    public void moveDirection() {
-
-    }
-
 }

@@ -1,9 +1,6 @@
 package game;
 
-import entity.EnemyMuzan;
-import entity.PlayerU;
-import entity.PlayerY;
-import entity.PlayerM;
+import entity.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -30,8 +27,11 @@ public class Map1Panel extends GamePanel implements Runnable {
             case 2 -> playerM = new PlayerM(this, keyH,x, y, width, height);
         }
         muzan = new EnemyMuzan();
+        setMuzanTarget(playerU); // Muzan이 PlayerU 객체를 추적하도록 설정합니다.
         setPreferredSize(new Dimension(screenWidth, screenHeight));
-
-
     }
+
+    private void setMuzanTarget(Player player) {
+        muzan.setPlayer(player);
+    } // player를 쫓도록 타겟 설정
 }

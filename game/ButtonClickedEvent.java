@@ -9,7 +9,6 @@ import javax.swing.JLabel;
 public class ButtonClickedEvent extends MouseAdapter {
     private GameFrame parent;
     private int selectedMenu;
-
     private ImageIcon enteredIcon;
     private ImageIcon presentIcon;
 

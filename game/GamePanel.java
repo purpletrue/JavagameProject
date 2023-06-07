@@ -40,8 +40,6 @@ public class GamePanel extends JPanel implements Runnable {
         g2.setColor(Color.GRAY);
         g2.fillRect(0, 0, tileSize * 2, tileSize);
         g2.dispose();
-
-
     }
 
 
@@ -118,9 +116,5 @@ public class GamePanel extends JPanel implements Runnable {
         Image backgroundImage = backgroundIcon.getImage();
         g2.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
     }
-
-
-
-
-        }
+}
 
