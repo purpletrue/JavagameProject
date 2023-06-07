@@ -42,7 +42,7 @@ public class EnemyMuzan extends Enemy {
     public void setDefaultValues() {
         x = 550;
         y = 550;
-        speed = 5;
+        speed = 1;
         direction = "up";
     }
 

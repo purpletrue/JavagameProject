@@ -27,6 +27,7 @@ public class Map1Panel extends GamePanel implements Runnable {
             case 2 -> playerM = new PlayerM(this, keyH,x, y, width, height);
         }
         muzan = new EnemyMuzan();
+        setMuzanTarget(playerU); // Muzan이 PlayerU 객체를 추적하도록 설정합니다.
         setPreferredSize(new Dimension(screenWidth, screenHeight));
     }
 
