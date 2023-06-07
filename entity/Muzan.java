@@ -52,7 +52,6 @@ public class Muzan extends Enemy {
         try {
             muzan1 = ImageIO.read(Objects.requireNonNull(Muzan.class.getResourceAsStream("/res/muzan1.png")));
             muzan2 = ImageIO.read(Objects.requireNonNull(Muzan.class.getResourceAsStream("/res/muzan2.png")));
-            muzan4 = ImageIO.read(Objects.requireNonNull(Muzan.class.getResourceAsStream("/res/muzan4.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }

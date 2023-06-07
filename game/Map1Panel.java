@@ -29,6 +29,7 @@ public class Map1Panel extends GamePanel implements Runnable {
         muzan = new EnemyMuzan();
         setPreferredSize(new Dimension(screenWidth, screenHeight));
     }
+
     private void setMuzanTarget(Player player) {
         muzan.setPlayer(player);
     }
