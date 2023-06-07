@@ -1,10 +1,13 @@
+
+
+// 게임 시작 후 첫번째 맵의 코드입니다.
+
+
 package game;
 
 import entity.*;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 public class Map1Panel extends GamePanel implements Runnable {
 
@@ -20,18 +23,28 @@ public class Map1Panel extends GamePanel implements Runnable {
         addKeyListener(keyH);    // keyH 객체를 리스너로 추가
         requestFocusInWindow();  // 포커스 요청
 
+        muzan = new EnemyMuzan();
+
         // Player 객체 생성
         switch (characterType) {
-            case 0 -> playerU = new PlayerU(this, keyH,x, y, width, height);
-            case 1 -> playerY = new PlayerY(this, keyH,x, y, width, height);
-            case 2 -> playerM = new PlayerM(this, keyH,x, y, width, height);
+            case 0:
+                playerU = new PlayerU(this, keyH, x, y, width, height, muzan);
+                break;
+            case 1:
+                playerY = new PlayerY(this, keyH, x, y, width, height, muzan);
+                break;
+            case 2:
+                playerM = new PlayerM(this, keyH, x, y, width, height, muzan);
+                break;
         }
-        muzan = new EnemyMuzan();
-        setMuzanTarget(playerU); // Muzan이 PlayerU 객체를 추적하도록 설정합니다.
+        setMuzanTarget(playerU);
+//        setMuzanTarget(playerY);
+//        setMuzanTarget(playerM);
         setPreferredSize(new Dimension(screenWidth, screenHeight));
+
     }
 
     private void setMuzanTarget(Player player) {
         muzan.setPlayer(player);
-    } // player를 쫓도록 타겟 설정
+    }
 }

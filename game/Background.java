@@ -1,3 +1,8 @@
+
+
+// 캐릭터의 움직임 범위를 지정하고, 발판을 확인하는 코드입니다.
+
+
 package game;
 
 import entity.Player;
@@ -29,7 +34,7 @@ public class Background implements Runnable {
             int y = player.getY();
             Color leftColor = new Color(image.getRGB(x + 10, y + 25));
             Color rightColor = new Color(image.getRGB(x + 90, y + 25));
-            int bottomColor = image.getRGB(x+90,y + 132);
+            int bottomColor = image.getRGB(x+72,y + 132);
 //            System.out.println(bottomColor);
 
 //            바닥 충돌 확인

@@ -1,3 +1,8 @@
+
+
+// Map1, 2, 3의 부모클래스로, 게임 화면을 나타내는 곳입니다.
+
+
 package game;
 
 import entity.*;
@@ -5,7 +10,6 @@ import entity.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable {
     protected int mapNumber;
@@ -13,6 +17,7 @@ public class GamePanel extends JPanel implements Runnable {
     int x, y, width, height;
 
     protected GameFrame gameFrame;
+    protected Thread gameThread;
     protected final int originalTileSize = 48;
     protected final int scale = 2;
     public final int tileSize = originalTileSize * scale;
@@ -22,11 +27,13 @@ public class GamePanel extends JPanel implements Runnable {
     protected final int screenHeight = tileSize * maxScreenRow;
     protected int FPS = 60;
     protected KeyHandler keyH = new KeyHandler();
-    protected Thread gameThread;
+    protected boolean running = false;
     protected PlayerU playerU;
     protected PlayerY playerY;
     protected PlayerM playerM;
     protected EnemyMuzan muzan;
+    protected EnemyAkaza akaza;
+    protected EnemyKoku koku;
 
     public GamePanel() {
         // 발판 생성
@@ -40,6 +47,8 @@ public class GamePanel extends JPanel implements Runnable {
         g2.setColor(Color.GRAY);
         g2.fillRect(0, 0, tileSize * 2, tileSize);
         g2.dispose();
+
+
     }
 
 
@@ -116,5 +125,24 @@ public class GamePanel extends JPanel implements Runnable {
         Image backgroundImage = backgroundIcon.getImage();
         g2.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
     }
+
+    public void returnToBeginningPanel() {
+        SwingUtilities.invokeLater(() -> {
+            if (gameFrame != null) {
+                gameFrame.swapPanel(GameFrame.BEGINNING_PANEL);
+                stopGameThread();
+            }
+        });
+    }
+    public void stopGameThread() {
+        running = false;
+        try {
+            gameThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
 

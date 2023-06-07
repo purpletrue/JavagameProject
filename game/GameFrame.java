@@ -1,3 +1,8 @@
+
+
+// 게임의 전체적인 프레임입니다.
+
+
 package game;
 
 import java.awt.Dimension;
@@ -75,5 +80,9 @@ public class GameFrame extends JFrame {
         validate();
         map1Panel.requestFocusInWindow();
         map1Panel.startGameThread();
+    }
+    public void returnToBeginningPanel() {
+        swapPanel(BEGINNING_PANEL);
+        repaint();
     }
 }

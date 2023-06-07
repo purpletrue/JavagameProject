@@ -1,3 +1,8 @@
+
+
+//  캐릭터 선택 화면입니다
+
+
 package game;
 
 import java.awt.Color;

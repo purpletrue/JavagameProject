@@ -1,3 +1,8 @@
+
+
+// 캐릭터 선택 화면에서 필요한 마우스 클릭시 이벤트입니다.
+
+
 package game;
 
 import java.awt.event.MouseAdapter;
@@ -9,6 +14,7 @@ import javax.swing.JLabel;
 public class ButtonClickedEvent extends MouseAdapter {
     private GameFrame parent;
     private int selectedMenu;
+
     private ImageIcon enteredIcon;
     private ImageIcon presentIcon;
 

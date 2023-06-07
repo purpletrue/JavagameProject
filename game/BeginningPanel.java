@@ -1,4 +1,8 @@
-// BeginningPanel.java
+
+
+// 시작 화면 입니다
+
+
 package game;
 
 import java.awt.Graphics;

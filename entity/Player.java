@@ -1,9 +1,15 @@
+
+
+// PlayerU, PlayerY, PlayerM 의 부모클래스로, 플레이어의 공통적인 특성을 정의하는 클래스입니다.
+
+
 package entity;
 
 import game.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 public class Player extends JLabel {
@@ -38,11 +44,12 @@ public class Player extends JLabel {
     public Enemy enemy;
     public int hpwidth;
 
-    public Player(int x, int y, int width, int height) {
+    public Player(int x, int y, int width, int height, Enemy enemy) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.enemy = enemy;
         this.mp1 = mp1;  // mp1 변수에 Map1Panel 인스턴스 할당
         initBackgroundPlayerService();
     }
@@ -60,6 +67,10 @@ public class Player extends JLabel {
         animateSprite();
         updateAttack();
         setHpBar();
+        if (keyH.isKeyPressed(KeyEvent.VK_K)) {
+            enemy.decreaseHp(1,this);
+        }
+
     }
 
     private void handleKeyEvents() {
@@ -77,6 +88,9 @@ public class Player extends JLabel {
         if (keyH.xPressed && !attack) {
             direction = "attack";
             attack();
+            if (this.enemy != null) {  // enemy가 null이 아닌지 확인
+                enemy.decreaseHp(1,this);
+            }
         }
     }
 
@@ -137,6 +151,8 @@ public class Player extends JLabel {
 
         }
         g2.drawImage(image, x, y, width, height, null);
+
+
     }
 
     public void up() {
@@ -176,6 +192,9 @@ public class Player extends JLabel {
             down = false;
         }).start();
     }
+
+
+
 
 
     public boolean isDown() {
@@ -289,7 +308,6 @@ public class Player extends JLabel {
         this.down = down;
     }
 }
-
 
 
 

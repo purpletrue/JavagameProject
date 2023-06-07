@@ -44,6 +44,7 @@ public class EnemyMuzan extends Enemy {
         y = 550;
         speed = 1;
         direction = "up";
+        hp = 1000;
     }
 
     public void getEnemyImage() {
@@ -94,7 +95,7 @@ public class EnemyMuzan extends Enemy {
             int playerX = playerToFollow.getX(); // Player의 X 좌표
 
             if (playerX < x) {
-                image = (movingForward && spriteNum == 1) ? muzan1 : muzan2; // Player가 Muzan의 왼쪽에 있는 경우, Muzan의 왼쪽 이미지 선택
+                image = muzan1; // Player가 Muzan의 왼쪽에 있는 경우, Muzan의 왼쪽 이미지 선택
             } else if (playerX > x) {
                 image = muzan2;  // Player가 Muzan의 오른쪽에 있는 경우, Muzan의 오른쪽 이미지 선택
             }
@@ -102,10 +103,10 @@ public class EnemyMuzan extends Enemy {
         if (image != null) {
             g2.drawImage(image, x, y, null);
         }
-            g2.setColor(Color.RED);
-            g2.fillRect(x, y - 10, hpBarWidthEnemy, hpBarHeightEnemy); // HP 바 배경색으로 채우기
-            g2.setColor(Color.RED);
-            int hpBarWidthEnemy = (int) ((double) currentHpEnemy / maxHpEnemy * this.hpBarWidthEnemy); // 현재 체력에 따라 바의 길이 계산
-            g2.fillRect(x, y - 10, this.hpBarWidthEnemy, hpBarHeightEnemy); // 현재 체력에 맞게 HP 바 그리기
+        g2.setColor(Color.RED);
+        g2.fillRect(x, y - 10, hpBarWidthEnemy, hpBarHeightEnemy); // HP 바 배경색으로 채우기
+        g2.setColor(Color.RED);
+        int hpBarWidthEnemy = (int) ((double) currentHpEnemy / maxHpEnemy * this.hpBarWidthEnemy); // 현재 체력에 따라 바의 길이 계산
+        g2.fillRect(x, y - 10, this.hpBarWidthEnemy, hpBarHeightEnemy); // 현재 체력에 맞게 HP 바 그리기
     }
 }
