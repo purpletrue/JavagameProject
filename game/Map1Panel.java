@@ -33,5 +33,5 @@ public class Map1Panel extends GamePanel implements Runnable {
 
     private void setMuzanTarget(Player player) {
         muzan.setPlayer(player);
-    }
+    } // player를 쫓도록 타겟 설정
 }

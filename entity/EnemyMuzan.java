@@ -98,7 +98,6 @@ public class EnemyMuzan extends Enemy {
         if (image != null) {
             g2.drawImage(image, x, y, null);
         }
-
             g2.setColor(Color.RED);
             g2.fillRect(x, y - 10, hpBarWidthEnemy, hpBarHeightEnemy); // HP 바 배경색으로 채우기
             g2.setColor(Color.RED);
