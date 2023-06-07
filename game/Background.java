@@ -1,3 +1,8 @@
+
+
+// 캐릭터의 움직임 범위를 지정하고, 발판을 확인하는 코드입니다.
+
+
 package game;
 
 import entity.Player;

@@ -1,3 +1,8 @@
+
+
+// Map1, 2, 3의 부모클래스로, 게임 화면을 나타내는 곳입니다.
+
+
 package game;
 
 import entity.*;
@@ -5,7 +10,6 @@ import entity.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable {
     protected int mapNumber;

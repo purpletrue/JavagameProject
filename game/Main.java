@@ -1,3 +1,8 @@
+
+
+// psvm이 있는 메인 코드입니다.
+
+
 package game;
 
 import javax.swing.JFrame;

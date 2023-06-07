@@ -1,3 +1,8 @@
+
+
+// 게임 시작 후 첫번째 맵의 코드입니다.
+
+
 package game;
 
 import entity.*;
@@ -18,6 +23,8 @@ public class Map1Panel extends GamePanel implements Runnable {
         addKeyListener(keyH);    // keyH 객체를 리스너로 추가
         requestFocusInWindow();  // 포커스 요청
 
+        muzan = new EnemyMuzan();
+
         // Player 객체 생성
         switch (characterType) {
             case 0:
@@ -30,7 +37,6 @@ public class Map1Panel extends GamePanel implements Runnable {
                 playerM = new PlayerM(this, keyH, x, y, width, height, muzan);
                 break;
         }
-        muzan = new EnemyMuzan();
         setMuzanTarget(playerU);
 //        setMuzanTarget(playerY);
 //        setMuzanTarget(playerM);

@@ -95,7 +95,7 @@ public class EnemyMuzan extends Enemy {
             int playerX = playerToFollow.getX(); // Player의 X 좌표
 
             if (playerX < x) {
-                image = (movingForward && spriteNum == 1) ? muzan1 : muzan2; // Player가 Muzan의 왼쪽에 있는 경우, Muzan의 왼쪽 이미지 선택
+                image = muzan1; // Player가 Muzan의 왼쪽에 있는 경우, Muzan의 왼쪽 이미지 선택
             } else if (playerX > x) {
                 image = muzan2;  // Player가 Muzan의 오른쪽에 있는 경우, Muzan의 오른쪽 이미지 선택
             }

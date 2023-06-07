@@ -1,3 +1,8 @@
+
+
+// EnemyAkaza, EnemyKoku, EnemyMuzan 의 부모클래스로, 적의 공통적인 특성을 정의하는 클래스입니다.
+
+
 package entity;
 
 import game.*;
@@ -96,12 +101,5 @@ public class Enemy extends JLabel {
         this.name = string;
     }
 
-    public void moveChange() {
-        // Implement change in movement
-    }
-
-    public void moveDirection() {
-        // Implement direction of movement
-    }
 
 }

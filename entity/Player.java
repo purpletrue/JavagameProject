@@ -1,3 +1,8 @@
+
+
+// PlayerU, PlayerY, PlayerM 의 부모클래스로, 플레이어의 공통적인 특성을 정의하는 클래스입니다.
+
+
 package entity;
 
 import game.*;
