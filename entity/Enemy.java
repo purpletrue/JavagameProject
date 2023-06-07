@@ -44,7 +44,7 @@ public class Enemy extends JLabel {
     public void setHpBarDefaultValues() {
         maxHpEnemy = 100;
         hpBarWidthEnemy = 150;
-        hpBarHeightEnemy = 5;
+        hpBarHeightEnemy = 20;
     }
     protected void returnToBeginningPanel() {
         if (gameFrame != null) {
@@ -52,10 +52,9 @@ public class Enemy extends JLabel {
         }
     }
     public void decreaseHp(int amount, Player player) {
-        // Calculate the distance between the player and the enemy on the x axis
+
         int distance = Math.abs(this.x - player.getX());
 
-        // Only decrease HP if the distance is less than or equal to 16px
         if (distance <= 16) {
             System.out.println("현재 hp" + hp);
             this.hp -= amount;
@@ -63,7 +62,6 @@ public class Enemy extends JLabel {
                 isDefeated = true;
                 SwingUtilities.invokeLater(() -> {
                     JOptionPane.showMessageDialog(null, "적이 쓰러졌습니다!");
-                    // Call the new method to switch back to the BeginningPanel
                     gamePanel.returnToBeginningPanel();
                 });
             }
