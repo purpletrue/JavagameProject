@@ -39,6 +39,7 @@ public class Muzan extends Enemy {
         y = 550;
         speed = 5;
         direction = "up";
+        hp = 10;
     }
 
     public void getEnemyImage() {
@@ -83,7 +84,7 @@ public class Muzan extends Enemy {
             g2.setColor(Color.RED);
             g2.fillRect(x, y - 10, hpBarWidthEnemy, hpBarHeightEnemy); // HP 바 배경색으로 채우기
             g2.setColor(Color.RED);
-            int hpBarWidthEnemy = (int) ((double) currentHpEnemy / maxHpEnemy * this.hpBarWidthEnemy); // 현재 체력에 따라 바의 길이 계산
-            g2.fillRect(x, y - 10, this.hpBarWidthEnemy, hpBarHeightEnemy); // 현재 체력에 맞게 HP 바 그리기
+            int hpBarWidthEnemy = (int) ((double) hp / maxHpEnemy * this.hpBarWidthEnemy); // 현재 체력에 따라 바의 길이 계산
+            g2.fillRect(x, y - 10, this.hp, hpBarHeightEnemy); // 현재 체력에 맞게 HP 바 그리기
     }
 }

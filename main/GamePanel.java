@@ -10,6 +10,7 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import game.KeyHandler;
 import inputs.KeyboardInputs;
 import inputs.MouseInputs;
 
@@ -26,15 +27,9 @@ public class GamePanel extends JPanel {
 private Game game;
     public GamePanel(Game game) {
 
-        mouseInputs = new MouseInputs(this);
         this.game = game;
-
-
-
         setPanelSize();
-        addKeyListener(new KeyboardInputs(this));
-        addMouseListener(mouseInputs);
-        addMouseMotionListener(mouseInputs);
+        addKeyListener(new KeyHandler());
 
     }
 

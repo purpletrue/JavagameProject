@@ -39,6 +39,7 @@ public class EnemyMuzan extends Enemy {
         y = 550;
         speed = 5;
         direction = "up";
+        hp = 100;
     }
 
     public void getEnemyImage() {

@@ -10,6 +10,12 @@ public class KeyHandler implements KeyListener {
 //    x:기본공격,  스페이스:점프   1,2,3:스킬
     public boolean xPressed, spaceBarPressed, onePressed, twoPressed,threePressed;
 
+    private final boolean[] keys;
+
+    public KeyHandler() {
+        keys = new boolean[256];
+    }
+
     @Override
     public void keyTyped(KeyEvent e) {
 
@@ -67,5 +73,8 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_3) {
             threePressed = false;
         }
+    }
+    public boolean isKeyPressed(int keyCode) {
+        return keys[keyCode];
     }
 }

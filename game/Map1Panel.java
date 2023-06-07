@@ -23,15 +23,20 @@ public class Map1Panel extends GamePanel implements Runnable {
         addKeyListener(keyH);    // keyH 객체를 리스너로 추가
         requestFocusInWindow();  // 포커스 요청
 
+        muzan = new EnemyMuzan();
+
         // Player 객체 생성
         switch (characterType) {
-            case 0 -> playerU = new PlayerU(this, keyH,x, y, width, height);
-            case 1 -> playerY = new PlayerY(this, keyH,x, y, width, height);
-            case 2 -> playerM = new PlayerM(this, keyH,x, y, width, height);
+            case 0:
+                playerU = new PlayerU(this, keyH, x, y, width, height, muzan);
+                break;
+            case 1:
+                playerY = new PlayerY(this, keyH, x, y, width, height, muzan);
+                break;
+            case 2:
+                playerM = new PlayerM(this, keyH, x, y, width, height, muzan);
+                break;
         }
-        muzan = new EnemyMuzan();
         setPreferredSize(new Dimension(screenWidth, screenHeight));
-
-
     }
 }

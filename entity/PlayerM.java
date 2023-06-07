@@ -10,8 +10,8 @@ import java.io.IOException;
 public class PlayerM extends Player {
     // 이미지 변수 추가
 
-    public PlayerM(Map1Panel gp, KeyHandler keyH, int x, int y, int width, int height) {
-        super(x, y, width, height);
+    public PlayerM(Map1Panel gp, KeyHandler keyH, int x, int y, int width, int height, Enemy enemy) {
+        super(x, y, width, height, enemy);
         this.mp1 = gp;
         this.keyH = keyH;
         getPlayerImage();

@@ -76,4 +76,8 @@ public class GameFrame extends JFrame {
         map1Panel.requestFocusInWindow();
         map1Panel.startGameThread();
     }
+    public void returnToBeginningPanel() {
+        swapPanel(BEGINNING_PANEL);
+        repaint();
+    }
 }

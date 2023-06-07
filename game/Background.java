@@ -29,7 +29,7 @@ public class Background implements Runnable {
             int y = player.getY();
             Color leftColor = new Color(image.getRGB(x + 10, y + 25));
             Color rightColor = new Color(image.getRGB(x + 90, y + 25));
-            int bottomColor = image.getRGB(x+90,y + 132);
+            int bottomColor = image.getRGB(x+72,y + 132);
 //            System.out.println(bottomColor);
 
 //            바닥 충돌 확인
