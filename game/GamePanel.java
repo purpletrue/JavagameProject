@@ -28,6 +28,8 @@ public class GamePanel extends JPanel implements Runnable {
     protected PlayerY playerY;
     protected PlayerM playerM;
     protected EnemyMuzan muzan;
+    protected EnemyAkaza akaza;
+    protected EnemyKoku koku;
 
     public GamePanel() {
         // 발판 생성

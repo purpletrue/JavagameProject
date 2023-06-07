@@ -28,6 +28,7 @@ public class PlayerU extends Player {
         width = 96;
         height = 96;
         jumpSpeed=2;
+        hp = 200;
     }
     public void getPlayerImage() {
         try {

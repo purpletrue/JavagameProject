@@ -46,6 +46,7 @@ public class Enemy extends JLabel {
         hpBarWidthEnemy = 150;
         hpBarHeightEnemy = 20;
     }
+
     protected void returnToBeginningPanel() {
         if (gameFrame != null) {
             gameFrame.returnToBeginningPanel();

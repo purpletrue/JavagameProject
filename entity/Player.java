@@ -83,7 +83,9 @@ public class Player extends JLabel {
         if (keyH.xPressed && !attack) {
             direction = "attack";
             attack();
-            enemy.decreaseHp(1,this);
+            if (this.enemy != null) {  // enemy가 null이 아닌지 확인
+                enemy.decreaseHp(1,this);
+            }
         }
     }
 
@@ -301,7 +303,6 @@ public class Player extends JLabel {
         this.down = down;
     }
 }
-
 
 
 

@@ -1,13 +1,8 @@
 package game;
 
-import entity.EnemyMuzan;
-import entity.PlayerU;
-import entity.PlayerY;
-import entity.PlayerM;
+import entity.*;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 public class Map1Panel extends GamePanel implements Runnable {
 
@@ -23,8 +18,6 @@ public class Map1Panel extends GamePanel implements Runnable {
         addKeyListener(keyH);    // keyH 객체를 리스너로 추가
         requestFocusInWindow();  // 포커스 요청
 
-        muzan = new EnemyMuzan();
-
         // Player 객체 생성
         switch (characterType) {
             case 0:
@@ -37,6 +30,15 @@ public class Map1Panel extends GamePanel implements Runnable {
                 playerM = new PlayerM(this, keyH, x, y, width, height, muzan);
                 break;
         }
+        muzan = new EnemyMuzan();
+        setMuzanTarget(playerU);
+//        setMuzanTarget(playerY);
+//        setMuzanTarget(playerM);
         setPreferredSize(new Dimension(screenWidth, screenHeight));
+
+    }
+
+    private void setMuzanTarget(Player player) {
+        muzan.setPlayer(player);
     }
 }
