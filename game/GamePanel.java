@@ -85,6 +85,9 @@ public class GamePanel extends JPanel implements Runnable {
             case 1 -> playerY.update();
             case 2 -> playerM.update();
         }
+        muzan.update();
+//        akaza.update();
+//        koku.update();
 
     }
 

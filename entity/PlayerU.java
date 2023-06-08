@@ -19,7 +19,6 @@ public class PlayerU extends Player {
         y = 650;
         speed = 4;
         direction = "right";
-        currentHp = maxHp - decreaseHp; // 현재 체력
         mp = 100;
         width = 96;
         height = 96;

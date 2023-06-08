@@ -36,6 +36,7 @@ public class Player extends JLabel {
     public int hpBarWidth = 50;
     public int hpBarHeight;
     public Enemy enemy;
+    private GamePanel gamePanel;
 
 //    생성자
     public Player(int x, int y, int width, int height, Enemy enemy) {
@@ -56,11 +57,23 @@ public class Player extends JLabel {
         handleKeyEvents();
         animateSprite();
         if (keyH.isKeyPressed(KeyEvent.VK_K)) {
-            enemy.decreaseHp(1,this);
+            enemy.decreaseEnemyHp(1,this);
+        }
+    }
+    public void decreasePlayerHp(int amount) {
+        System.out.println("Player HP " + hp);
+        this.hp -= amount;
+        if (this.hp <= 0) {
+            SwingUtilities.invokeLater(() -> {
+                JOptionPane.showMessageDialog(null, "Player is defeated!");
+                gamePanel.returnToBeginningPanel();
+            });
         }
     }
 
-//    키보드 키 입력시 상태 변화
+
+
+    //    키보드 키 입력시 상태 변화
     private void handleKeyEvents() {
         if (keyH.leftPressed && !isLeftWallCrash()) {
             direction = "left";
@@ -76,7 +89,7 @@ public class Player extends JLabel {
         if (keyH.xPressed && !attack) {
             direction = "attack";
             if (this.enemy != null) {
-                enemy.decreaseHp(1,this);
+                enemy.decreaseEnemyHp(1,this);
             }
         }
     }

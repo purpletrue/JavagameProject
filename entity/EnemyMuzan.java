@@ -94,4 +94,15 @@ public class EnemyMuzan extends Enemy {
         int hpBarWidthEnemy = (int) ((double) currentHpEnemy / maxHpEnemy * this.hpBarWidthEnemy); // 현재 체력에 따라 바의 길이 계산
         g2.fillRect(x, y - 10, this.hpBarWidthEnemy, hpBarHeightEnemy); // 현재 체력에 맞게 HP 바 그리기
     }
+    @Override
+    public void update() {
+        int distanceX = this.x - playerToFollow.getX();
+        int distanceY = this.y - playerToFollow.getY();
+        double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+        if (distance <= 5) {
+            playerToFollow.decreasePlayerHp(10);
+        }
+    }
+
 }
