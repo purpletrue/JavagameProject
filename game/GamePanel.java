@@ -101,6 +101,8 @@ public class GamePanel extends JPanel implements Runnable {
             case 2 -> playerM.draw(g2);
         }
         muzan.draw(g2);
+        drawEnemyHp(g2); // 적의 체력을 그리는 코드 추가
+        drawPlayerHp(g2);
         g2.dispose();
     }
 
@@ -120,18 +122,35 @@ public class GamePanel extends JPanel implements Runnable {
         SwingUtilities.invokeLater(() -> {
             if (gameFrame != null) {
                 gameFrame.swapPanel(GameFrame.BEGINNING_PANEL);
-                stopGameThread();
             }
         });
     }
-    public void stopGameThread() {
-        running = false;
-        try {
-            gameThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+
+    private void drawPlayerHp(Graphics2D g2) {
+        String hpText = "";
+        switch (characterType) {
+            case 0 -> hpText = "Player HP: " + playerU.getHp();
+            case 1 -> hpText = "Player HP: " + playerY.getHp();
+            case 2 -> hpText = "Player HP: " + playerM.getHp();
         }
-        gameThread = null;;
+        g2.setFont(new Font("Arial", Font.PLAIN, 20));
+        g2.setColor(Color.BLACK);
+        FontMetrics fm = g2.getFontMetrics();
+        int x = 20;
+        int y = fm.getHeight()+50;
+        g2.drawString(hpText, x, y);
+    }
+
+
+
+    private void drawEnemyHp(Graphics2D g2) {
+        String hpText = "Enemy HP: " + muzan.getHp();
+        g2.setFont(new Font("Arial", Font.BOLD, 30));
+        g2.setColor(Color.BLACK);
+        FontMetrics fm = g2.getFontMetrics();
+        int x = getWidth() - fm.stringWidth(hpText) - 50; // 오른쪽 상단에 위치하도록 x 좌표 계산
+        int y = fm.getHeight()+50; // 상단에 위치하도록 y 좌표 계산
+        g2.drawString(hpText, x, y);
     }
 
 

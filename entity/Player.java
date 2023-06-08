@@ -39,6 +39,8 @@ public class Player extends JLabel {
     public int hpBarHeight;
     public Enemy enemy;
     private GamePanel gamePanel;
+    private long lastDecreaseTime = 0;
+    private volatile boolean isDead = false;  //죽었을 때 변수를 추가해 체력이 0이 될 때 true로 설정함.
 
 //    생성자
     public Player(GamePanel gp, int x, int y, int width, int height, Enemy enemy) {
@@ -63,17 +65,29 @@ public class Player extends JLabel {
             enemy.decreaseEnemyHp(1,this);
         }
     }
+
     public void decreasePlayerHp(int amount) {
+        long currentTime = System.currentTimeMillis();
+        // 체력 감소 후 3초가 지나지 않았다면 데미지를 받지 않음. (무적 시간)
+        if (currentTime - lastDecreaseTime < 3000) {
+            return;
+        }
+        if (isDead) {
+            return;
+        }
         System.out.println("Player HP " + hp);
         this.hp -= amount;
+        lastDecreaseTime = currentTime; // 체력 감소 시간 업데이트
+
         if (this.hp <= 0) {
+            isDead = true;
             SwingUtilities.invokeLater(() -> {
-                JOptionPane.showMessageDialog(null, "Player is defeated!");
+                JOptionPane.showMessageDialog(null, "다시 도전하세요..");
                 gamePanel.returnToBeginningPanel();
             });
-            gamePanel.stopGameThread(); // 게임 스레드 멈춤
         }
     }
+
 
 
 
@@ -240,6 +254,9 @@ public class Player extends JLabel {
     }
     public void setRightWallCrash(boolean rightWallCrash) {
         this.rightWallCrash = rightWallCrash;
+    }
+    public int getHp() {
+        return hp;
     }
 
 }

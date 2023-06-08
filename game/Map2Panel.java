@@ -1,8 +1,8 @@
-
-
+//
+//
 // Map1 클리어 후 이동하는 Map2의 코드입니다.
-
-
+//
+//
 //package game;
 //
 //import entity.Muzan;
