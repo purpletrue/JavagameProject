@@ -7,9 +7,8 @@ import java.io.IOException;
 
 public class PlayerM extends Player {
 
-    public PlayerM(Map1Panel gp, KeyHandler keyH, int x, int y, int width, int height, Enemy enemy) {
-        super(x, y, width, height, enemy);
-        this.mp1 = gp;
+    public PlayerM(GamePanel gp, KeyHandler keyH, int x, int y, int width, int height, Enemy enemy) {
+        super(gp, x, y, width, height, enemy);
         this.keyH = keyH;
         getPlayerImage();
         setDefaultValues();

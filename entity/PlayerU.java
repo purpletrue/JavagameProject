@@ -5,9 +5,8 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 
 public class PlayerU extends Player {
-    public PlayerU(Map1Panel gp, KeyHandler keyH, int x, int y, int width, int height, Enemy enemy) {
-        super(x, y, width, height,enemy); // 부모 클래스인 Player의 생성자 호출
-        this.mp1 = gp;
+    public PlayerU(GamePanel gp, KeyHandler keyH, int x, int y, int width, int height, Enemy enemy) {
+        super(gp, x, y, width, height,enemy); // 부모 클래스인 Player의 생성자 호출
         this.keyH = keyH;
         setDefaultValues();
         getPlayerImage();

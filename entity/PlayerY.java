@@ -1,5 +1,6 @@
 package entity;
 
+import game.GamePanel;
 import game.KeyHandler;
 import game.Map1Panel;
 
@@ -7,9 +8,8 @@ import javax.imageio.ImageIO;
 import java.io.IOException;
 
 public class PlayerY extends Player {
-    public PlayerY(Map1Panel gp, KeyHandler keyH, int x, int y, int width, int height, Enemy enemy) {
-        super(x, y, width, height, enemy);
-        this.mp1 = gp;
+    public PlayerY(GamePanel gp, KeyHandler keyH, int x, int y, int width, int height, Enemy enemy) {
+        super(gp, x, y, width, height, enemy);
         this.keyH = keyH;
         setDefaultValues();
         getPlayerImage();

@@ -11,6 +11,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import javax.swing.JOptionPane;
+
 
 public class Player extends JLabel {
     Map1Panel mp1;
@@ -39,7 +41,8 @@ public class Player extends JLabel {
     private GamePanel gamePanel;
 
 //    생성자
-    public Player(int x, int y, int width, int height, Enemy enemy) {
+    public Player(GamePanel gp, int x, int y, int width, int height, Enemy enemy) {
+        this.gamePanel = gp;
         this.x = x;
         this.y = y;
         this.width = width;
@@ -68,6 +71,7 @@ public class Player extends JLabel {
                 JOptionPane.showMessageDialog(null, "Player is defeated!");
                 gamePanel.returnToBeginningPanel();
             });
+            gamePanel.stopGameThread(); // 게임 스레드 멈춤
         }
     }
 
