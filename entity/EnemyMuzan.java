@@ -3,6 +3,7 @@ package entity;
 import game.*;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -17,8 +18,13 @@ public class EnemyMuzan extends Enemy {
     private int hpBarWidthEnemy = 100; // 적 체력바 너비
     private int maxDistance = 100;
     private GamePanel gamePanel;
+    private boolean isDead = false;
 
-    public EnemyMuzan() {
+    private long lastAttackTime = 0;     // 스킬 샷
+    private long attackCooldown = 3000; // 3초의 쿨다운 시간
+
+    public EnemyMuzan(GamePanel gamePanel) {
+        super(gamePanel);
         setDefaultValues();
         getEnemyImage();
     }
@@ -74,7 +80,6 @@ public class EnemyMuzan extends Enemy {
     }
 
     public void draw(Graphics2D g2) {
-        followCoordinates(); // 플레이어를 따라가도록 위치 업데이트
         BufferedImage image = null;
         if (playerToFollow != null) {
             int playerX = playerToFollow.getX(); // Player의 X 좌표
@@ -96,6 +101,8 @@ public class EnemyMuzan extends Enemy {
     }
     @Override
     public void update() {
+        followCoordinates();
+        attackSkill(); // 공격 스킬을 호출
         int distanceX = this.x - playerToFollow.getX();
         int distanceY = this.y - playerToFollow.getY();
         double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
@@ -104,5 +111,32 @@ public class EnemyMuzan extends Enemy {
             playerToFollow.decreasePlayerHp(10);
         }
     }
+
+    public void attackSkill() {
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastAttackTime < attackCooldown) {
+            return; // 스킬이 쿨다운 상태일 경우 더 이상 진행하지 않습니다.
+        }
+
+        int damage = 20; // 스킬이 입히는 데미지
+        int skillRange = 100; // 스킬의 범위
+
+        if (playerToFollow != null) {
+            int distanceX = this.x - playerToFollow.getX();
+            int distanceY = this.y - playerToFollow.getY();
+            double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+            if (distance <= skillRange) {
+                playerToFollow.decreasePlayerHp(damage); // 플레이어의 체력을 감소시킵니다.
+            }
+        }
+
+        lastAttackTime = currentTime; // 마지막 공격 시간을 현재 시간으로 업데이트 합니다.
+    }
+    public int getHp() {
+        return hp;
+    }
+
+
 
 }

@@ -26,6 +26,7 @@ public class Enemy extends JLabel {
     public int hpBarHeightEnemy;
     private GamePanel gamePanel;
     private Player player;
+    private long lastDecreaseTime = 0;
 
     public void setHpBarDefaultValues() {
         maxHpEnemy = 100;
@@ -34,15 +35,27 @@ public class Enemy extends JLabel {
     }
 
     public void decreaseEnemyHp(int amount, Player player) {
+        if (this.hp <= 0 && isDefeated) {
+            return;
+        }
+        long currentTime = System.currentTimeMillis();
+
+        // 체력 감소 딜레이 줌 0.1sec
+        if (currentTime - lastDecreaseTime < 100) {
+            return;
+        }
+
         int distance = Math.abs(this.x - player.getX());
 
-        if (distance <= 16) {
+        if (distance <= 30) {
             System.out.println("Enemy HP " + hp);
             this.hp -= amount;
+            lastDecreaseTime = currentTime; // 체력 감소 시간 업데이트
+
             if (this.hp <= 0 && !isDefeated) {
                 isDefeated = true;
                 SwingUtilities.invokeLater(() -> {
-                    JOptionPane.showMessageDialog(null, "Enemy is defeated!");
+                    JOptionPane.showMessageDialog(null, "다음 단계로 넘어감");
                     gamePanel.returnToBeginningPanel();
                 });
             }

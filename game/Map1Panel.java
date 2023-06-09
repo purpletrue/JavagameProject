@@ -22,7 +22,7 @@ public class Map1Panel extends GamePanel implements Runnable {
         addKeyListener(keyH);    // keyH 객체를 리스너로 추가
         requestFocusInWindow();  // 포커스 요청
 
-        muzan = new EnemyMuzan();
+        muzan = new EnemyMuzan(this);
 
         // Player 객체 생성
         switch (characterType) {
