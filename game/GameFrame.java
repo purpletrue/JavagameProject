@@ -14,11 +14,12 @@ public class GameFrame extends JFrame {
     public static final int BEGINNING_PANEL = -1; // 시작메뉴 패널
     public static final int SELECT_PANEL = 0; // 캐릭터 선택 패널
     public static final int RULE_PANEL = 1; // 룰 설명 패널
-    public static final int PROD_PANEL = 2; // 제작자 패널
+    public static final int CREDIT_PANEL = 2; // 제작자 패널
 
     private BeginningPanel beginningPanel;
     private SelectPanel selectPanel;
     private Map1Panel map1Panel;
+    private CreditPanel creditPanel;
 
     private int characterType;
 
@@ -39,6 +40,7 @@ public class GameFrame extends JFrame {
 
         beginningPanel = new BeginningPanel(this);
         selectPanel = new SelectPanel(this);
+        creditPanel = new CreditPanel(this);
 
         setContentPane(beginningPanel);
         setFocusable(true);
@@ -61,11 +63,10 @@ public class GameFrame extends JFrame {
                 // setContentPane(rulePanel);
                 // System.out.println("패널 변경 -> 규칙 설명");
                 break;
-            case PROD_PANEL:
-                // Add code to create and set the prodPanel
-                // prodPanel = new ProdPanel(this);
-                // setContentPane(prodPanel);
-                // System.out.println("패널 변경 -> 제작자 패널");
+            case CREDIT_PANEL:
+                 creditPanel = new CreditPanel(this);
+                 setContentPane(creditPanel);
+                 System.out.println("패널 변경 -> 제작자 패널");
                 break;
         }
         validate();
