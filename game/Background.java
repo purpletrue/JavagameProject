@@ -12,6 +12,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class Background implements Runnable {
 
@@ -21,7 +22,7 @@ public class Background implements Runnable {
     public Background(Player player) {
         this.player = player;
         try {
-            image = ImageIO.read(new File("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\test.png"));
+            image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/test.png")));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }

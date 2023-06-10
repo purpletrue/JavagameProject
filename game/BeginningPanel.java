@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Objects;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -16,13 +17,13 @@ import javax.swing.JPanel;
 
 public class BeginningPanel extends JPanel {
     private GameFrame parent;
-    private ImageIcon start = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\start.png");
-    private ImageIcon startH = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\startH.png");
-    private ImageIcon help = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\help.png");
-    private ImageIcon helpH = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\helpH.png");
-    private ImageIcon credit = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\credit.png");
-    private ImageIcon creditH = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\creditH.png");
-    private ImageIcon bgImageicon = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\background.png");
+    private ImageIcon start = new ImageIcon(getClass().getResource("/res/start.png"));
+    private ImageIcon startH = new ImageIcon(getClass().getResource("../res/startH.png"));
+    private ImageIcon help = new ImageIcon(getClass().getResource("../res/help.png"));
+    private ImageIcon helpH = new ImageIcon(getClass().getResource("../res/helpH.png"));
+    private ImageIcon credit = new ImageIcon(getClass().getResource("../res/credit.png"));
+    private ImageIcon creditH = new ImageIcon(getClass().getResource("../res/creditH.png"));
+    private ImageIcon bgImageicon = new ImageIcon(getClass().getResource("../res/background.png"));
     private Image backgroundPanelImage = bgImageicon.getImage();
 
     public BeginningPanel(GameFrame parent) {

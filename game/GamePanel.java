@@ -109,10 +109,10 @@ public class GamePanel extends JPanel implements Runnable {
     private void drawBackground(Graphics2D g2) {
         ImageIcon backgroundIcon;
         switch (mapNumber) {
-            case 1 -> backgroundIcon = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\backgroundG1.png");
-            case 2 -> backgroundIcon = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\backgroundG2.png");
-            case 3 -> backgroundIcon = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\backgroundG3.png");
-            default -> backgroundIcon = new ImageIcon("D:\\workspace_IntelliJ_IDEA\\codeRed\\codeGreen\\src\\res\\background1.png");
+            case 1 -> backgroundIcon = new ImageIcon(getClass().getResource("/res/backgroundG1.png"));
+            case 2 -> backgroundIcon = new ImageIcon(getClass().getResource("/res/backgroundG2.png"));
+            case 3 -> backgroundIcon = new ImageIcon(getClass().getResource("/res/backgroundG3.png"));
+            default -> backgroundIcon = new ImageIcon(getClass().getResource("/res/background1.png"));
         }
         Image backgroundImage = backgroundIcon.getImage();
         g2.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
