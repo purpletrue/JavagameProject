@@ -80,15 +80,25 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        switch (characterType) {
-            case 0 -> playerU.update();
-            case 1 -> playerY.update();
-            case 2 -> playerM.update();
-        }
-        muzan.update();
+        if (isVisible()) {
+            switch (characterType) {
+                case 0 -> {
+                    playerU.update();
+                    break;
+                }
+                case 1 -> {
+                    playerY.update();
+                    break;
+                }
+                case 2 -> {
+                    playerM.update();
+                    break;
+                }
+            }
+            muzan.update();
 //        akaza.update();
 //        koku.update();
-
+        }
     }
 
     public void paintComponent(Graphics g) {

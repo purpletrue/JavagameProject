@@ -41,6 +41,8 @@ public class Player extends JLabel {
     private GamePanel gamePanel;
     private long lastDecreaseTime = 0;
     private volatile boolean isDead = false;  //죽었을 때 변수를 추가해 체력이 0이 될 때 true로 설정함.
+    private Background background;
+    private boolean isVisible = true;
 
 //    생성자
     public Player(GamePanel gp, int x, int y, int width, int height, Enemy enemy) {
@@ -50,29 +52,38 @@ public class Player extends JLabel {
         this.width = width;
         this.height = height;
         this.enemy = enemy;
+//        this.background = new Background(this, imagePath);
         initBackgroundPlayerService();
     }
 
     private void initBackgroundPlayerService() {
         new Thread(new Background(this)).start();
     }
+    public boolean isVisible() {
+        return isVisible;
+    }
+    public void setVisible(boolean visible) {
+        isVisible = visible;
+    }
 
 //    플레이어 상태를 업데이트
     public void update() {
-        handleKeyEvents();
-        animateSprite();
-        if (keyH.isKeyPressed(KeyEvent.VK_K)) {
-            enemy.decreaseEnemyHp(1,this);
+        if (isVisible()) {
+            handleKeyEvents();
+            animateSprite();
+            if (keyH.isKeyPressed(KeyEvent.VK_K)) {
+                enemy.decreaseEnemyHp(1, this);
+            }
         }
     }
 
     public void decreasePlayerHp(int amount) {
-        long currentTime = System.currentTimeMillis();
-        // 체력 감소 후 3초가 지나지 않았다면 데미지를 받지 않음. (무적 시간)
-        if (currentTime - lastDecreaseTime < 3000) {
+        if (isDead) {
             return;
         }
-        if (isDead) {
+        long currentTime = System.currentTimeMillis();
+        // 체력 감소 후 3초가 지나지 않았다면 데미지를 받지 않음. (무적 시간). 테스트때문에 빠르게 바꿈
+        if (currentTime - lastDecreaseTime < 100) {
             return;
         }
         System.out.println("Player HP " + hp);
@@ -83,6 +94,7 @@ public class Player extends JLabel {
             isDead = true;
             SwingUtilities.invokeLater(() -> {
                 JOptionPane.showMessageDialog(null, "다시 도전하세요..");
+                background.stopRunning();
                 gamePanel.returnToBeginningPanel();
             });
         }

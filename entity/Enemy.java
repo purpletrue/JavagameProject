@@ -35,7 +35,7 @@ public class Enemy extends JLabel {
     }
 
     public void decreaseEnemyHp(int amount, Player player) {
-        if (this.hp <= 0 && isDefeated) {
+        if (isDefeated) {
             return;
         }
         long currentTime = System.currentTimeMillis();
@@ -52,7 +52,7 @@ public class Enemy extends JLabel {
             this.hp -= amount;
             lastDecreaseTime = currentTime; // 체력 감소 시간 업데이트
 
-            if (this.hp <= 0 && !isDefeated) {
+            if (this.hp <= 0) {
                 isDefeated = true;
                 SwingUtilities.invokeLater(() -> {
                     JOptionPane.showMessageDialog(null, "다음 단계로 넘어감");
