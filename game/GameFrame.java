@@ -69,9 +69,10 @@ public class GameFrame extends JFrame {
                 // System.out.println("패널 변경 -> 규칙 설명");
                 break;
             case CREDIT_PANEL:
-                 creditPanel = new CreditPanel(this);
-                 setContentPane(creditPanel);
-                 System.out.println("패널 변경 -> 제작자 패널");
+                creditPanel = new CreditPanel(this);
+                currentPanel = creditPanel;
+                setContentPane(creditPanel);
+                System.out.println("패널 변경 -> 제작자 패널");
                 break;
         }
         setContentPane(currentPanel);
