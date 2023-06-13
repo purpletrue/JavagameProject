@@ -10,7 +10,6 @@ import entity.Player;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -18,9 +17,11 @@ public class Background implements Runnable {
 
     private BufferedImage image;
     private Player player;
+    private boolean running;
 
     public Background(Player player) {
         this.player = player;
+        this.running = true;
         try {
             image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/test.png")));
         } catch (IOException e) {
@@ -30,7 +31,7 @@ public class Background implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
+        while (running) {
             int x = player.getX();
             int y = player.getY();
             Color leftColor = new Color(image.getRGB(x + 10, y + 25));
@@ -68,5 +69,8 @@ public class Background implements Runnable {
                 e.printStackTrace();
             }
         }
+    }
+    public void stopRunning(){
+        this.running = false;
     }
 }

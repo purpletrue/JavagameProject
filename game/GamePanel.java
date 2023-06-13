@@ -33,9 +33,25 @@ public class GamePanel extends JPanel implements Runnable {
     protected EnemyMuzan muzan;
     protected EnemyAkaza akaza;
     protected EnemyKoku koku;
+    protected JLabel homeLabel;
 
     public GamePanel(GameFrame gameFrame) {
         this.gameFrame = gameFrame;
+        setLayout(null);
+
+        int panelWidth = 1152;
+        int panelHeight = 864;
+
+        ImageIcon homeIcon = new ImageIcon(getClass().getResource("/res/home.png")); // 홈 아이콘 이미지 불러오기
+        ImageIcon homeIconEntered = new ImageIcon(getClass().getResource("/res/home.png")); // 마우스를 올렸을 때의 아이콘도 설정해줍니다. 필요에 따라 다른 아이콘으로 변경 가능합니다.
+
+        homeLabel = new JLabel(homeIcon);
+        homeLabel.setBounds(1080, 10, homeIcon.getIconWidth(), homeIcon.getIconHeight()); // 홈 아이콘의 위치와 크기 설정
+        add(homeLabel);
+
+        // 마우스 이벤트 처리를 위한 클래스를 생성하고 이를 MouseListener로 추가
+        ButtonClickedEvent buttonClickedEvent = new ButtonClickedEvent(gameFrame, GameFrame.BEGINNING_PANEL, homeIconEntered, homeIcon);
+        homeLabel.addMouseListener(buttonClickedEvent);
     }
 
 
@@ -80,15 +96,25 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        switch (characterType) {
-            case 0 -> playerU.update();
-            case 1 -> playerY.update();
-            case 2 -> playerM.update();
-        }
-        muzan.update();
+        if (isVisible()) {
+            switch (characterType) {
+                case 0 -> {
+                    playerU.update();
+                    break;
+                }
+                case 1 -> {
+                    playerY.update();
+                    break;
+                }
+                case 2 -> {
+                    playerM.update();
+                    break;
+                }
+            }
+            muzan.update();
 //        akaza.update();
 //        koku.update();
-
+        }
     }
 
     public void paintComponent(Graphics g) {
@@ -103,7 +129,7 @@ public class GamePanel extends JPanel implements Runnable {
         muzan.draw(g2);
         drawEnemyHp(g2); // 적의 체력을 그리는 코드 추가
         drawPlayerHp(g2);
-        g2.dispose();
+//        g2.dispose();
     }
 
     private void drawBackground(Graphics2D g2) {
@@ -125,6 +151,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
         });
     }
+
 
     private void drawPlayerHp(Graphics2D g2) {
         String hpText = "";
@@ -155,4 +182,3 @@ public class GamePanel extends JPanel implements Runnable {
 
 
 }
-

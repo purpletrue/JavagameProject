@@ -6,6 +6,8 @@
 package game;
 
 import entity.*;
+
+import javax.swing.*;
 import java.awt.*;
 
 public class Map1Panel extends GamePanel implements Runnable {
@@ -14,13 +16,10 @@ public class Map1Panel extends GamePanel implements Runnable {
         super(gameFrame);
         this.characterType = characterType;
         this.mapNumber = 1; // Map1Panel은 mapNumber를 1로 설정
-        setFocusable(true);
-        setVisible(true);
 
         keyH = new KeyHandler();  // keyH 객체 초기화
         gameFrame.addKeyListener(keyH);  // gameFrame에 KeyListener 등록
         addKeyListener(keyH);    // keyH 객체를 리스너로 추가
-        requestFocusInWindow();  // 포커스 요청
 
         muzan = new EnemyMuzan(this);
 
@@ -39,8 +38,9 @@ public class Map1Panel extends GamePanel implements Runnable {
         setMuzanTarget(playerU);
 //        setMuzanTarget(playerY);
 //        setMuzanTarget(playerM);
-        setPreferredSize(new Dimension(screenWidth, screenHeight));
+
     }
+
 
     private void setMuzanTarget(Player player) {
         muzan.setPlayer(player);

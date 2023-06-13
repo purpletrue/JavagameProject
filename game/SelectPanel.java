@@ -16,9 +16,9 @@ import javax.swing.JPanel;
 public class SelectPanel extends JPanel {
     GameFrame parent;
     int characterType;
+    JLabel homeLabel;
+    GameFrame gameFrame;
 
-    ImageIcon homeButtonIcon = new ImageIcon(getClass().getResource("/res/home.png"));
-    ImageIcon homeButtonEnteredIcon = new ImageIcon(getClass().getResource("/res/home.png"));
     ImageIcon umjiro = new ImageIcon(getClass().getResource("/res/characterU1.png"));
     ImageIcon yujinko = new ImageIcon(getClass().getResource("/res/characterY1.png"));
     ImageIcon mokgoku = new ImageIcon(getClass().getResource("/res/characterM1.png"));
@@ -72,6 +72,16 @@ public class SelectPanel extends JPanel {
         add(mokgokuLabel);
 
         setVisible(true);
+        ImageIcon homeIcon = new ImageIcon(getClass().getResource("/res/home.png")); // 홈 아이콘 이미지 불러오기
+        ImageIcon homeIconEntered = new ImageIcon(getClass().getResource("/res/home.png"));
+
+        homeLabel = new JLabel(homeIcon);
+        homeLabel.setBounds(1080, 10, homeIcon.getIconWidth(), homeIcon.getIconHeight()); // 홈 아이콘의 위치와 크기 설정
+        add(homeLabel);
+
+        // 마우스 이벤트 처리를 위한 클래스를 생성하고 이를 MouseListener로 추가
+        ButtonClickedEvent buttonClickedEvent = new ButtonClickedEvent(parent, GameFrame.BEGINNING_PANEL, homeIconEntered, homeIcon);
+        homeLabel.addMouseListener(buttonClickedEvent);
     }
 
     @Override
