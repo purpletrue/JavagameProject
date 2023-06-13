@@ -136,7 +136,4 @@ public class EnemyMuzan extends Enemy {
     public int getHp() {
         return hp;
     }
-
-
-
 }
