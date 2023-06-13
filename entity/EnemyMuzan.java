@@ -18,12 +18,13 @@ public class EnemyMuzan extends Enemy {
     private Player playerToFollow; // 따라다니는 대상 Player
     private int hpBarWidthEnemy = 100; // 적 체력바 너비
     private int maxDistance = 100;
-    private boolean isAttackExcuted = false;
+    private long lastAttackTime = 0;     // 스킬 샷
+    private long attackInterval = 5000;
+    private long attackCooldown = 3000; // 3초의 쿨다운 시간
     private GamePanel gamePanel;
     private boolean isDead = false;
 
-    private long lastAttackTime = 0;     // 스킬 샷
-    private long attackCooldown = 3000; // 3초의 쿨다운 시간
+
 
     public EnemyMuzan(GamePanel gamePanel) {
         super(gamePanel);
@@ -134,14 +135,22 @@ public class EnemyMuzan extends Enemy {
                 playerToFollow.decreasePlayerHp(attackDamage); // Decrease the player's health
 
                 // Additional attack logic here, e.g., creating and launching the ball projectile
-                BallProjectile ball = new BallProjectile(x, y, playerToFollow.getX(), playerToFollow.getY(), 5);
+                Attack attack = new Attack(x, y, playerToFollow.getX(), playerToFollow.getY(), 5);
                 // Add the ball projectile to your game logic or update loop for it to be processed and drawn
             }
         }
-
         lastAttackTime = currentTime; // Update the last attack time
     }
 
+    private class Attack {
+        private int x;
+        private int y;
+        private int speed;
+
+        public Attack(int x, int y, int speed) {
+            
+        }
+    }
 
 
     public void attackSkill() {
