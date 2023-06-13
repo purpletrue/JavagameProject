@@ -4,6 +4,7 @@ import game.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -17,6 +18,7 @@ public class EnemyMuzan extends Enemy {
     private Player playerToFollow; // 따라다니는 대상 Player
     private int hpBarWidthEnemy = 100; // 적 체력바 너비
     private int maxDistance = 100;
+    private boolean isAttackExcuted = false;
     private GamePanel gamePanel;
     private boolean isDead = false;
 
@@ -101,8 +103,9 @@ public class EnemyMuzan extends Enemy {
     }
     @Override
     public void update() {
-        followCoordinates();
+        followCoordinates(); // player를 따라다니게 설정
         attackSkill(); // 공격 스킬을 호출
+        attackDefault(); // 기본 공격 호출
         int distanceX = this.x - playerToFollow.getX();
         int distanceY = this.y - playerToFollow.getY();
         double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
@@ -111,6 +114,35 @@ public class EnemyMuzan extends Enemy {
             playerToFollow.decreasePlayerHp(10);
         }
     }
+
+    public void attackDefault() {
+        long currentTime = System.currentTimeMillis();
+
+        if (currentTime - lastAttackTime < attackInterval) {
+            return; // If the attack is on cooldown, return
+        }
+
+        int attackRange = 100; // Range of the attack
+        int attackDamage = 10; // Damage dealt by the attack
+
+        if (playerToFollow != null) {
+            int distanceX = playerToFollow.getX() - x;
+            int distanceY = playerToFollow.getY() - y;
+            double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+            if (distance <= attackRange) {
+                playerToFollow.decreasePlayerHp(attackDamage); // Decrease the player's health
+
+                // Additional attack logic here, e.g., creating and launching the ball projectile
+                BallProjectile ball = new BallProjectile(x, y, playerToFollow.getX(), playerToFollow.getY(), 5);
+                // Add the ball projectile to your game logic or update loop for it to be processed and drawn
+            }
+        }
+
+        lastAttackTime = currentTime; // Update the last attack time
+    }
+
+
 
     public void attackSkill() {
         long currentTime = System.currentTimeMillis();
