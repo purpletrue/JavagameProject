@@ -23,6 +23,7 @@ public class EnemyMuzan extends Enemy {
     private long attackCooldown = 3000; // 3초의 쿨다운 시간
     private GamePanel gamePanel;
     private boolean isDead = false;
+    private Attack attack;
 
 
 
@@ -96,13 +97,15 @@ public class EnemyMuzan extends Enemy {
         if (image != null) {
             g2.drawImage(image, x, y, null);
         }
+        if (attack != null) {
+            attack.draw(g2);
+        }
         g2.setColor(Color.RED);
         g2.fillRect(x, y - 10, hpBarWidthEnemy, hpBarHeightEnemy); // HP 바 배경색으로 채우기
-        g2.setColor(Color.RED);
         int hpBarWidthEnemy = (int) ((double) currentHpEnemy / maxHpEnemy * this.hpBarWidthEnemy); // 현재 체력에 따라 바의 길이 계산
         g2.fillRect(x, y - 10, this.hpBarWidthEnemy, hpBarHeightEnemy); // 현재 체력에 맞게 HP 바 그리기
     }
-    @Override
+
     public void update() {
         followCoordinates(); // player를 따라다니게 설정
         attackSkill(); // 공격 스킬을 호출
@@ -111,20 +114,23 @@ public class EnemyMuzan extends Enemy {
         int distanceY = this.y - playerToFollow.getY();
         double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
-        if (distance <= 5) {
+        if (distance <= 50) {
             playerToFollow.decreasePlayerHp(10);
+        }
+
+        if (attack != null) {
+            attack.update();
         }
     }
 
     public void attackDefault() {
         long currentTime = System.currentTimeMillis();
-
         if (currentTime - lastAttackTime < attackInterval) {
-            return; // If the attack is on cooldown, return
+            return; // 기본 공격의 텀
         }
 
-        int attackRange = 100; // Range of the attack
-        int attackDamage = 10; // Damage dealt by the attack
+        int attackRange = 100; // 공격 범위
+        int attackDamage = 10; // 공격 데미지
 
         if (playerToFollow != null) {
             int distanceX = playerToFollow.getX() - x;
@@ -132,26 +138,14 @@ public class EnemyMuzan extends Enemy {
             double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
             if (distance <= attackRange) {
-                playerToFollow.decreasePlayerHp(attackDamage); // Decrease the player's health
 
                 // Additional attack logic here, e.g., creating and launching the ball projectile
-                Attack attack = new Attack(x, y, playerToFollow.getX(), playerToFollow.getY(), 5);
+                attack = new Attack(x, y, playerToFollow.getX(), playerToFollow.getY(), 1,500);
                 // Add the ball projectile to your game logic or update loop for it to be processed and drawn
             }
         }
-        lastAttackTime = currentTime; // Update the last attack time
+        lastAttackTime = currentTime; // 마지막 공격 타임
     }
-
-    private class Attack {
-        private int x;
-        private int y;
-        private int speed;
-
-        public Attack(int x, int y, int speed) {
-            
-        }
-    }
-
 
     public void attackSkill() {
         long currentTime = System.currentTimeMillis();
@@ -176,5 +170,50 @@ public class EnemyMuzan extends Enemy {
     }
     public int getHp() {
         return hp;
+    }
+
+    private class Attack {
+        private int startX;
+        private int startY;
+        private int targetX;
+        private int targetY;
+        private int speed;
+        private int targetDistance;
+        private int distanceTraveled;
+        private boolean reachedTarget = false;
+
+        public Attack(int startX, int startY, int targetX, int targetY, int speed, int targetDistance) {
+            this.startX = startX;
+            this.startY = startY;
+            this.targetX = targetX;
+            this.targetY = targetY;
+            this.speed = speed;
+            this.targetDistance = targetDistance;
+            this.distanceTraveled = 0;
+        }
+
+        public void update() {
+            int attackX = targetX - startX;
+            int attackY = targetY - startY;
+            double distance = Math.sqrt(attackX * attackX + attackY * attackY);
+
+            double normalizedAttackX = attackX / distance;
+            double normalizedAttackY = attackY / distance;
+
+            startX += (int) (normalizedAttackX * speed);
+            startY += (int) (normalizedAttackY * speed);
+            distanceTraveled += speed;
+
+            if (distanceTraveled >= targetDistance) {
+                reachedTarget = true;
+            }
+        }
+
+        public void draw(Graphics2D g2) {
+            if (!reachedTarget) {
+                g2.setColor(Color.GREEN);
+                g2.fillOval(startX, startY, 10, 10);
+            }
+        }
     }
 }

@@ -76,12 +76,4 @@ public class Enemy extends JLabel {
         setHpBarDefaultValues();
     }
 
-    public void update() {
-        int distance = Math.abs(this.x - player.getX());
-
-        if (distance <= 16) {
-            player.decreasePlayerHp(1);
-        }
-    }
-
 }
