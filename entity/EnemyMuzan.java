@@ -27,6 +27,7 @@ public class EnemyMuzan extends Enemy {
         super(gamePanel);
         setDefaultValues();
         getEnemyImage();
+        this.hp = maxHpEnemy;
     }
 
 
@@ -36,6 +37,7 @@ public class EnemyMuzan extends Enemy {
         speed = 1;
         direction = "up";
         hp = 10;
+        maxHpEnemy = 10;
     }
 
     public void getEnemyImage() {

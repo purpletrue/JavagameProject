@@ -9,7 +9,6 @@ import entity.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class GamePanel extends JPanel implements Runnable {
     protected int mapNumber;
@@ -26,7 +25,7 @@ public class GamePanel extends JPanel implements Runnable {
     protected final int screenHeight = tileSize * maxScreenRow;
     protected int FPS = 60;
     protected KeyHandler keyH = new KeyHandler();
-    protected boolean running = false;
+    protected volatile boolean running = false;
     protected PlayerU playerU;
     protected PlayerY playerY;
     protected PlayerM playerM;
@@ -64,8 +63,28 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void startGameThread() {
-        gameThread = new Thread(this);
-        gameThread.start();
+        if (gameThread == null || !running) {
+            gameThread = new Thread(this);
+            running = true;
+            gameThread.start();
+        }
+    }
+    public void stopGameThread() {
+        if (gameThread != null && running) {
+            running = false;
+            try {
+                gameThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public void dispose() {
+        stopGameThread();
+        playerU = null;
+        playerY = null;
+        playerM = null;
+        muzan = null;
     }
 
     @Override
@@ -76,6 +95,8 @@ public class GamePanel extends JPanel implements Runnable {
         long currentTime;
         long timer = 0;
         int drawCount = 0;
+
+        running = true;
 
         while (gameThread != null) {
             currentTime = System.nanoTime();
@@ -99,19 +120,19 @@ public class GamePanel extends JPanel implements Runnable {
         if (isVisible()) {
             switch (characterType) {
                 case 0 -> {
-                    playerU.update();
+                    if (playerU != null)  playerU.update();
                     break;
                 }
                 case 1 -> {
-                    playerY.update();
+                    if (playerY != null) playerY.update();
                     break;
                 }
                 case 2 -> {
-                    playerM.update();
+                    if (playerM != null) playerM.update();
                     break;
                 }
             }
-            muzan.update();
+            if(muzan != null) muzan.update();
 //        akaza.update();
 //        koku.update();
         }
@@ -147,6 +168,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void returnToBeginningPanel() {
         SwingUtilities.invokeLater(() -> {
             if (gameFrame != null) {
+                dispose();
                 gameFrame.swapPanel(GameFrame.BEGINNING_PANEL);
             }
         });

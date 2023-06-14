@@ -41,7 +41,7 @@ public class Player extends JLabel {
     private GamePanel gamePanel;
     private long lastDecreaseTime = 0;
     private volatile boolean isDead = false;  //죽었을 때 변수를 추가해 체력이 0이 될 때 true로 설정함.
-    private Background background;
+    public Background background;
     private boolean isVisible = true;
     ImageIcon skillIcon = new ImageIcon(getClass().getResource("/res/skill.gif"));
     Image scaledImage = skillIcon.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT);
@@ -59,7 +59,7 @@ public class Player extends JLabel {
         this.width = width;
         this.height = height;
         this.enemy = enemy;
-//        this.background = new Background(this, imagePath);
+        this.background = new Background(this);
         initBackgroundPlayerService();
         skillLabel = new JLabel(scaledSkillIcon);
         skillLabel.setBounds(x + 50, y, 50, 50);
@@ -96,15 +96,14 @@ public class Player extends JLabel {
         if (currentTime - lastDecreaseTime < 100) {
             return;
         }
-        System.out.println("Player HP " + hp);
         this.hp -= amount;
         lastDecreaseTime = currentTime; // 체력 감소 시간 업데이트
+        System.out.println("Player HP " + hp);
 
         if (this.hp <= 0) {
             isDead = true;
             SwingUtilities.invokeLater(() -> {
                 JOptionPane.showMessageDialog(null, "다시 도전하세요..");
-                background.stopRunning();
                 gamePanel.returnToBeginningPanel();
             });
         }
