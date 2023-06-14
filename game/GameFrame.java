@@ -54,6 +54,9 @@ public class GameFrame extends JFrame {
     public void swapPanel(int selectedMenu) {
         // 이전 패널 제거
         if (currentPanel != null) {
+            if (currentPanel instanceof CreditPanel) {
+                ((CreditPanel) currentPanel).stopTimer();
+            }
             remove(currentPanel);
         }
         switch (selectedMenu) {

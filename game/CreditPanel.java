@@ -65,12 +65,15 @@ public class CreditPanel extends JPanel implements ActionListener {
     // y값이 0이면 다시 시작패널로 변경.
     @Override
     public void actionPerformed(ActionEvent e) {
-//        y--;
-//        if (y < 0) {
-//            y = 0;
-//            timer.stop();
-//            gameFrame.swapPanel(GameFrame.BEGINNING_PANEL);
-//        }
-//        repaint();
+        y--;
+        if (y < 0) {
+            y = 0;
+            timer.stop();
+            gameFrame.swapPanel(GameFrame.BEGINNING_PANEL);
+        }
+        repaint();
+    }
+    public void stopTimer() {
+        timer.stop();
     }
 }
