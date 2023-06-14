@@ -20,6 +20,7 @@ public class GameFrame extends JFrame {
     private SelectPanel selectPanel;
     private Map1Panel map1Panel;
     private CreditPanel creditPanel;
+    private HelpPanel helpPanel;
     private JPanel currentPanel;
 
     private int characterType;
@@ -58,15 +59,17 @@ public class GameFrame extends JFrame {
         switch (selectedMenu) {
             case BEGINNING_PANEL:
                 currentPanel = beginningPanel;
+                System.out.println("패널 변경 -> 시작 화면");
                 break;
             case SELECT_PANEL:
                 currentPanel = selectPanel;
+                System.out.println("패널 변경 -> 캐릭터 선택");
                 break;
             case RULE_PANEL:
-                // Add code to create and set the rulePanel
-                // rulePanel = new RulePanel(this);
-                // setContentPane(rulePanel);
-                // System.out.println("패널 변경 -> 규칙 설명");
+                 helpPanel = new HelpPanel(this);
+                 currentPanel = helpPanel;
+                 setContentPane(helpPanel);
+                 System.out.println("패널 변경 -> 규칙 설명");
                 break;
             case CREDIT_PANEL:
                 creditPanel = new CreditPanel(this);
@@ -80,4 +83,5 @@ public class GameFrame extends JFrame {
         requestFocusInWindow();
 
     }
+
 }
