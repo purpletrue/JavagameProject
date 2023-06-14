@@ -15,6 +15,7 @@ public class GameFrame extends JFrame {
     public static final int SELECT_PANEL = 0; // 캐릭터 선택 패널
     public static final int RULE_PANEL = 1; // 룰 설명 패널
     public static final int CREDIT_PANEL = 2; // 제작자 패널
+    public static final int MAP1_Panel = 3;
 
     private BeginningPanel beginningPanel;
     private SelectPanel selectPanel;
