@@ -31,7 +31,7 @@ public class Enemy extends JLabel {
     public void setHpBarDefaultValues() {
         maxHpEnemy = 100;
         hpBarWidthEnemy = 150;
-        hpBarHeightEnemy = 20;
+        hpBarHeightEnemy = 10;
     }
 
     public void decreaseEnemyHp(int amount, Player player) {
