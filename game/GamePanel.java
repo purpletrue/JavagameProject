@@ -112,8 +112,6 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
             muzan.update();
-//        akaza.update();
-//        koku.update();
         }
     }
 

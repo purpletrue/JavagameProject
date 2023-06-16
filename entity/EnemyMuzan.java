@@ -13,6 +13,7 @@ import java.util.Objects;
 public class EnemyMuzan extends Enemy {
     private static BufferedImage muzan1; // Muzan의 왼쪽 이미지
     private static BufferedImage muzan2; // Muzan의 오른쪽 이미지
+    private static BufferedImage attack;
     private String direction; // 이동 방향
     private boolean movingForward = true; // 스프라이트 애니메이션 전환을 위한 플래그
     private Player playerToFollow; // 따라다니는 대상 Player
@@ -22,14 +23,16 @@ public class EnemyMuzan extends Enemy {
     private long attackCooldown = 3000; // 3초의 쿨다운 시간
     private GamePanel gamePanel;
     private boolean isDead = false;
-    private AutoAttack autoAttack;
+    private boolean attacks = false; // 무잔이 날아다니는지 여부를 나타내는 플래그
+    private double attackX; // 무잔이 X 좌표
+    private double attackY; // 무잔이 Y 좌표
+    private boolean attackLaunched = false;
 
 
     public EnemyMuzan(GamePanel gamePanel) {
         super(gamePanel);
         setDefaultValues();
         getEnemyImage();
-        autoAttack = new AutoAttack(this, 10, 2, 0);
     }
 
     public void setDefaultValues() {
@@ -39,11 +42,16 @@ public class EnemyMuzan extends Enemy {
         direction = "up";
         hp = 10;
     }
+
     public int getX() {
         return x;
     }
     public void setX(int x) {
         this.x = x;
+    }
+
+    public int getHp() {
+        return hp;
     }
 
     public int getY() {
@@ -57,6 +65,7 @@ public class EnemyMuzan extends Enemy {
         try {
             muzan1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/muzan1.png")));
             muzan2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/muzan2.png")));
+            attack = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/muzan2.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -94,41 +103,49 @@ public class EnemyMuzan extends Enemy {
         }
     }
 
-    public void draw(Graphics2D g2) {
-        BufferedImage image = null;
-        if (playerToFollow != null) {
-            int playerX = playerToFollow.getX(); // Player의 X 좌표
-
-            if (playerX < x) {
-                image = muzan1; // Player가 Muzan의 왼쪽에 있는 경우, Muzan의 왼쪽 이미지 선택
-            } else if (playerX > x) {
-                image = muzan2;  // Player가 Muzan의 오른쪽에 있는 경우, Muzan의 오른쪽 이미지 선택
-            }
-        }
-        if (image != null) {
-            g2.drawImage(image, x, y, null);
-        }
-        if (autoAttack != null) {
-            autoAttack.draw(g2);
-        }
-        g2.setColor(Color.RED);
-        g2.fillRect(x, y - 10, hpBarWidthEnemy, hpBarHeightEnemy); // HP 바 배경색으로 채우기
-        int hpBarWidthEnemy = (int) ((double) currentHpEnemy / maxHpEnemy * this.hpBarWidthEnemy); // 현재 체력에 따라 바의 길이 계산
-        g2.fillRect(x, y - 10, this.hpBarWidthEnemy, hpBarHeightEnemy); // 현재 체력에 맞게 HP 바 그리기
-    }
-
-    public void update() {
-        followCoordinates(); // player를 따라다니게 설정
-        attackSkill(); // 공격 스킬을 호출
-        int distanceX = this.x - playerToFollow.getX();
-        int distanceY = this.y - playerToFollow.getY();
+    public void attackDefault() {
+        double distanceX = Math.abs(playerToFollow.getX() - x);
+        double distanceY = Math.abs(playerToFollow.getY() - y);
         double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
-        if (distance <= 50) {
-            playerToFollow.decreasePlayerHp(10);
+        // 플레이어와 Muzan 객체 사이의 거리가 500 이하이고, 공격이 아직 실행 중이 아닌 경우
+        if (distance <= 200 && !attacks) {
+            attacks = true;
+            attackX = x;
+            attackY = y;
+
+            // 이동 방향에 따라 공격의 초기 X 위치를 설정합니다.
+            if (direction.equals("right")) {
+                attackX = x + 50; // Muzan이 오른쪽으로 이동 중인 경우, 오른쪽으로 100만큼 이동한 공격 위치 설정
+            } else if (direction.equals("left")) {
+                attackX = x; // Muzan이 왼쪽으로 이동 중인 경우, 왼쪽으로 100만큼 이동한 공격 위치 설정
+            }
         }
-        if (autoAttack != null) {
-            autoAttack.update();
+
+        if (attacks) {
+            double directionX = (direction.equals("right")) ? 1 : -1; // Muzan의 X축 이동 방향 설정
+            double directionY = 0; // Muzan의 Y축 이동 방향은 고정입니다.
+
+            double distanceMoved = Math.sqrt((attackX - x) * (attackX - x) + (attackY - y) * (attackY - y));
+
+            // 공격이 목표 위치까지 이동한 거리가 100 이상인 경우 공격을 종료합니다.
+            if (direction.equals("right")) {
+                // End the attack when Muzan moves more than 100 distance to the right of the target location.
+                if (distanceMoved >= 200) {
+                    attacks = false;
+                }
+            } else if (direction.equals("left")) {
+                // End the attack when Muzan moves more than 100 distance to the left of the target location.
+                if (distanceMoved >= 100) {
+                    attacks = false;
+                }
+            }
+
+            if (attacks) {
+                // Muzan을 2의 속도로 앞으로 이동합니다. (속도는 필요에 따라 조정 가능합니다.)
+                attackX += directionX * 2;
+                attackY += directionY * 2;
+            }
         }
     }
 
@@ -150,10 +167,44 @@ public class EnemyMuzan extends Enemy {
                 playerToFollow.decreasePlayerHp(damage); // 플레이어의 체력을 감소시킵니다.
             }
         }
-
         lastAttackTime = currentTime; // 마지막 공격 시간을 현재 시간으로 업데이트 합니다.
     }
-    public int getHp() {
-        return hp;
+
+    public void draw(Graphics2D g2) {
+        BufferedImage image = null;
+        if (playerToFollow != null) {
+            int playerX = playerToFollow.getX(); // Player의 X 좌표
+
+            if (playerX < x) {
+                image = muzan1; // Player가 Muzan의 왼쪽에 있는 경우, Muzan의 왼쪽 이미지 선택
+            } else if (playerX > x) {
+                image = muzan2;  // Player가 Muzan의 오른쪽에 있는 경우, Muzan의 오른쪽 이미지 선택
+            }
+        }
+        if (image != null) {
+            g2.drawImage(image, x, y, null);
+        }
+        if (attacks && attack != null) {
+            int drawX = (int) attackX - attack.getWidth() / 2; // 위치 보정
+            int drawY = (int) attackY - attack.getHeight() / 2; // 위치 보정
+            g2.drawImage(attack, drawX, drawY + 40 , null);
+        }
+        g2.setColor(Color.RED);
+        g2.fillRect(x, y - 10, hpBarWidthEnemy, hpBarHeightEnemy); // HP 바 배경색으로 채우기
+        int hpBarWidthEnemy = (int) ((double) currentHpEnemy / maxHpEnemy * this.hpBarWidthEnemy); // 현재 체력에 따라 바의 길이 계산
+        g2.fillRect(x, y - 10, this.hpBarWidthEnemy, hpBarHeightEnemy); // 현재 체력에 맞게 HP 바 그리기
+    }
+
+    public void update() {
+        followCoordinates(); // player를 따라다니게 설정
+        attackSkill(); // 공격 스킬을 호출
+        attackDefault();
+        int distanceX = this.x - playerToFollow.getX();
+        int distanceY = this.y - playerToFollow.getY();
+        double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+        if (distance <= 50) {
+            playerToFollow.decreasePlayerHp(10);
+        }
     }
 }
