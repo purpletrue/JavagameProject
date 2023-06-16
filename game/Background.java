@@ -41,18 +41,18 @@ public class Background implements Runnable {
             Color rightColor = new Color(image.getRGB(playerX + 90, playerY + 25));
             int bottomColor = image.getRGB(playerX + 72, playerY + 132);
 
-            // 바닥과의 충돌 감지
+            // 플레이어 바닥과의 충돌 감지
             if (bottomColor != -1) {
                 if (player.isDown()) {
                     player.setDown(false);
                 }
             } else {
-                if (!player.isUp() && !player.isDown()) {
-                    player.setDown();
+                if (!player.isUp()&&!player.isDown()) {
+                    player.down();
                 }
             }
 
-            // 벽과의 충돌 감지
+            // 플레이어 벽과의 충돌 감지
             if (leftColor.getRed() == 255 && leftColor.getGreen() == 0 && leftColor.getBlue() == 0) {
                 player.setLeftWallCrash(true);
             } else {
@@ -70,7 +70,20 @@ public class Background implements Runnable {
             int muzanY = muzan.getY();
             Color muzanLeftColor = new Color(image.getRGB(muzanX + 10, muzanY + 25));
             Color muzanRightColor = new Color(image.getRGB(muzanX + 90, muzanY + 25));
+            int btColor = image.getRGB(muzanX + 72, muzanY + 132);
 
+            // muzan 바닥과의 충돌 감지
+//            if (btColor != -1) {
+//                if (muzan.isDown()) {
+//                    muzan.setDown(false);
+//                }
+//            } else {
+//                if (!muzan.isUp() && !muzan.isDown()) {
+//                    muzan.down();
+//                }
+//            }
+
+            // 무장과 벽과의 충돌 감지
             if (muzanLeftColor.getRed() == 255 && muzanLeftColor.getGreen() == 0 && muzanLeftColor.getBlue() == 0) {
                 muzan.setLeftWallCrash(true);
             } else {
@@ -83,21 +96,6 @@ public class Background implements Runnable {
                 muzan.setRightWallCrash(false);
             }
 
-            // 비계와의 충돌 감지
-            Color playerTopColor = new Color(image.getRGB(playerX + 50, playerY + 10));
-            Color muzanTopColor = new Color(image.getRGB(muzanX + 50, muzanY + 10));
-
-            if (playerTopColor.getRed() == 255 && playerTopColor.getGreen() == 255 && playerTopColor.getBlue() == 0) {
-                player.setScaffoldCrash(true);
-            } else {
-                player.setScaffoldCrash(false);
-            }
-
-            if (muzanTopColor.getRed() == 255 && muzanTopColor.getGreen() == 255 && muzanTopColor.getBlue() == 0) {
-                muzan.setScaffoldCrash(true);
-            } else {
-                muzan.setScaffoldCrash(false);
-            }
 
             try {
                 Thread.sleep(5);

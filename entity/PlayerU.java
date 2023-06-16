@@ -24,6 +24,7 @@ public class PlayerU extends Player {
         jumpSpeed=2;
         hp = 200;
     }
+
     public void getPlayerImage() {
         try {
             right1 = ImageIO.read(getClass().getResourceAsStream("/res/tanjiro_right1.png"));

@@ -57,7 +57,7 @@ public class Player extends JLabel {
     }
 
     private void initBackgroundPlayerService() {
-        new Thread(new Background(this)).start();
+        new Thread(new Background(this, (EnemyMuzan) enemy)).start();
     }
     public boolean isVisible() {
         return isVisible;
@@ -94,7 +94,6 @@ public class Player extends JLabel {
             isDead = true;
             SwingUtilities.invokeLater(() -> {
                 JOptionPane.showMessageDialog(null, "다시 도전하세요..");
-                background.stopRunning();
                 gamePanel.returnToBeginningPanel();
             });
         }
@@ -235,6 +234,9 @@ public class Player extends JLabel {
     public boolean isDown() {
         return down;
     }
+    public void setDown(boolean down) {
+        this.down = down;
+    }
     public boolean isUp() {
         return up;
     }
@@ -250,9 +252,7 @@ public class Player extends JLabel {
     public int getY() {
         return this.y;
     }
-    public void setDown(boolean down) {
-        this.down = down;
-    }
+
 
 //    벽 충돌을 감지하기 위한 getter, setter
     public boolean isLeftWallCrash() {

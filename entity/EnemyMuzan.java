@@ -27,6 +27,8 @@ public class EnemyMuzan extends Enemy {
     private double attackX; // 무잔이 X 좌표
     private double attackY; // 무잔이 Y 좌표
     private boolean attackLaunched = false;
+    private boolean leftWallCrash;
+    private boolean rightWallCrash;
 
 
     public EnemyMuzan(GamePanel gamePanel) {
@@ -59,6 +61,19 @@ public class EnemyMuzan extends Enemy {
     }
     public void setY(int y) {
         this.y = y;
+    }
+
+    public boolean isLeftWallCrash() {
+        return leftWallCrash;
+    }
+    public void setLeftWallCrash(boolean leftWallCrash) {
+        this.leftWallCrash = leftWallCrash;
+    }
+    public boolean isRightWallCrash() {
+        return rightWallCrash;
+    }
+    public void setRightWallCrash(boolean rightWallCrash) {
+        this.rightWallCrash = rightWallCrash;
     }
 
     public void getEnemyImage() {
