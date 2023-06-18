@@ -8,6 +8,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.TimerTask;
+import java.util.Timer;
 
 public class EnemyMuzan extends Enemy {
     private static BufferedImage muzan1; // Muzan의 왼쪽 이미지
@@ -22,12 +24,16 @@ public class EnemyMuzan extends Enemy {
 
     private long lastAttackTime = 0;     // 스킬 샷
     private long attackCooldown = 3000; // 3초의 쿨다운 시간
+    private Timer shootTimer; // 총알 발사 타이머
+    private int shootDelay = 1000; // 총알 발사 간격 (1초)
 
     public EnemyMuzan(GamePanel gamePanel) {
         super(gamePanel);
+        this.gamePanel = gamePanel;
         setDefaultValues();
         getEnemyImage();
         this.hp = maxHpEnemy;
+        startShooting();
     }
 
 
@@ -135,6 +141,55 @@ public class EnemyMuzan extends Enemy {
 
         lastAttackTime = currentTime; // 마지막 공격 시간을 현재 시간으로 업데이트 합니다.
     }
+
+    private void shootPlayer() {
+        int playerX = playerToFollow.getX();
+        int playerY = playerToFollow.getY();
+        int bulletDamage = 10;
+        Bullet bullet = new Bullet(x, y, playerX, playerY,bulletDamage);
+        bullet.setMuzanTarget(playerToFollow);
+        gamePanel.add(bullet);
+        gamePanel.revalidate();
+
+        Timer bulletTimer = new Timer();
+        bulletTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                bullet.move();
+                if (bullet.collidesWith(playerToFollow)) {
+                    bulletTimer.cancel();
+                    bulletTimer.purge();
+                    gamePanel.remove(bullet);
+                    gamePanel.revalidate();
+                    playerToFollow.decreasePlayerHp(1);
+                }
+            }
+        }, 0, bullet.getSpeed());
+    }
+
+
+    public void startShooting() {
+        shootTimer = new Timer();
+        shootTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (playerToFollow != null) {
+                    shootPlayer();
+                }
+            }
+        }, 0, shootDelay);
+    }
+
+
+    public void stopShooting() {
+        if (shootTimer != null) {
+            shootTimer.cancel();
+            shootTimer = null;
+        }
+    }
+
+
+
     public int getHp() {
         return hp;
     }

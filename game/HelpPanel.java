@@ -43,13 +43,6 @@ protected JLabel homeLabel;
         Image backgroundImage = backgroundIcon.getImage();
         g2.drawImage(backgroundImage,0,0,getWidth(),getHeight(),this);
     }
-    public void returnToBeginningPanel() {
-        SwingUtilities.invokeLater(() -> {
-            if (gameFrame != null) {
-                gameFrame.swapPanel(GameFrame.BEGINNING_PANEL);
-            }
-        });
-    }
     
 
 }

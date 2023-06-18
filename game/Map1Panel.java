@@ -27,6 +27,7 @@ public class Map1Panel extends GamePanel implements Runnable {
         switch (characterType) {
             case 0:
                 playerU = new PlayerU(this, keyH, x, y, width, height, muzan);
+                setMuzanTarget(playerU);
                 break;
             case 1:
                 playerY = new PlayerY(this, keyH, x, y, width, height, muzan);
@@ -35,7 +36,6 @@ public class Map1Panel extends GamePanel implements Runnable {
                 playerM = new PlayerM(this, keyH, x, y, width, height, muzan);
                 break;
         }
-        setMuzanTarget(playerU);
 //        setMuzanTarget(playerY);
 //        setMuzanTarget(playerM);
 

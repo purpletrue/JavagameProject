@@ -147,7 +147,7 @@ public class GamePanel extends JPanel implements Runnable {
             if (muzan != null && muzan.getHp() <= 0) {
                 SwingUtilities.invokeLater(() -> {
                     JOptionPane.showMessageDialog(null, "다음 단계로 넘어감");
-                    returnToBeginningPanel();
+                    returnToCreditPanel();
                 });
                 stopGameThread();
             }
@@ -186,6 +186,14 @@ public class GamePanel extends JPanel implements Runnable {
             if (gameFrame != null) {
                 dispose();
                 gameFrame.swapPanel(GameFrame.BEGINNING_PANEL);
+            }
+        });
+    }
+    public void returnToCreditPanel() {
+        SwingUtilities.invokeLater(() -> {
+            if (gameFrame != null) {
+                dispose();
+                gameFrame.swapPanel(GameFrame.CREDIT_PANEL);
             }
         });
     }
