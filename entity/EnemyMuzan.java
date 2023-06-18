@@ -118,6 +118,7 @@ public class EnemyMuzan extends Enemy {
         if (distance <= 5) {
             playerToFollow.decreasePlayerHp(10);
         }
+
     }
 
     public void attackSkill() {
@@ -126,8 +127,8 @@ public class EnemyMuzan extends Enemy {
             return; // 스킬이 쿨다운 상태일 경우 더 이상 진행하지 않습니다.
         }
 
-        int damage = 20; // 스킬이 입히는 데미지
-        int skillRange = 100; // 스킬의 범위
+        int damage = 15; // 스킬이 입히는 데미지
+        int skillRange = 1000; // 스킬의 범위
 
         if (playerToFollow != null) {
             int distanceX = this.x - playerToFollow.getX();
@@ -135,7 +136,7 @@ public class EnemyMuzan extends Enemy {
             double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
             if (distance <= skillRange) {
-                playerToFollow.decreasePlayerHp(damage); // 플레이어의 체력을 감소시킵니다.
+                playerToFollow.decreasePlayerHp(damage); // 플레이어의 체력을 감소
             }
         }
 
@@ -150,22 +151,40 @@ public class EnemyMuzan extends Enemy {
         bullet.setMuzanTarget(playerToFollow);
         gamePanel.add(bullet);
         gamePanel.revalidate();
-
         Timer bulletTimer = new Timer();
         bulletTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 bullet.move();
-                if (bullet.collidesWith(playerToFollow)) {
+
+                // 총알이 최대 이동 거리를 초과했는지 확인
+                if (bullet.hasTravelledMaxDistance()) {
                     bulletTimer.cancel();
                     bulletTimer.purge();
                     gamePanel.remove(bullet);
                     gamePanel.revalidate();
-                    playerToFollow.decreasePlayerHp(1);
+                    return;
                 }
+
+                Timer bulletTimer2 = new Timer(); // 내부에 존재하는 또 다른 타이머에 대한 이름 충돌을 피하기 위해 이름 변경
+                bulletTimer2.scheduleAtFixedRate(new TimerTask() {
+                    @Override
+                    public void run() {
+                        bullet.move();
+                        if (bullet.collidesWith(playerToFollow)) {
+                            bulletTimer2.cancel(); // 여기서도 타이머 이름 변경
+                            bulletTimer2.purge(); // 여기서도 타이머 이름 변경
+                            gamePanel.remove(bullet);
+                            gamePanel.revalidate();
+                            playerToFollow.decreasePlayerHp(15);
+                        }
+                    }
+                }, 0, bullet.getSpeed());
             }
         }, 0, bullet.getSpeed());
     }
+
+
 
 
     public void startShooting() {

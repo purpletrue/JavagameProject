@@ -86,9 +86,9 @@ public class Player extends JLabel {
         if (currentTime - lastDecreaseTime < 100) {
             return;
         }
-        System.out.println("Player HP " + hp);
         this.hp -= amount;
         lastDecreaseTime = currentTime; // 체력 감소 시간 업데이트
+        System.out.println("Player HP " + hp);
 
 //        if (this.hp <= 0) {
 //            isDead = true;

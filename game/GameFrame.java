@@ -86,6 +86,12 @@ public class GameFrame extends JFrame {
                 System.out.println("패널 변경 -> Map1");
                 map1Panel.startGameThread(); // 게임 스레드 시작
                 break;
+//            case MAP2_Panel:
+//                map2Panel = new Map1Panel(this, characterType);
+//                currentPanel = map1Panel;
+//                System.out.println("패널 변경 -> Map2");
+//                map2Panel.startGameThread(); // 게임 스레드 시작
+//                break;
         }
         // 새로운 패널 추가
         setContentPane(currentPanel);

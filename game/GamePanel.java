@@ -151,6 +151,13 @@ public class GamePanel extends JPanel implements Runnable {
                 });
                 stopGameThread();
             }
+//            if (muzan != null && muzan.getHp() <= 0) {
+//                SwingUtilities.invokeLater(() -> {
+//                    JOptionPane.showMessageDialog(null, "다음 단계로 넘어감");
+//                    goingToTheSecondPhase();
+//                });
+//                stopGameThread();
+//            }
         }
     }
 
@@ -197,6 +204,14 @@ public class GamePanel extends JPanel implements Runnable {
             }
         });
     }
+//    public void goingToTheSecondPhase() {
+//        SwingUtilities.invokeLater(() -> {
+//            if (gameFrame != null) {
+//                dispose();
+//                gameFrame.swapPanel(GameFrame.CREDIT_PANEL);
+//            }
+//        });
+//    }
 
 
     private void drawPlayerHp(Graphics2D g2) {
