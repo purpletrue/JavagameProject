@@ -24,7 +24,7 @@ public class GameFrame extends JFrame {
     private HelpPanel helpPanel;
     private JPanel currentPanel;
 
-    private int characterType;
+    int characterType;
 
     public GameFrame() {
         setTitle("코딩의 호흡");
@@ -55,11 +55,12 @@ public class GameFrame extends JFrame {
     public void swapPanel(int selectedMenu) {
         // 이전 패널 제거
         if (currentPanel != null) {
-            if (currentPanel instanceof CreditPanel) {
-                ((CreditPanel) currentPanel).stopTimer();
+            if (currentPanel instanceof Map1Panel) {
+                ((Map1Panel) currentPanel).stopGameThread();
             }
             remove(currentPanel);
         }
+
         switch (selectedMenu) {
             case BEGINNING_PANEL:
                 currentPanel = beginningPanel;
@@ -72,18 +73,27 @@ public class GameFrame extends JFrame {
             case RULE_PANEL:
                 helpPanel = new HelpPanel(this);
                 currentPanel = helpPanel;
-                setContentPane(helpPanel);
                 System.out.println("패널 변경 -> 규칙 설명");
                 break;
             case CREDIT_PANEL:
                 creditPanel = new CreditPanel(this);
                 currentPanel = creditPanel;
-                setContentPane(creditPanel);
                 System.out.println("패널 변경 -> 제작자 패널");
                 break;
+            case MAP1_Panel:
+                map1Panel = new Map1Panel(this, characterType);
+                currentPanel = map1Panel;
+                System.out.println("패널 변경 -> Map1");
+                map1Panel.startGameThread(); // 게임 스레드 시작
+                break;
         }
+        // 새로운 패널 추가
         setContentPane(currentPanel);
+
+        // 화면 갱신
         validate();
+        repaint();
+
         requestFocusInWindow();
 
     }

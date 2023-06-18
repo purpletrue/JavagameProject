@@ -10,7 +10,6 @@ public class PlayerU extends Player {
         this.keyH = keyH;
         setDefaultValues();
         getPlayerImage();
-        background = new Background(this);
     }
 
 

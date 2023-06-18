@@ -98,7 +98,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         running = true;
 
-        while (gameThread != null) {
+        while (gameThread != null && running) {
             currentTime = System.nanoTime();
             delta += (currentTime - lastTime) / drawInterval;
             timer += (currentTime - lastTime);
@@ -133,8 +133,24 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
             if(muzan != null) muzan.update();
-//        akaza.update();
-//        koku.update();
+
+            if ((playerU != null && playerU.getHp() <= 0) ||
+                    (playerY != null && playerY.getHp() <= 0) ||
+                    (playerM != null && playerM.getHp() <= 0) ) {
+                // 체력이 0이 된 경우의 추가적인 처리를 실행
+                SwingUtilities.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(null, "게임이 종료되었습니다.");
+                    returnToBeginningPanel();
+                });
+                stopGameThread();
+            }
+            if (muzan != null && muzan.getHp() <= 0) {
+                SwingUtilities.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(null, "다음 단계로 넘어감");
+                    returnToBeginningPanel();
+                });
+                stopGameThread();
+            }
         }
     }
 
@@ -202,6 +218,16 @@ public class GamePanel extends JPanel implements Runnable {
         g2.drawString(hpText, x, y);
     }
 
+    @Override
+    public void addNotify() {
+        super.addNotify();
+        startGameThread();
+    }
 
+    @Override
+    public void removeNotify() {
+        super.removeNotify();
+        stopGameThread();
+    }
 
 }

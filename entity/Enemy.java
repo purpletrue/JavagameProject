@@ -52,13 +52,13 @@ public class Enemy extends JLabel {
             lastDecreaseTime = currentTime; // 체력 감소 시간 업데이트
             System.out.println("Enemy HP " + hp);
 
-            if (this.hp <= 0 && !isDefeated) {
-                isDefeated = true;
-                SwingUtilities.invokeLater(() -> {
-                    JOptionPane.showMessageDialog(null, "다음 단계로 넘어감");
-                    gamePanel.returnToBeginningPanel();
-                });
-            }
+//            if (this.hp <= 0 && !isDefeated) {
+//                isDefeated = true;
+//                SwingUtilities.invokeLater(() -> {
+//                    JOptionPane.showMessageDialog(null, "다음 단계로 넘어감");
+//                    gamePanel.returnToBeginningPanel();
+//                });
+//            }
         }
     }
 

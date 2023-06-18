@@ -41,15 +41,8 @@ public class Player extends JLabel {
     private GamePanel gamePanel;
     private long lastDecreaseTime = 0;
     private volatile boolean isDead = false;  //죽었을 때 변수를 추가해 체력이 0이 될 때 true로 설정함.
-    public Background background;
+    private Background background;
     private boolean isVisible = true;
-    ImageIcon skillIcon = new ImageIcon(getClass().getResource("/res/skill.gif"));
-    Image scaledImage = skillIcon.getImage().getScaledInstance(50, 50, Image.SCALE_DEFAULT);
-    ImageIcon scaledSkillIcon = new ImageIcon(scaledImage);
-    JLabel skillLabel = new JLabel(scaledSkillIcon);
-
-
-
 
     //    생성자
     public Player(GamePanel gp, int x, int y, int width, int height, Enemy enemy) {
@@ -59,11 +52,8 @@ public class Player extends JLabel {
         this.width = width;
         this.height = height;
         this.enemy = enemy;
-        this.background = new Background(this);
+//        this.background = new Background(this, imagePath);
         initBackgroundPlayerService();
-        skillLabel = new JLabel(scaledSkillIcon);
-        skillLabel.setBounds(x + 50, y, 50, 50);
-        gamePanel.add(skillLabel);
     }
 
     private void initBackgroundPlayerService() {
@@ -96,17 +86,18 @@ public class Player extends JLabel {
         if (currentTime - lastDecreaseTime < 100) {
             return;
         }
+        System.out.println("Player HP " + hp);
         this.hp -= amount;
         lastDecreaseTime = currentTime; // 체력 감소 시간 업데이트
-        System.out.println("Player HP " + hp);
 
-        if (this.hp <= 0) {
-            isDead = true;
-            SwingUtilities.invokeLater(() -> {
-                JOptionPane.showMessageDialog(null, "다시 도전하세요..");
-                gamePanel.returnToBeginningPanel();
-            });
-        }
+//        if (this.hp <= 0) {
+//            isDead = true;
+//            SwingUtilities.invokeLater(() -> {
+//                JOptionPane.showMessageDialog(null, "다시 도전하세요..");
+//                background.stopRunning();
+//                gamePanel.returnToBeginningPanel();
+//            });
+//        }
     }
 
 
@@ -133,12 +124,9 @@ public class Player extends JLabel {
         }
         if (keyH.onePressed && !fire) {
             direction = "fire";
-            skillLabel.setVisible(true);
-            if (this.enemy != null) {
-                enemy.decreaseEnemyHp(5, this);
+            if(this.enemy != null) {
+                enemy.decreaseEnemyHp(5,this);
             }
-        } else {
-            skillLabel.setVisible(false);
         }
     }
 
@@ -189,22 +177,16 @@ public class Player extends JLabel {
                     image = attack2;
                 }
                 break;
-////                스킬샷에 관한 이미지도 여기서 넣어야 함
+//                스킬샷에 관한 이미지도 여기서 넣어야 함
             case "fire":
                 if (spriteNum == 1) {
                     image = fire1;
                 } else if (spriteNum == 2) {
                     image = fire2;
                 }
-                skillLabel.setVisible(true); // 스킬 이미지 보이기
-                break;
-
-            default:
-                skillLabel.setVisible(false); // 스킬 이미지 숨기기
                 break;
         }
         g2.drawImage(image, x, y, width, height, null);
-        skillLabel.setLocation(x+50,y);
     }
 
     //    점프 관련 메서드

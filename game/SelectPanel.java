@@ -41,10 +41,8 @@ public class SelectPanel extends JPanel {
         public void mouseClicked(MouseEvent e) {
             System.out.println(characterType + "번 캐릭터 선택됨");
             SelectPanel.this.characterType = characterType;
-            Map1Panel game = new Map1Panel(parent, characterType);
-            parent.setContentPane(game);
-            parent.validate();
-            game.startGameThread();
+            parent.characterType = characterType;
+            parent.swapPanel(GameFrame.MAP1_Panel);
             parent.requestFocus();
         }
     }

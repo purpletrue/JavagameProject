@@ -17,11 +17,10 @@ public class Background implements Runnable {
 
     private BufferedImage image;
     private Player player;
-    private boolean running;
+    private boolean running = true;
 
     public Background(Player player) {
         this.player = player;
-        this.running = true;
         try {
             image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/test.png")));
         } catch (IOException e) {
@@ -37,16 +36,14 @@ public class Background implements Runnable {
             Color leftColor = new Color(image.getRGB(x + 10, y + 25));
             Color rightColor = new Color(image.getRGB(x + 90, y + 25));
             int bottomColor = image.getRGB(x+72,y + 132);
-//            System.out.println(bottomColor);
 
 //            바닥 충돌 확인
             if (bottomColor != -1) {
-//                System.out.println("바닥에 충돌");
                 if(player.isDown()) {
                     player.setDown(false);
                 }
             } else {
-                if (!player.isUp()&&!player.isDown()) {
+                if (!player.isUp() && !player.isDown()) {
                     player.down();
                 }
             }
@@ -67,6 +64,8 @@ public class Background implements Runnable {
                 Thread.sleep(3);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+                running = false;
+                break;
             }
         }
     }
