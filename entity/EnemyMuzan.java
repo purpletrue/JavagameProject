@@ -60,7 +60,7 @@ public class EnemyMuzan extends Enemy {
             int distanceX = Math.abs(targetX - x);
 
             // player와 muzan 사이의 거리가 maxDistance 이상일 때만 이동
-            if (Math.abs(distanceX) > maxDistance) {
+            if (Math.abs(distanceX) > 0 ){
                 if (x < targetX) {
                     x += speed; // 타겟의 X 좌표를 따라 오른쪽으로 이동
                     direction = "right"; // 이동 방향을 오른쪽으로 설정
