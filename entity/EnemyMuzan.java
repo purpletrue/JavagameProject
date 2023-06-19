@@ -8,6 +8,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.TimerTask;
+import java.util.Timer;
 
 public class EnemyMuzan extends Enemy {
     private static BufferedImage muzan1; // Muzan의 왼쪽 이미지
@@ -22,11 +24,16 @@ public class EnemyMuzan extends Enemy {
 
     private long lastAttackTime = 0;     // 스킬 샷
     private long attackCooldown = 3000; // 3초의 쿨다운 시간
+    private Timer shootTimer; // 총알 발사 타이머
+    private int shootDelay = 1000; // 총알 발사 간격 (1초)
 
     public EnemyMuzan(GamePanel gamePanel) {
         super(gamePanel);
+        this.gamePanel = gamePanel;
         setDefaultValues();
         getEnemyImage();
+        this.hp = maxHpEnemy;
+        startShooting();
     }
 
 
@@ -36,6 +43,7 @@ public class EnemyMuzan extends Enemy {
         speed = 1;
         direction = "up";
         hp = 10;
+        maxHpEnemy = 10;
     }
 
     public void getEnemyImage() {
@@ -58,7 +66,7 @@ public class EnemyMuzan extends Enemy {
             int distanceX = Math.abs(targetX - x);
 
             // player와 muzan 사이의 거리가 maxDistance 이상일 때만 이동
-            if (Math.abs(distanceX) > maxDistance) {
+            if (Math.abs(distanceX) > 0 ){
                 if (x < targetX) {
                     x += speed; // 타겟의 X 좌표를 따라 오른쪽으로 이동
                     direction = "right"; // 이동 방향을 오른쪽으로 설정
@@ -110,6 +118,7 @@ public class EnemyMuzan extends Enemy {
         if (distance <= 5) {
             playerToFollow.decreasePlayerHp(10);
         }
+
     }
 
     public void attackSkill() {
@@ -118,8 +127,8 @@ public class EnemyMuzan extends Enemy {
             return; // 스킬이 쿨다운 상태일 경우 더 이상 진행하지 않습니다.
         }
 
-        int damage = 20; // 스킬이 입히는 데미지
-        int skillRange = 100; // 스킬의 범위
+        int damage = 15; // 스킬이 입히는 데미지
+        int skillRange = 1000; // 스킬의 범위
 
         if (playerToFollow != null) {
             int distanceX = this.x - playerToFollow.getX();
@@ -127,12 +136,79 @@ public class EnemyMuzan extends Enemy {
             double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
             if (distance <= skillRange) {
-                playerToFollow.decreasePlayerHp(damage); // 플레이어의 체력을 감소시킵니다.
+                playerToFollow.decreasePlayerHp(damage); // 플레이어의 체력을 감소
             }
         }
 
         lastAttackTime = currentTime; // 마지막 공격 시간을 현재 시간으로 업데이트 합니다.
     }
+
+    private void shootPlayer() {
+        int playerX = playerToFollow.getX();
+        int playerY = playerToFollow.getY();
+        int bulletDamage = 10;
+        Bullet bullet = new Bullet(x, y, playerX, playerY,bulletDamage);
+        bullet.setMuzanTarget(playerToFollow);
+        gamePanel.add(bullet);
+        gamePanel.revalidate();
+        Timer bulletTimer = new Timer();
+        bulletTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                bullet.move();
+
+                // 총알이 최대 이동 거리를 초과했는지 확인
+                if (bullet.hasTravelledMaxDistance()) {
+                    bulletTimer.cancel();
+                    bulletTimer.purge();
+                    gamePanel.remove(bullet);
+                    gamePanel.revalidate();
+                    return;
+                }
+
+                Timer bulletTimer2 = new Timer(); // 내부에 존재하는 또 다른 타이머에 대한 이름 충돌을 피하기 위해 이름 변경
+                bulletTimer2.scheduleAtFixedRate(new TimerTask() {
+                    @Override
+                    public void run() {
+                        bullet.move();
+                        if (bullet.collidesWith(playerToFollow)) {
+                            bulletTimer2.cancel(); // 여기서도 타이머 이름 변경
+                            bulletTimer2.purge(); // 여기서도 타이머 이름 변경
+                            gamePanel.remove(bullet);
+                            gamePanel.revalidate();
+                            playerToFollow.decreasePlayerHp(15);
+                        }
+                    }
+                }, 0, bullet.getSpeed());
+            }
+        }, 0, bullet.getSpeed());
+    }
+
+
+
+
+    public void startShooting() {
+        shootTimer = new Timer();
+        shootTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (playerToFollow != null) {
+                    shootPlayer();
+                }
+            }
+        }, 0, shootDelay);
+    }
+
+
+    public void stopShooting() {
+        if (shootTimer != null) {
+            shootTimer.cancel();
+            shootTimer = null;
+        }
+    }
+
+
+
     public int getHp() {
         return hp;
     }

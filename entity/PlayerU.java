@@ -35,6 +35,8 @@ public class PlayerU extends Player {
             attack1 = ImageIO.read(getClass().getResourceAsStream("/res/tanjiro_attackR1.png"));
             attack2 = ImageIO.read(getClass().getResourceAsStream("/res/tanjiro_attackL1.png"));
             die = ImageIO.read(getClass().getResourceAsStream("/res/tanjiro_attackL1.png"));
+            fire1 = ImageIO.read(getClass().getResourceAsStream("/res/tanjiro_right1.png"));
+            fire2 = ImageIO.read(getClass().getResourceAsStream("/res/tanjiro_right2.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }

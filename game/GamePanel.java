@@ -9,7 +9,6 @@ import entity.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class GamePanel extends JPanel implements Runnable {
     protected int mapNumber;
@@ -26,7 +25,7 @@ public class GamePanel extends JPanel implements Runnable {
     protected final int screenHeight = tileSize * maxScreenRow;
     protected int FPS = 60;
     protected KeyHandler keyH = new KeyHandler();
-    protected boolean running = false;
+    protected volatile boolean running = false;
     protected PlayerU playerU;
     protected PlayerY playerY;
     protected PlayerM playerM;
@@ -64,8 +63,28 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void startGameThread() {
-        gameThread = new Thread(this);
-        gameThread.start();
+        if (gameThread == null || !running) {
+            gameThread = new Thread(this);
+            running = true;
+            gameThread.start();
+        }
+    }
+    public void stopGameThread() {
+        if (gameThread != null && running) {
+            running = false;
+            try {
+                gameThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public void dispose() {
+        stopGameThread();
+        playerU = null;
+        playerY = null;
+        playerM = null;
+        muzan = null;
     }
 
     @Override
@@ -77,7 +96,9 @@ public class GamePanel extends JPanel implements Runnable {
         long timer = 0;
         int drawCount = 0;
 
-        while (gameThread != null) {
+        running = true;
+
+        while (gameThread != null && running) {
             currentTime = System.nanoTime();
             delta += (currentTime - lastTime) / drawInterval;
             timer += (currentTime - lastTime);
@@ -99,21 +120,44 @@ public class GamePanel extends JPanel implements Runnable {
         if (isVisible()) {
             switch (characterType) {
                 case 0 -> {
-                    playerU.update();
+                    if (playerU != null)  playerU.update();
                     break;
                 }
                 case 1 -> {
-                    playerY.update();
+                    if (playerY != null) playerY.update();
                     break;
                 }
                 case 2 -> {
-                    playerM.update();
+                    if (playerM != null) playerM.update();
                     break;
                 }
             }
-            muzan.update();
-//        akaza.update();
-//        koku.update();
+            if(muzan != null) muzan.update();
+
+            if ((playerU != null && playerU.getHp() <= 0) ||
+                    (playerY != null && playerY.getHp() <= 0) ||
+                    (playerM != null && playerM.getHp() <= 0) ) {
+                // 체력이 0이 된 경우의 추가적인 처리를 실행
+                SwingUtilities.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(null, "게임이 종료되었습니다.");
+                    returnToBeginningPanel();
+                });
+                stopGameThread();
+            }
+            if (muzan != null && muzan.getHp() <= 0) {
+                SwingUtilities.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(null, "다음 단계로 넘어감");
+                    returnToCreditPanel();
+                });
+                stopGameThread();
+            }
+//            if (muzan != null && muzan.getHp() <= 0) {
+//                SwingUtilities.invokeLater(() -> {
+//                    JOptionPane.showMessageDialog(null, "다음 단계로 넘어감");
+//                    goingToTheSecondPhase();
+//                });
+//                stopGameThread();
+//            }
         }
     }
 
@@ -147,10 +191,27 @@ public class GamePanel extends JPanel implements Runnable {
     public void returnToBeginningPanel() {
         SwingUtilities.invokeLater(() -> {
             if (gameFrame != null) {
+                dispose();
                 gameFrame.swapPanel(GameFrame.BEGINNING_PANEL);
             }
         });
     }
+    public void returnToCreditPanel() {
+        SwingUtilities.invokeLater(() -> {
+            if (gameFrame != null) {
+                dispose();
+                gameFrame.swapPanel(GameFrame.CREDIT_PANEL);
+            }
+        });
+    }
+//    public void goingToTheSecondPhase() {
+//        SwingUtilities.invokeLater(() -> {
+//            if (gameFrame != null) {
+//                dispose();
+//                gameFrame.swapPanel(GameFrame.CREDIT_PANEL);
+//            }
+//        });
+//    }
 
 
     private void drawPlayerHp(Graphics2D g2) {
@@ -180,6 +241,16 @@ public class GamePanel extends JPanel implements Runnable {
         g2.drawString(hpText, x, y);
     }
 
+    @Override
+    public void addNotify() {
+        super.addNotify();
+        startGameThread();
+    }
 
+    @Override
+    public void removeNotify() {
+        super.removeNotify();
+        stopGameThread();
+    }
 
 }

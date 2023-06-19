@@ -28,6 +28,7 @@ public class Enemy extends JLabel {
     private Player player;
     private long lastDecreaseTime = 0;
 
+
     public void setHpBarDefaultValues() {
         maxHpEnemy = 100;
         hpBarWidthEnemy = 150;
@@ -48,32 +49,35 @@ public class Enemy extends JLabel {
         int distance = Math.abs(this.x - player.getX());
 
         if (distance <= 30) {
-            System.out.println("Enemy HP " + hp);
             this.hp -= amount;
             lastDecreaseTime = currentTime; // 체력 감소 시간 업데이트
+            System.out.println("Enemy HP " + hp);
 
-            if (this.hp <= 0) {
-                isDefeated = true;
-                SwingUtilities.invokeLater(() -> {
-                    JOptionPane.showMessageDialog(null, "다음 단계로 넘어감");
-                    gamePanel.returnToBeginningPanel();
-                });
-            }
+//            if (this.hp <= 0 && !isDefeated) {
+//                isDefeated = true;
+//                SwingUtilities.invokeLater(() -> {
+//                    JOptionPane.showMessageDialog(null, "다음 단계로 넘어감");
+//                    gamePanel.returnToBeginningPanel();
+//                });
+//            }
         }
     }
 
 
     public Enemy() {
         setHpBarDefaultValues();
+        this.hp = maxHpEnemy;
     }
     public Enemy(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
         setHpBarDefaultValues();
+        this.hp = maxHpEnemy;
     }
     public Enemy(Player player, GamePanel gamePanel) {
         this.player = player;
         this.gamePanel = gamePanel;
         setHpBarDefaultValues();
+        this.hp = maxHpEnemy;
     }
 
     public void update() {

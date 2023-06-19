@@ -24,11 +24,11 @@ public class Player extends JLabel {
     int hp, mp;     // 캐릭터 체력, 마력
     int width, height;      // 캐릭터 크기
     int speed, jumpSpeed;      // 캐릭터 속도
-    boolean right, left, move, attack;        //캐릭터 상태
+    boolean right, left, move, attack, fire;        //캐릭터 상태
     private boolean up;
     private volatile boolean down;
     private boolean leftWallCrash, rightWallCrash;
-    BufferedImage right1, right2, left1, left2, jump1, jump2, attack1, attack2, die;       // 캐릭터 이미지
+    BufferedImage right1, right2, left1, left2, jump1, jump2, attack1, attack2, fire1, fire2, die;       // 캐릭터 이미지
     String direction;       // 캐릭터 상태를 알려주는 문자열 변수
     int spriteCounter = 0;      //캐릭터 이미지를 변경하기 위한 변수
     public int spriteNum = 1;       // 위와 마찬가지
@@ -44,7 +44,7 @@ public class Player extends JLabel {
     private Background background;
     private boolean isVisible = true;
 
-//    생성자
+    //    생성자
     public Player(GamePanel gp, int x, int y, int width, int height, Enemy enemy) {
         this.gamePanel = gp;
         this.x = x;
@@ -66,7 +66,7 @@ public class Player extends JLabel {
         isVisible = visible;
     }
 
-//    플레이어 상태를 업데이트
+    //    플레이어 상태를 업데이트
     public void update() {
         if (isVisible()) {
             handleKeyEvents();
@@ -86,18 +86,18 @@ public class Player extends JLabel {
         if (currentTime - lastDecreaseTime < 100) {
             return;
         }
-        System.out.println("Player HP " + hp);
         this.hp -= amount;
         lastDecreaseTime = currentTime; // 체력 감소 시간 업데이트
+        System.out.println("Player HP " + hp);
 
-        if (this.hp <= 0) {
-            isDead = true;
-            SwingUtilities.invokeLater(() -> {
-                JOptionPane.showMessageDialog(null, "다시 도전하세요..");
-                background.stopRunning();
-                gamePanel.returnToBeginningPanel();
-            });
-        }
+//        if (this.hp <= 0) {
+//            isDead = true;
+//            SwingUtilities.invokeLater(() -> {
+//                JOptionPane.showMessageDialog(null, "다시 도전하세요..");
+//                background.stopRunning();
+//                gamePanel.returnToBeginningPanel();
+//            });
+//        }
     }
 
 
@@ -122,9 +122,15 @@ public class Player extends JLabel {
                 enemy.decreaseEnemyHp(1,this);
             }
         }
+        if (keyH.onePressed && !fire) {
+            direction = "fire";
+            if(this.enemy != null) {
+                enemy.decreaseEnemyHp(5,this);
+            }
+        }
     }
 
-//    캐릭터 이미지를 변경해 애니메이션 효과를 주는 메서드. animateSprite() 에서 변경된 spriteNum 으로 draw() 에서 다른 이미지를 보여줌.
+    //    캐릭터 이미지를 변경해 애니메이션 효과를 주는 메서드. animateSprite() 에서 변경된 spriteNum 으로 draw() 에서 다른 이미지를 보여줌.
     public void animateSprite() {
         if (keyH.leftPressed || keyH.rightPressed || (keyH.spaceBarPressed && direction.equals("jump"))) {
             spriteCounter++;
@@ -138,7 +144,7 @@ public class Player extends JLabel {
             }
         }
     }
-//    상태별 캐릭터 이미지 표시
+    //    상태별 캐릭터 이미지 표시
     public void draw(Graphics2D g2) {
         BufferedImage image = null;
         switch (direction) {
@@ -172,18 +178,18 @@ public class Player extends JLabel {
                 }
                 break;
 //                스킬샷에 관한 이미지도 여기서 넣어야 함
-//            case "skill1":
-//                if (spriteNum == 1) {
-//                    image = attack1;
-//                } else if (spriteNum == 2) {
-//                    image = attack2;
-//                }
-//                break;
+            case "fire":
+                if (spriteNum == 1) {
+                    image = fire1;
+                } else if (spriteNum == 2) {
+                    image = fire2;
+                }
+                break;
         }
         g2.drawImage(image, x, y, width, height, null);
     }
 
-//    점프 관련 메서드
+    //    점프 관련 메서드
     public void up() {
         if (!up) {
             up = true;
@@ -206,7 +212,7 @@ public class Player extends JLabel {
         }
     }
 
-//    Background 클래스에서 가져온 스레드로 바닥을 확인해, 없으면 하강하도록 만듬.
+    //    Background 클래스에서 가져온 스레드로 바닥을 확인해, 없으면 하강하도록 만듬.
     public void down() {
         down = true;
         new Thread(() -> {
@@ -254,10 +260,10 @@ public class Player extends JLabel {
         this.down = down;
     }
 
-//    벽 충돌을 감지하기 위한 getter, setter
+    //    벽 충돌을 감지하기 위한 getter, setter
     public boolean isLeftWallCrash() {
-    return leftWallCrash;
-}
+        return leftWallCrash;
+    }
     public void setLeftWallCrash(boolean leftWallCrash) {
         this.leftWallCrash = leftWallCrash;
     }
