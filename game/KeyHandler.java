@@ -10,7 +10,6 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
 
-//    downPressed 뺌
     public boolean leftPressed, rightPressed;
 //    x:기본공격,  스페이스:점프   1,2,3:스킬
     public boolean xPressed, spaceBarPressed, onePressed, twoPressed,threePressed;

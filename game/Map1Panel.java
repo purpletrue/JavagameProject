@@ -22,7 +22,7 @@ public class Map1Panel extends GamePanel implements Runnable {
         gameFrame.addKeyListener(keyH);  // gameFrame에 KeyListener 등록
         addKeyListener(keyH);    // keyH 객체를 리스너로 추가
 
-        muzan = new EnemyMuzan(this);
+        muzan = new EnemyMuzan(this, null);
 
         // Player 객체 생성
         switch (characterType) {

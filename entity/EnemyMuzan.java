@@ -3,23 +3,22 @@ package entity;
 import game.*;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
 
 public class EnemyMuzan extends Enemy {
-    private static BufferedImage muzan1, muzan2, attack, bImage; // Muzan의 왼쪽 이미지
+    private static BufferedImage muzan1, muzan2, attack; // Muzan의 왼쪽 이미지
     private String direction; // 이동 방향
     private boolean movingForward = true; // 스프라이트 애니메이션 전환을 위한 플래그
     private Player playerToFollow; // 따라다니는 대상 Player
     private int hpBarWidthEnemy = 100; // 적 체력바 너비
-    private int maxDistance = 100;
+    private int maxDistance = 150;
     private long lastAttackTime = 0;     // 스킬 샷
-    private long attackCooldown = 3000; // 3초의 쿨다운 시간
+    private long attackCoolDown = 3000; // 3초의 쿨다운 시간
     private GamePanel gamePanel;
+    private Background background;
     private boolean isDead = false;
     private boolean attacks = false; // 공격이 날아가는지 확인하는 플래그
     private double attackX; // 공격 X 좌표
@@ -27,21 +26,18 @@ public class EnemyMuzan extends Enemy {
     private boolean leftWallCrash; //왼쪽 벽 충돌
     private boolean rightWallCrash; //오른쪽 벽 충돌
     private boolean down, up; // 점프, 하강
-    Image image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/test.png")));
-    int imageWidth = image.getWidth(null);
-    int imageHeight = image.getHeight(null);
-    private boolean canJump = true;
 
 
-    public EnemyMuzan(GamePanel gamePanel) throws IOException {
+    public EnemyMuzan(GamePanel gamePanel, Background background) throws IOException {
         super(gamePanel);
         setDefaultValues();
         getEnemyImage();
+        this.background = background;
     }
 
     public void setDefaultValues() {
         x = 550;
-        y = 550;
+        y = 650;
         speed = 1;
         jumpSpeed = 1;
         direction = "up";
@@ -90,8 +86,12 @@ public class EnemyMuzan extends Enemy {
     public void setUp(boolean up) {
         this.up = up;
     }
-    private boolean isPlatformBelow() {
-        return bImage.getRGB(x + 72, y + 132) != -1;
+    private boolean checkHitPlayer(double playerX, double playerY, double attackX, double attackY) {
+        double distanceX = Math.abs(playerX - attackX);
+        double distanceY = Math.abs(playerY - attackY);
+        double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+        return distance <= 3;
     }
 
     public void getEnemyImage() {
@@ -99,7 +99,6 @@ public class EnemyMuzan extends Enemy {
             muzan1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/muzan1.png")));
             muzan2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/muzan2.png")));
             attack = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/muzan2.png")));
-            bImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -117,47 +116,45 @@ public class EnemyMuzan extends Enemy {
                 for (int i = 0; i < 100 && up; i++) {
                     y -= jumpSpeed;
                     setLocation(x, y);
-
-                    // 플레이어가 위에 있으며, 밟을 공간이 있는지 확인
-                    if (playerToFollow.getY() < y && isPlatformBelow()) {
-                        canJump = true;
-                    } else if (y <= initialY - 150) { // 숫자는 점프 높이입니다
-                        up = false;
-                        down();
-                    }
-
                     try {
                         Thread.sleep(5);
                     } catch (InterruptedException e) {
-                        System.out.println("위로 이동 중 인터럽트가 발생했습니다: " + e.getMessage());
-                    }
-                    if (!canJump) {
-                        up = false;
-                        down();
+                        System.out.println("An interrupt occurred while moving up: " + e.getMessage());
                     }
                 }
+                up = false; // Set 'up' flag to false after finishing the jump
             }).start();
         }
     }
 
-
-
     public void down() {
-        down = true;
-        new Thread(() -> {
-            int initialY = y;
-            while (down) {
-                y += jumpSpeed;
-                setLocation(x, y);
-                try {
-                    Thread.sleep(3);
-                } catch (Exception e) {
-                    e.printStackTrace();
+        if (!down) {
+            down = true;
+            new Thread(() -> {
+                int initialY = y;
+                for (int i = 0; i < 100 && down; i++) {
+                    y += jumpSpeed;
+                    setLocation(x, y);
+                    try {
+                        Thread.sleep(5);
+                    } catch (InterruptedException e) {
+                        System.out.println("An interrupt occurred while moving down: " + e.getMessage());
+                    }
                 }
+                down = false; // Set 'down' flag to false after finishing the descent
+            }).start();
+        }
+    }
+
+    public void autoJump() {
+        if (playerToFollow != null) {
+            int targetX = playerToFollow.getX(); // X coordinate of the player to follow
+            int targetY = playerToFollow.getY(); // Y coordinate of the player to follow
+
+            if (y > targetY) {
+                up(); // Call the up method to make Muzan jump
             }
-            down = false;
-            canJump = false; // 점프 후 발판이 없으므로 점프 불가능
-        }).start();
+        }
     }
 
     public void followCoordinates() {
@@ -178,6 +175,7 @@ public class EnemyMuzan extends Enemy {
                 movingForward = !movingForward; // 이동 방향이 변경되었으므로 스프라이트 애니메이션 전환을 위한 플래그 업데이트
             }
         }
+        autoJump();
     }
 
     public void attackDefault() {
@@ -185,8 +183,8 @@ public class EnemyMuzan extends Enemy {
         double distanceY = Math.abs(playerToFollow.getY() - y);
         double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
-        // 플레이어와 Muzan 객체 사이의 거리가 500 이하이고, 공격이 아직 실행 중이 아닌 경우
-        if (distance <= 200 && !attacks) {
+        // 공격중이 아니고 일정 거리 이하일시 공격
+        if (distance <= 250 && !attacks) {
             attacks = true;
             attackX = x;
             attackY = y;
@@ -208,7 +206,7 @@ public class EnemyMuzan extends Enemy {
             // 공격이 목표 위치까지 이동한 거리가 100 이상인 경우 공격을 종료합니다.
             if (direction.equals("right")) {
                 // End the attack when Muzan moves more than 100 distance to the right of the target location.
-                if (distanceMoved >= 200) {
+                if (distanceMoved >= 130) {
                     attacks = false;
                 }
             } else if (direction.equals("left")) {
@@ -220,20 +218,24 @@ public class EnemyMuzan extends Enemy {
 
             if (attacks) {
                 // Muzan을 2의 속도로 앞으로 이동합니다. (속도는 필요에 따라 조정 가능합니다.)
-                attackX += directionX * 2;
-                attackY += directionY * 2;
+                attackX += directionX * 4;
+                attackY += directionY * 4;
+
+                if (checkHitPlayer(playerToFollow.getX(), playerToFollow.getY(), attackX, attackY)) {
+                    playerToFollow.decreasePlayerHp(5); // Decrease player health by 10
+                }
             }
         }
     }
 
     public void attackSkill() {
         long currentTime = System.currentTimeMillis();
-        if (currentTime - lastAttackTime < attackCooldown) {
+        if (currentTime - lastAttackTime < attackCoolDown) {
             return; // 스킬이 쿨다운 상태일 경우 더 이상 진행하지 않습니다.
         }
 
-        int damage = 20; // 스킬이 입히는 데미지
-        int skillRange = 100; // 스킬의 범위
+        int damage = 10; // 스킬이 입히는 데미지
+        int skillRange = 50; // 스킬의 범위
 
         if (playerToFollow != null) {
             int distanceX = this.x - playerToFollow.getX();
@@ -276,13 +278,12 @@ public class EnemyMuzan extends Enemy {
         followCoordinates(); // player를 따라다니게 설정
         attackSkill(); // 공격 스킬을 호출
         attackDefault();
-        up();
 
         int distanceX = this.x - playerToFollow.getX();
         int distanceY = this.y - playerToFollow.getY();
         double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
-        if (distance <= 50 && canJump) {
+        if (distance <= 50) {
             playerToFollow.decreasePlayerHp(10);
         }
     }

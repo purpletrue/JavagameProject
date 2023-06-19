@@ -83,7 +83,7 @@ public class Player extends JLabel {
         }
         long currentTime = System.currentTimeMillis();
         // 체력 감소 후 3초가 지나지 않았다면 데미지를 받지 않음. (무적 시간). 테스트때문에 빠르게 바꿈
-        if (currentTime - lastDecreaseTime < 100) {
+        if (currentTime - lastDecreaseTime < 300) {
             return;
         }
         System.out.println("Player HP " + hp);

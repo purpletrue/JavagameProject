@@ -16,10 +16,11 @@ import java.util.Objects;
 
 public class Background implements Runnable {
 
-    private BufferedImage image;
+    public BufferedImage image;
     private final Player player;
     private final EnemyMuzan muzan;
     private final boolean running;
+    private EnemyMuzan playerToFollow;
 
     public Background(Player player, EnemyMuzan muzan) {
         this.player = player;
