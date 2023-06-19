@@ -17,9 +17,9 @@ import java.util.Objects;
 public class Background implements Runnable {
 
     private BufferedImage image;
-    private Player player;
-    private EnemyMuzan muzan;
-    private boolean running;
+    private final Player player;
+    private final EnemyMuzan muzan;
+    private final boolean running;
 
     public Background(Player player, EnemyMuzan muzan) {
         this.player = player;
@@ -53,48 +53,31 @@ public class Background implements Runnable {
             }
 
             // 플레이어 벽과의 충돌 감지
-            if (leftColor.getRed() == 255 && leftColor.getGreen() == 0 && leftColor.getBlue() == 0) {
-                player.setLeftWallCrash(true);
-            } else {
-                player.setLeftWallCrash(false);
-            }
+            player.setLeftWallCrash(leftColor.getRed() == 255 && leftColor.getGreen() == 0 && leftColor.getBlue() == 0);
 
-            if (rightColor.getRed() == 255 && rightColor.getGreen() == 0 && rightColor.getBlue() == 0) {
-                player.setRightWallCrash(true);
-            } else {
-                player.setRightWallCrash(false);
-            }
+            player.setRightWallCrash(rightColor.getRed() == 255 && rightColor.getGreen() == 0 && rightColor.getBlue() == 0);
 
-            // 무장과 벽과의 충돌 감지
             int muzanX = muzan.getX();
             int muzanY = muzan.getY();
             Color muzanLeftColor = new Color(image.getRGB(muzanX + 10, muzanY + 25));
             Color muzanRightColor = new Color(image.getRGB(muzanX + 90, muzanY + 25));
             int btColor = image.getRGB(muzanX + 72, muzanY + 132);
 
-            // muzan 바닥과의 충돌 감지
-//            if (btColor != -1) {
-//                if (muzan.isDown()) {
-//                    muzan.setDown(false);
-//                }
-//            } else {
-//                if (!muzan.isUp() && !muzan.isDown()) {
-//                    muzan.down();
-//                }
-//            }
-
-            // 무장과 벽과의 충돌 감지
-            if (muzanLeftColor.getRed() == 255 && muzanLeftColor.getGreen() == 0 && muzanLeftColor.getBlue() == 0) {
-                muzan.setLeftWallCrash(true);
+             //muzan 바닥과의 충돌 감지
+            if (btColor != -1) {
+                if (muzan.isDown()) {
+                    muzan.setDown(false);
+                }
             } else {
-                muzan.setLeftWallCrash(false);
+                if (!muzan.isUp() && !muzan.isDown()) {
+                    muzan.down();
+                }
             }
 
-            if (muzanRightColor.getRed() == 255 && muzanRightColor.getGreen() == 0 && muzanRightColor.getBlue() == 0) {
-                muzan.setRightWallCrash(true);
-            } else {
-                muzan.setRightWallCrash(false);
-            }
+            // muzan 벽과의 충돌 감지
+            muzan.setLeftWallCrash(muzanLeftColor.getRed() == 255 && muzanLeftColor.getGreen() == 0 && muzanLeftColor.getBlue() == 0);
+
+            muzan.setRightWallCrash(muzanRightColor.getRed() == 255 && muzanRightColor.getGreen() == 0 && muzanRightColor.getBlue() == 0);
 
 
             try {

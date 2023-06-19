@@ -99,9 +99,6 @@ public class Player extends JLabel {
         }
     }
 
-
-
-
     //    키보드 키 입력시 상태 변화
     private void handleKeyEvents() {
         if (keyH.leftPressed && !isLeftWallCrash()) {

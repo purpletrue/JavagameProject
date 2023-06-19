@@ -9,10 +9,11 @@ import entity.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class Map1Panel extends GamePanel implements Runnable {
 
-    public Map1Panel(GameFrame gameFrame, int characterType) {
+    public Map1Panel(GameFrame gameFrame, int characterType) throws IOException {
         super(gameFrame);
         this.characterType = characterType;
         this.mapNumber = 1; // Map1Panel은 mapNumber를 1로 설정

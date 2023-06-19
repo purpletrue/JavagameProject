@@ -11,9 +11,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class EnemyMuzan extends Enemy {
-    private static BufferedImage muzan1; // Muzan의 왼쪽 이미지
-    private static BufferedImage muzan2; // Muzan의 오른쪽 이미지
-    private static BufferedImage attack;
+    private static BufferedImage muzan1, muzan2, attack, bImage; // Muzan의 왼쪽 이미지
     private String direction; // 이동 방향
     private boolean movingForward = true; // 스프라이트 애니메이션 전환을 위한 플래그
     private Player playerToFollow; // 따라다니는 대상 Player
@@ -23,15 +21,19 @@ public class EnemyMuzan extends Enemy {
     private long attackCooldown = 3000; // 3초의 쿨다운 시간
     private GamePanel gamePanel;
     private boolean isDead = false;
-    private boolean attacks = false; // 무잔이 날아다니는지 여부를 나타내는 플래그
-    private double attackX; // 무잔이 X 좌표
-    private double attackY; // 무잔이 Y 좌표
-    private boolean attackLaunched = false;
-    private boolean leftWallCrash;
-    private boolean rightWallCrash;
+    private boolean attacks = false; // 공격이 날아가는지 확인하는 플래그
+    private double attackX; // 공격 X 좌표
+    private double attackY; // 공격 Y 좌표
+    private boolean leftWallCrash; //왼쪽 벽 충돌
+    private boolean rightWallCrash; //오른쪽 벽 충돌
+    private boolean down, up; // 점프, 하강
+    Image image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/test.png")));
+    int imageWidth = image.getWidth(null);
+    int imageHeight = image.getHeight(null);
+    private boolean canJump = true;
 
 
-    public EnemyMuzan(GamePanel gamePanel) {
+    public EnemyMuzan(GamePanel gamePanel) throws IOException {
         super(gamePanel);
         setDefaultValues();
         getEnemyImage();
@@ -41,6 +43,7 @@ public class EnemyMuzan extends Enemy {
         x = 550;
         y = 550;
         speed = 1;
+        jumpSpeed = 1;
         direction = "up";
         hp = 10;
     }
@@ -75,12 +78,28 @@ public class EnemyMuzan extends Enemy {
     public void setRightWallCrash(boolean rightWallCrash) {
         this.rightWallCrash = rightWallCrash;
     }
+    public boolean isDown() {
+        return down;
+    }
+    public void setDown(boolean down) {
+        this.down = down;
+    }
+    public boolean isUp() {
+        return up;
+    }
+    public void setUp(boolean up) {
+        this.up = up;
+    }
+    private boolean isPlatformBelow() {
+        return bImage.getRGB(x + 72, y + 132) != -1;
+    }
 
     public void getEnemyImage() {
         try {
             muzan1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/muzan1.png")));
             muzan2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/muzan2.png")));
             attack = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/muzan2.png")));
+            bImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -88,6 +107,57 @@ public class EnemyMuzan extends Enemy {
 
     public void setPlayer(Player player) {
         this.playerToFollow = player;
+    }
+
+    public void up() {
+        if (!up) {
+            up = true;
+            new Thread(() -> {
+                int initialY = y;
+                for (int i = 0; i < 100 && up; i++) {
+                    y -= jumpSpeed;
+                    setLocation(x, y);
+
+                    // 플레이어가 위에 있으며, 밟을 공간이 있는지 확인
+                    if (playerToFollow.getY() < y && isPlatformBelow()) {
+                        canJump = true;
+                    } else if (y <= initialY - 150) { // 숫자는 점프 높이입니다
+                        up = false;
+                        down();
+                    }
+
+                    try {
+                        Thread.sleep(5);
+                    } catch (InterruptedException e) {
+                        System.out.println("위로 이동 중 인터럽트가 발생했습니다: " + e.getMessage());
+                    }
+                    if (!canJump) {
+                        up = false;
+                        down();
+                    }
+                }
+            }).start();
+        }
+    }
+
+
+
+    public void down() {
+        down = true;
+        new Thread(() -> {
+            int initialY = y;
+            while (down) {
+                y += jumpSpeed;
+                setLocation(x, y);
+                try {
+                    Thread.sleep(3);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            down = false;
+            canJump = false; // 점프 후 발판이 없으므로 점프 불가능
+        }).start();
     }
 
     public void followCoordinates() {
@@ -104,14 +174,6 @@ public class EnemyMuzan extends Enemy {
                 } else if (x > targetX) {
                     x -= speed; // 타겟의 X 좌표를 따라 왼쪽으로 이동
                     direction = "left"; // 이동 방향을 왼쪽으로 설정
-                }
-
-                if (y < targetY) {
-                    y += speed; // 타겟의 Y 좌표를 따라 아래로 이동
-                    direction = "down"; // 이동 방향을 아래로 설정
-                } else if (y > targetY) {
-                    y -= speed; // 타겟의 Y 좌표를 따라 위로 이동
-                    direction = "up"; // 이동 방향을 위로 설정
                 }
                 movingForward = !movingForward; // 이동 방향이 변경되었으므로 스프라이트 애니메이션 전환을 위한 플래그 업데이트
             }
@@ -214,11 +276,13 @@ public class EnemyMuzan extends Enemy {
         followCoordinates(); // player를 따라다니게 설정
         attackSkill(); // 공격 스킬을 호출
         attackDefault();
+        up();
+
         int distanceX = this.x - playerToFollow.getX();
         int distanceY = this.y - playerToFollow.getY();
         double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
-        if (distance <= 50) {
+        if (distance <= 50 && canJump) {
             playerToFollow.decreasePlayerHp(10);
         }
     }
