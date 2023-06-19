@@ -267,5 +267,4 @@ public class Player extends JLabel {
     public int getHp() {
         return hp;
     }
-
 }
