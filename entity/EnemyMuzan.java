@@ -173,6 +173,13 @@ public class EnemyMuzan extends Enemy {
                     x -= speed; // 타겟의 X 좌표를 따라 왼쪽으로 이동
                     direction = "left"; // 이동 방향을 왼쪽으로 설정
                 }
+                if (y < targetY) {
+                    y += speed; // 타겟의 Y 좌표를 따라 아래로 이동
+                    direction = "down"; // 이동 방향을 아래로 설정
+                } else if (y > targetY) {
+                    y -= speed; // 타겟의 Y 좌표를 따라 위로 이동
+                    direction = "up"; // 이동 방향을 위로 설정
+                }
                 movingForward = !movingForward; // 이동 방향이 변경되었으므로 스프라이트 애니메이션 전환을 위한 플래그 업데이트
             }
         }
