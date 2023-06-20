@@ -7,6 +7,7 @@ package game;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -52,7 +53,7 @@ public class GameFrame extends JFrame {
         setVisible(true);
     }
 
-    public void swapPanel(int selectedMenu) {
+    public void swapPanel(int selectedMenu) throws IOException {
         // 이전 패널 제거
         if (currentPanel != null) {
             if (currentPanel instanceof Map1Panel) {

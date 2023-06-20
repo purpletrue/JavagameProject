@@ -57,7 +57,7 @@ public class Player extends JLabel {
     }
 
     private void initBackgroundPlayerService() {
-        new Thread(new Background(this)).start();
+        new Thread(new Background(this, (EnemyMuzan) enemy)).start();
     }
     public boolean isVisible() {
         return isVisible;

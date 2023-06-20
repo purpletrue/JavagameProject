@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.Objects;
 
 import javax.swing.ImageIcon;
@@ -42,7 +43,11 @@ public class BeginningPanel extends JPanel {
                 if (map1Panel != null) {
                     map1Panel.startGameThread();
                 }
-                parent.swapPanel(0);
+                try {
+                    parent.swapPanel(0);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         add(startButtonLabel);

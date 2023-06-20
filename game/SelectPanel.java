@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -42,7 +43,11 @@ public class SelectPanel extends JPanel {
             System.out.println(characterType + "번 캐릭터 선택됨");
             SelectPanel.this.characterType = characterType;
             parent.characterType = characterType;
-            parent.swapPanel(GameFrame.MAP1_Panel);
+            try {
+                parent.swapPanel(GameFrame.MAP1_Panel);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
             parent.requestFocus();
         }
     }

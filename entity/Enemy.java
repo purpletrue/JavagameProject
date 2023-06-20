@@ -15,7 +15,7 @@ public class Enemy extends JLabel {
     private boolean isDefeated = false;
     int x, y;
     int width, height;
-    int speed;
+    int speed, jumpSpeed;
     String name;
     GameFrame gameFrame;
     ImageIcon imageicon;
