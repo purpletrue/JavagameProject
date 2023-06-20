@@ -18,7 +18,7 @@ public class Bullet extends JLabel {
         this.y = y;
         this.targetX = targetX;
         this.targetY = targetY;
-        this.speed = 5; // 총알 속도 설정
+        this.speed = 1; // 총알 속도 설정
         this.damage = 15;
 
         setIcon(new ImageIcon(getClass().getResource("/res/nezuko_left1.png"))); // 이미지 아이콘 설정

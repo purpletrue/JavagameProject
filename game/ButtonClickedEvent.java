@@ -50,3 +50,14 @@ public class ButtonClickedEvent extends MouseAdapter {
         parent.swapPanel(selectedMenu);
     }
 }
+
+
+
+
+
+
+
+
+
+
+

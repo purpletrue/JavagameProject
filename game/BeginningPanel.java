@@ -63,6 +63,6 @@ public class BeginningPanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(backgroundPanelImage, 200, 0, bgImageicon.getIconWidth(), bgImageicon.getIconHeight(), null);
+        g.drawImage(backgroundPanelImage, 0, 0, 1152, 864, null);
     }
 }

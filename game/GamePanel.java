@@ -179,7 +179,7 @@ public class GamePanel extends JPanel implements Runnable {
     private void drawBackground(Graphics2D g2) {
         ImageIcon backgroundIcon;
         switch (mapNumber) {
-            case 1 -> backgroundIcon = new ImageIcon(getClass().getResource("/res/backgroundG1.png"));
+            case 1 -> backgroundIcon = new ImageIcon(getClass().getResource("/res/백그라운드1.png"));
             case 2 -> backgroundIcon = new ImageIcon(getClass().getResource("/res/backgroundG2.png"));
             case 3 -> backgroundIcon = new ImageIcon(getClass().getResource("/res/backgroundG3.png"));
             default -> backgroundIcon = new ImageIcon(getClass().getResource("/res/background1.png"));
@@ -222,7 +222,7 @@ public class GamePanel extends JPanel implements Runnable {
             case 2 -> hpText = "Player HP: " + playerM.getHp();
         }
         g2.setFont(new Font("Arial", Font.PLAIN, 20));
-        g2.setColor(Color.BLACK);
+        g2.setColor(Color.white);
         FontMetrics fm = g2.getFontMetrics();
         int x = 20;
         int y = fm.getHeight()+50;
@@ -234,7 +234,7 @@ public class GamePanel extends JPanel implements Runnable {
     private void drawEnemyHp(Graphics2D g2) {
         String hpText = "Enemy HP: " + muzan.getHp();
         g2.setFont(new Font("Arial", Font.BOLD, 30));
-        g2.setColor(Color.BLACK);
+        g2.setColor(Color.white);
         FontMetrics fm = g2.getFontMetrics();
         int x = getWidth() - fm.stringWidth(hpText) - 50; // 오른쪽 상단에 위치하도록 x 좌표 계산
         int y = fm.getHeight()+50; // 상단에 위치하도록 y 좌표 계산
