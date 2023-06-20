@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class CreditPanel extends JPanel implements ActionListener {
 
@@ -69,7 +70,11 @@ public class CreditPanel extends JPanel implements ActionListener {
         if (y < 0) {
             y = 0;
             timer.stop();
-            gameFrame.swapPanel(GameFrame.BEGINNING_PANEL);
+            try {
+                gameFrame.swapPanel(GameFrame.BEGINNING_PANEL);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         }
         repaint();
     }

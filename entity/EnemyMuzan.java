@@ -9,12 +9,12 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class EnemyMuzan extends Enemy {
-    private static BufferedImage muzan1, muzan2, attack; // Muzan의 왼쪽 이미지
+    private static BufferedImage muzan1, muzan2, attack, attackImage; // Muzan의 왼쪽 이미지
     private String direction; // 이동 방향
     private boolean movingForward = true; // 스프라이트 애니메이션 전환을 위한 플래그
     private Player playerToFollow; // 따라다니는 대상 Player
     private int hpBarWidthEnemy = 100; // 적 체력바 너비
-    private int maxDistance = 150;
+    private int maxDistance = 90;
     private long lastAttackTime = 0;     // 스킬 샷
     private long attackCoolDown = 3000; // 3초의 쿨다운 시간
     private GamePanel gamePanel;
@@ -26,6 +26,7 @@ public class EnemyMuzan extends Enemy {
     private boolean leftWallCrash; //왼쪽 벽 충돌
     private boolean rightWallCrash; //오른쪽 벽 충돌
     private boolean down, up; // 점프, 하강
+    private boolean isAttacking = false;
 
 
     public EnemyMuzan(GamePanel gamePanel, Background background) throws IOException {
@@ -98,7 +99,7 @@ public class EnemyMuzan extends Enemy {
         try {
             muzan1 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/muzan1.png")));
             muzan2 = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/muzan2.png")));
-            attack = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/muzan2.png")));
+            attack = ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("/res/blood.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }

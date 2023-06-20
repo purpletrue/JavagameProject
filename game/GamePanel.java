@@ -9,6 +9,7 @@ import entity.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class GamePanel extends JPanel implements Runnable {
     protected int mapNumber;
@@ -192,7 +193,11 @@ public class GamePanel extends JPanel implements Runnable {
         SwingUtilities.invokeLater(() -> {
             if (gameFrame != null) {
                 dispose();
-                gameFrame.swapPanel(GameFrame.BEGINNING_PANEL);
+                try {
+                    gameFrame.swapPanel(GameFrame.BEGINNING_PANEL);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }
@@ -200,7 +205,11 @@ public class GamePanel extends JPanel implements Runnable {
         SwingUtilities.invokeLater(() -> {
             if (gameFrame != null) {
                 dispose();
-                gameFrame.swapPanel(GameFrame.CREDIT_PANEL);
+                try {
+                    gameFrame.swapPanel(GameFrame.CREDIT_PANEL);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }

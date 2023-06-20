@@ -7,6 +7,7 @@ package game;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -47,7 +48,11 @@ public class ButtonClickedEvent extends MouseAdapter {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        parent.swapPanel(selectedMenu);
+        try {
+            parent.swapPanel(selectedMenu);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }
 
