@@ -6,7 +6,7 @@
 package game;
 
 import entity.Player;
-
+import entity.EnemyMuzan;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -15,12 +15,16 @@ import java.util.Objects;
 
 public class Background implements Runnable {
 
-    private BufferedImage image;
-    private Player player;
-    private boolean running = true;
+    public BufferedImage image;
+    private final Player player;
+    private final EnemyMuzan muzan;
+    private boolean running;
+    private EnemyMuzan playerToFollow;
 
-    public Background(Player player) {
+    public Background(Player player, EnemyMuzan muzan) {
         this.player = player;
+        this.muzan = muzan;
+        this.running = true;
         try {
             image = ImageIO.read(Objects.requireNonNull(getClass().getResource("/res/test.png")));
         } catch (IOException e) {
@@ -67,9 +71,34 @@ public class Background implements Runnable {
                 running = false;
                 break;
             }
+            int muzanX = muzan.getX();
+            int muzanY = muzan.getY();
+            Color muzanLeftColor = new Color(image.getRGB(muzanX + 10, muzanY + 25));
+            Color muzanRightColor = new Color(image.getRGB(muzanX + 90, muzanY + 25));
+            int btColor = image.getRGB(muzanX + 72, muzanY + 132);
+
+            //muzan 바닥과의 충돌 감지
+            if (btColor != -1) {
+                if (muzan.isDown()) {
+                    muzan.setDown(false);
+                }
+            } else {
+                if (!muzan.isUp() && !muzan.isDown()) {
+                    muzan.down();
+                }
+            }
+
+            // muzan 벽과의 충돌 감지
+            muzan.setLeftWallCrash(muzanLeftColor.getRed() == 255 && muzanLeftColor.getGreen() == 0 && muzanLeftColor.getBlue() == 0);
+
+            muzan.setRightWallCrash(muzanRightColor.getRed() == 255 && muzanRightColor.getGreen() == 0 && muzanRightColor.getBlue() == 0);
+
+
+            try {
+                Thread.sleep(5);
+            } catch (InterruptedException e) {
+                System.out.println(e.getMessage());
+            }
         }
-    }
-    public void stopRunning(){
-        this.running = false;
     }
 }
